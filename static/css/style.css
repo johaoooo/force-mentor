@@ -1,7 +1,7 @@
 /* Charte et styles A1 / Force-N - Ultra Pro */
 :root {
-    --fn-blue-hero: #0049c4;
-    --fn-blue-primary: #0052cc;
+    --fn-blue-hero: #064fc0;
+    --fn-blue-primary: #0056ee;
     --fn-blue-dark: #00368a;
     --fn-green-cta: #00a854;
     --fn-green-hover: #008f47;
@@ -204,11 +204,18 @@ body {
     align-items: center;
 }
 
-.hero-vector-graphic {
+.hero-vector-graphic, .hero-pro-img {
     width: 100%;
-    max-width: 480px;
+    max-width: 500px;
     height: auto;
-    filter: drop-shadow(0 15px 25px rgba(0, 20, 70, 0.3));
+    border-radius: 18px;
+    box-shadow: 0 15px 35px rgba(0, 20, 70, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    transition: transform 0.3s ease;
+}
+
+.hero-pro-img:hover {
+    transform: scale(1.02);
 }
 
 .floating-badge {
