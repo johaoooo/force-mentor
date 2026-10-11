@@ -56,7 +56,7 @@ import { AuthService } from '../../services/auth.service';
                       <span class="small fw-bold" style="color: var(--blue-dark); font-size: 0.78rem;">
                         <i class="bi bi-lightning-charge-fill text-warning me-1"></i>Accès rapide Démo (1 clic) :
                       </span>
-                      <span class="badge bg-white text-primary border rounded-pill px-2 py-0" style="font-size: 0.68rem;">Prêt à tester</span>
+                      <span class="badge bg-white text-primary border rounded-1 px-2 py-1" style="font-size: 0.75rem;">Prêt à tester</span>
                     </div>
                     <div class="d-flex flex-wrap gap-2">
                       <button type="button" class="cnib-quick-btn flex-fill" (click)="fillDemo('moussa_diop', 'passer123', 'Moussa Diop (Mentor)')">

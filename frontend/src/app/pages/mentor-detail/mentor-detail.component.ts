@@ -77,7 +77,7 @@ import { Profile, Matiere } from '../../models/models';
                           <small class="text-muted" style="font-size: 11px;">Matière validée</small>
                         </div>
                       </div>
-                      <span class="badge bg-white text-primary border rounded-pill px-2 py-1" style="font-size: 11px;">
+                      <span class="badge bg-white text-primary border rounded-1 px-2 py-1" style="font-size: 13px;">
                         {{ comp.niveau_display }}
                       </span>
                     </div>

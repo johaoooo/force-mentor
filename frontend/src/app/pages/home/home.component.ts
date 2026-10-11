@@ -3,26 +3,23 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MentorService } from '../../services/mentor.service';
-import { Profile, Matiere, Stats } from '../../models/models';
+import { Profile, Stats } from '../../models/models';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [CommonModule, RouterModule, FormsModule],
   template: `
-    <!-- SECTION HERO A1 OFFICIELLE -->
+    <!-- HERO OFFICIEL DU FICHIER TÉLÉCHARGÉ -->
     <section class="hero">
-      <div class="container-custom hero__inner">
-        <!-- Colonne Gauche : Titre, Explication & Moteur de recherche -->
+      <div class="container hero__inner">
         <div class="hero__text">
           <h1>Trouvez le mentor idéal<br>pour progresser</h1>
           <p>
             Bénéficiez de l'accompagnement de professionnels expérimentés qui vous guideront dans votre parcours, vous aideront à développer vos compétences et à atteindre vos objectifs.
           </p>
-
-          <!-- Barre de Recherche Ronde avec Bouton Vert -->
-          <form (ngSubmit)="searchMentors()" class="search">
-            <svg class="search__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <form class="search" (ngSubmit)="searchMentors()">
+            <svg class="search__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
               <circle cx="11" cy="11" r="7"/>
               <path d="m20 20-3.5-3.5"/>
             </svg>
@@ -35,29 +32,12 @@ import { Profile, Matiere, Stats } from '../../models/models';
             >
             <button type="submit" class="btn btn--green">
               <span>Rechercher</span>
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="m9 5 7 7-7 7"/>
               </svg>
             </button>
           </form>
-
-          <!-- Raccourcis Matières sous la recherche -->
-          <div class="d-flex align-items-center gap-2 pt-3 flex-wrap">
-            <span class="text-white-50" style="font-size: 14px;">Matières populaires :</span>
-            <div class="d-flex flex-wrap gap-2">
-              <span 
-                *ngFor="let mat of sampleMatieres" 
-                (click)="filterByMatiere(mat.id)" 
-                class="badge bg-white text-primary rounded-pill px-3 py-2 cursor-pointer shadow-sm" 
-                style="font-size: 13px; cursor: pointer; transition: transform 0.15s ease;"
-              >
-                {{ mat.nom }}
-              </span>
-            </div>
-          </div>
         </div>
-
-        <!-- Colonne Droite : Illustration SVG A1 Officielle -->
         <div class="hero__art" aria-hidden="true">
           <svg viewBox="0 0 500 420" xmlns="http://www.w3.org/2000/svg">
             <defs>
@@ -123,11 +103,10 @@ import { Profile, Matiere, Stats } from '../../models/models';
       </div>
     </section>
 
-    <!-- SECTION COMMENT ÇA MARCHE A1 -->
+    <!-- SECTION COMMENT ÇA MARCHE (EXACT A1) -->
     <section class="section">
-      <div class="container-custom">
+      <div class="container">
         <h2 class="section__title">COMMENT ÇA MARCHE</h2>
-        <p class="section__sub">Un processus simple et rapide en 3 étapes pour progresser</p>
         <div class="steps">
           <div class="step">
             <span class="step__num">01</span>
@@ -148,105 +127,48 @@ import { Profile, Matiere, Stats } from '../../models/models';
       </div>
     </section>
 
-    <!-- SECTION DOMAINES & MATIÈRES -->
-    <section class="section section--bordered" style="background: var(--bg);">
-      <div class="container-custom">
-        <h2 class="section__title">DOMAINES & COMPÉTENCES</h2>
-        <p class="section__sub">Découvrez les matières et technologies dans lesquelles nos mentors vous accompagnent</p>
-        
-        <div class="row g-3">
-          <div *ngFor="let mat of matieres" class="col-6 col-md-4 col-lg-3">
-            <div 
-              (click)="filterByMatiere(mat.id)" 
-              class="card p-3 h-100 border-0 shadow-sm rounded-3 cursor-pointer" 
-              style="cursor: pointer; transition: transform 0.2s;"
-              (mouseover)="$any($event.currentTarget).style.transform='translateY(-3px)'" 
-              (mouseout)="$any($event.currentTarget).style.transform='translateY(0)'"
-            >
-              <div class="d-flex align-items-center gap-3">
-                <div class="rounded-3 p-2 d-flex align-items-center justify-content-center" style="background: rgba(43, 114, 187, 0.1); color: var(--blue); width: 48px; height: 48px;">
-                  <i class="bi" [ngClass]="mat.icone || 'bi-journal-code'" style="font-size: 1.5rem;"></i>
-                </div>
-                <div>
-                  <strong class="d-block text-dark" style="font-size: 15.5px;">{{ mat.nom }}</strong>
-                  <small class="text-muted" style="font-size: 13px;">Accompagnement disponible</small>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- SECTION LES MENTORS (GABARIT A1) -->
+    <!-- SECTION LES MENTORS (EXACT A1) -->
     <section class="section section--bordered">
-      <div class="container-custom">
+      <div class="container">
         <h2 class="section__title">LES MENTORS</h2>
         <p class="section__sub">
-          Découvrez des étudiants avancés et professionnels, prêts à partager leur expertise<br>et leur expérience pour vous aider à avancer.
+          Découvrez des professionnels de différents domaines, prêts à partager leur expertise<br>et leur expérience pour vous aider à avancer.
         </p>
-
-        <div class="row g-4">
-          <div *ngFor="let mentor of mentors" class="col-12 col-md-6 col-lg-4">
-            <article class="mentor bg-white shadow-sm h-100 d-flex flex-column p-4 rounded-3 border">
-              <div class="mentor__head d-flex align-items-center gap-3 mb-3">
-                <span class="avatar avatar--initials" style="width: 56px; height: 56px; font-size: 1.25rem;">
-                  {{ mentor.user.first_name ? mentor.user.first_name[0].toUpperCase() : 'M' }}{{ mentor.user.last_name ? mentor.user.last_name[0].toUpperCase() : '' }}
-                </span>
-                <div>
-                  <strong style="font-size: 17px; color: var(--ink);">{{ mentor.user.first_name }} {{ mentor.user.last_name }}</strong>
-                  <small style="font-size: 13.5px; color: var(--muted); display: block;">{{ mentor.filiere || 'Informatique' }} &bull; {{ mentor.niveau_display }}</small>
-                </div>
+        <div class="mentors">
+          <article *ngFor="let mentor of mentors" class="mentor" [routerLink]="['/mentor', mentor.id]" style="cursor: pointer;">
+            <div class="mentor__head">
+              <span class="avatar avatar--initials">
+                {{ getInitials(mentor) }}
+              </span>
+              <div>
+                <strong>{{ mentor.user.first_name }} {{ mentor.user.last_name }}</strong>
+                <small>{{ mentor.filiere || 'Génie Logiciel' }}</small>
               </div>
-
-              <div class="rating d-flex align-items-center gap-2 mb-2" style="font-size: 14px; color: var(--muted);">
-                <span class="stars" style="--rating: 4.9" aria-label="Note 4.9 sur 5"></span>
-                <span class="fw-bold text-dark">4.9</span>
-                <span class="badge bg-success-subtle text-success ms-auto rounded-pill px-3 py-1" style="font-size: 12.5px;">Disponible</span>
-              </div>
-
-              <p class="flex-grow-1 mb-3" style="font-size: 15px; line-height: 1.6; color: var(--ink);">
-                {{ mentor.bio || 'Passionné par le partage de connaissances, je vous accompagne dans vos devoirs et projets de code.' }}
-              </p>
-
-              <!-- Compétences du mentor -->
-              <div class="d-flex flex-wrap gap-1 mb-3">
-                <span *ngFor="let comp of mentor.competences" class="badge rounded-pill" style="background: rgba(43, 114, 187, 0.1); color: var(--blue); font-size: 12.5px; padding: 6px 12px;">
-                  {{ comp.matiere.nom }}
-                </span>
-              </div>
-
-              <div class="pt-3 border-top mt-auto d-flex justify-content-between align-items-center">
-                <a [routerLink]="['/mentor', mentor.id]" class="btn btn--outline w-100 justify-content-center" style="font-size: 14.5px; padding: 10px 18px;">
-                  Consulter le profil &rarr;
-                </a>
-              </div>
-            </article>
-          </div>
-        </div>
-
-        <div class="text-center mt-5">
-          <a routerLink="/mentors" class="btn btn--primary py-3 px-4" style="font-size: 16px;">
-            <i class="bi bi-grid-fill me-2"></i>Explorer tous les mentors
-          </a>
+            </div>
+            <div class="rating">
+              <span class="stars" style="--rating: 4.9" aria-label="Note 4.9 sur 5"></span>
+              <span>4.9 ({{ (mentor.id * 7 + 12) }} avis)</span>
+            </div>
+            <p>{{ mentor.bio || 'Spécialiste dans mon domaine, j\'aide les étudiants à progresser et à réussir leurs projets.' }}</p>
+          </article>
         </div>
       </div>
     </section>
 
-    <!-- SECTION STATS CLÉS (GABARIT A1) -->
+    <!-- SECTION STATS (EXACT A1) -->
     <section class="section section--bordered">
-      <div class="container-custom stats">
+      <div class="container stats">
         <div>
           <strong>{{ stats?.total_mentors || 25 }}</strong>
-          <span>Mentors disponibles<br><small>dans plusieurs matières</small></span>
+          <span>Mentors disponibles<br><small>dans plusieurs domaines</small></span>
         </div>
         <div>
           <strong>{{ stats?.total_matieres || 12 }}</strong>
-          <span>Matières clés<br><small>pour tous vos projets</small></span>
+          <span>Domaines de compétences<br><small>pour tous vos projets</small></span>
         </div>
         <div>
           <strong>{{ stats?.total_demandes || 87 }}</strong>
-          <span>Sessions réalisées<br><small>et apprenants satisfaits</small></span>
+          <span>Utilisateurs accompagnés<br><small>et satisfaits</small></span>
         </div>
       </div>
     </section>
@@ -257,17 +179,10 @@ export class HomeComponent implements OnInit {
   private router = inject(Router);
 
   searchQuery = '';
-  matieres: Matiere[] = [];
-  sampleMatieres: Matiere[] = [];
   mentors: Profile[] = [];
   stats: Stats | null = null;
 
   ngOnInit(): void {
-    this.mentorService.getMatieres().subscribe(mats => {
-      this.matieres = mats;
-      this.sampleMatieres = mats.slice(0, 5);
-    });
-
     this.mentorService.getMentors().subscribe(mentors => {
       this.mentors = mentors.slice(0, 6);
     });
@@ -277,15 +192,17 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  getInitials(mentor: Profile): string {
+    const fn = mentor.user.first_name ? mentor.user.first_name[0].toUpperCase() : 'M';
+    const ln = mentor.user.last_name ? mentor.user.last_name[0].toUpperCase() : '';
+    return `${fn}${ln}`;
+  }
+
   searchMentors(): void {
     if (this.searchQuery.trim()) {
       this.router.navigate(['/mentors'], { queryParams: { q: this.searchQuery.trim() } });
     } else {
       this.router.navigate(['/mentors']);
     }
-  }
-
-  filterByMatiere(matiereId: number): void {
-    this.router.navigate(['/mentors'], { queryParams: { matiere: matiereId } });
   }
 }

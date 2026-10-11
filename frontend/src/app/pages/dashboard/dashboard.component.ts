@@ -124,7 +124,7 @@ import { DemandeMentorat, Profile } from '../../models/models';
                 </div>
 
                 <div class="d-flex align-items-center gap-2">
-                  <span class="badge rounded-pill px-3 py-2" [ngClass]="getBadgeClass(req.statut)">
+                  <span class="badge rounded-1 px-3 py-2" [ngClass]="getBadgeClass(req.statut)">
                     {{ req.statut_display }}
                   </span>
                   <small class="text-muted" style="font-size: 11.5px;">{{ req.date_creation | date:'dd/MM/yyyy HH:mm' }}</small>
@@ -200,7 +200,7 @@ import { DemandeMentorat, Profile } from '../../models/models';
                 </div>
 
                 <div class="d-flex align-items-center gap-2">
-                  <span class="badge rounded-pill px-3 py-2" [ngClass]="getBadgeClass(req.statut)">
+                  <span class="badge rounded-1 px-3 py-2" [ngClass]="getBadgeClass(req.statut)">
                     {{ req.statut_display }}
                   </span>
                   <small class="text-muted" style="font-size: 11.5px;">{{ req.date_creation | date:'dd/MM/yyyy HH:mm' }}</small>

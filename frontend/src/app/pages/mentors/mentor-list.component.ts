@@ -114,12 +114,12 @@ import { Profile, Matiere } from '../../models/models';
 
               <!-- Compétences / Matières -->
               <div class="mb-3">
-                <span class="small text-muted d-block mb-1 fw-bold" style="font-size: 11px;">COMPÉTENCES ENSEIGNÉES :</span>
+                <span class="small text-muted d-block mb-1 fw-bold" style="font-size: 13px;">COMPÉTENCES ENSEIGNÉES :</span>
                 <div class="d-flex flex-wrap gap-1">
-                  <span *ngFor="let comp of mentor.competences" class="badge rounded-pill" style="background: rgba(43, 114, 187, 0.1); color: var(--blue); font-size: 11.5px; padding: 5px 10px;">
+                  <span *ngFor="let comp of mentor.competences" class="badge rounded-1" style="background: rgba(43, 114, 187, 0.1); color: var(--blue); font-size: 13px; padding: 6px 10px;">
                     {{ comp.matiere.nom }} <span class="opacity-75">({{ comp.niveau_display }})</span>
                   </span>
-                  <span *ngIf="mentor.competences.length === 0" class="text-muted small" style="font-size: 11.5px;">Général</span>
+                  <span *ngIf="mentor.competences.length === 0" class="text-muted small" style="font-size: 13px;">Général</span>
                 </div>
               </div>
 
@@ -128,7 +128,7 @@ import { Profile, Matiere } from '../../models/models';
                 <span class="badge-status-accepted">
                   <i class="bi bi-circle-fill" style="font-size: 6px;"></i> Disponible
                 </span>
-                <a [routerLink]="['/mentor', mentor.id]" class="btn-fm-primary py-1 px-3" style="font-size: 12.5px;">
+                <a [routerLink]="['/mentor', mentor.id]" class="btn-fm-primary py-2 px-3" style="font-size: 14px;">
                   Voir le profil &bull; Demander <i class="bi bi-arrow-right ms-1"></i>
                 </a>
               </div>
