@@ -113,11 +113,30 @@ def dashboard(request):
     profile = request.user.profile
     demandes_envoyees = DemandeMentorat.objects.filter(mentore=profile).select_related('mentor__user', 'matiere')
     demandes_recues = DemandeMentorat.objects.filter(mentor=profile).select_related('mentore__user', 'matiere')
+    competences = profile.competences.select_related('matiere')
+
+    # Compteurs clés pour les KPI
+    count_envoyees = demandes_envoyees.count()
+    count_recues = demandes_recues.count()
+    count_en_attente = (
+        demandes_recues.filter(statut='EN_ATTENTE').count()
+        if profile.est_mentor
+        else demandes_envoyees.filter(statut='EN_ATTENTE').count()
+    )
+    count_acceptees = (
+        demandes_recues.filter(statut='ACCEPTEE').count()
+        + demandes_envoyees.filter(statut='ACCEPTEE').count()
+    )
 
     context = {
         'profile': profile,
         'demandes_envoyees': demandes_envoyees,
         'demandes_recues': demandes_recues,
+        'competences': competences,
+        'count_envoyees': count_envoyees,
+        'count_recues': count_recues,
+        'count_en_attente': count_en_attente,
+        'count_acceptees': count_acceptees,
     }
     return render(request, 'mentorship/dashboard.html', context)
 

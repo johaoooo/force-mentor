@@ -1,152 +1,313 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %}Tableau de bord — Force Mentor{% endblock %}
+{% block title %}Tableau de bord — Apprendre{% endblock %}
 
 {% block content %}
-<div class="container py-3">
-    <!-- En-tête -->
-    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+<div class="container py-4">
+
+    <!-- Bannière Bienvenue Personnalisée -->
+    <div class="dashboard-hero-banner d-flex justify-content-between align-items-center flex-wrap gap-3">
         <div>
-            <h2 class="fw-bold mb-1 text-dark"><i class="bi bi-speedometer2 text-primary me-2"></i>Tableau de bord</h2>
-            <p class="text-muted mb-0">Bienvenue, {{ user.get_full_name|default:user.username }} &bull; Espace {{ profile.get_role_display }}</p>
+            <div class="d-flex align-items-center gap-2 mb-2">
+                <span class="badge bg-white text-primary px-3 py-1 rounded-pill fw-bold" style="font-size: 0.8rem;">
+                    Espace {{ profile.get_role_display }}
+                </span>
+                {% if profile.est_disponible %}
+                    <span class="badge bg-success-subtle text-white border border-success px-2 py-1 rounded-pill" style="font-size: 0.75rem;">
+                        <i class="bi bi-circle-fill me-1" style="font-size: 6px;"></i>Actif
+                    </span>
+                {% endif %}
+            </div>
+            <h2 class="fw-bold mb-1" style="font-size: 2rem;">
+                Bonjour, {{ user.first_name|default:user.username }} 👋
+            </h2>
+            <p class="text-light opacity-75 mb-0 small">
+                {{ profile.filiere|default:"Parcours informatique" }} &bull; {{ profile.get_niveau_display }}
+            </p>
         </div>
+
         <div class="d-flex gap-2">
-            <a href="{% url 'mentor_list' %}" class="btn btn-fn-outline btn-sm rounded-pill">
-                <i class="bi bi-search me-1"></i>Chercher un mentor
+            <a href="{% url 'mentor_list' %}" class="btn btn-light px-3 py-2 fw-semibold rounded-pill text-primary">
+                <i class="bi bi-search me-1"></i>Trouver un mentor
             </a>
-            <a href="{% url 'profile' %}" class="btn btn-dark btn-sm rounded-pill">
-                <i class="bi bi-person-gear me-1"></i>Gérer mon profil
+            <a href="{% url 'profile' %}" class="btn btn-outline-light px-3 py-2 fw-semibold rounded-pill">
+                <i class="bi bi-person-gear me-1"></i>Modifier mon profil
             </a>
         </div>
     </div>
 
-    <!-- Si l'utilisateur est MENTOR ou LES DEUX : Section des demandes reçues -->
-    {% if profile.est_mentor %}
-    <div class="card p-4 bg-white border shadow-sm mb-4">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h4 class="fw-bold mb-0 text-dark">
-                <i class="bi bi-inbox-fill me-2" style="color: var(--fn-orange-accent);"></i>Demandes reçues (en tant que mentor)
-            </h4>
-            <span class="badge bg-secondary">{{ demandes_recues.count }} au total</span>
+    <!-- 4 Cartes d'Indicateurs Clés (KPI) -->
+    <div class="row g-3 mb-4">
+        <!-- KPI 1 : Demandes Reçues (si mentor) ou Suivies -->
+        <div class="col-6 col-lg-3">
+            <div class="kpi-card d-flex align-items-center gap-3">
+                <div class="kpi-icon-box" style="background-color: #eff6ff; color: var(--fn-blue-primary);">
+                    <i class="bi bi-inbox-fill"></i>
+                </div>
+                <div>
+                    <div class="kpi-val">{{ count_recues }}</div>
+                    <div class="kpi-lbl">Demandes reçues</div>
+                </div>
+            </div>
         </div>
 
-        {% if demandes_recues %}
-            <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0">
-                    <thead class="table-light">
-                        <tr>
-                            <th>Mentoré</th>
-                            <th>Matière</th>
-                            <th>Date</th>
-                            <th>Message</th>
-                            <th>Statut</th>
-                            <th class="text-end">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for req in demandes_recues %}
-                        <tr>
-                            <td>
-                                <strong class="text-dark">{{ req.mentore.user.get_full_name|default:req.mentore.user.username }}</strong>
-                                <div class="small text-muted">{{ req.mentore.filiere }}</div>
-                            </td>
-                            <td><span class="badge badge-fn-subject">{{ req.matiere.nom }}</span></td>
-                            <td class="small text-muted">{{ req.date_creation|date:"d/m/Y H:i" }}</td>
-                            <td class="small text-secondary" style="max-width: 250px;">{{ req.message|truncatewords:15 }}</td>
-                            <td>
-                                {% if req.statut == 'EN_ATTENTE' %}
-                                    <span class="badge bg-warning text-dark"><i class="bi bi-hourglass-split me-1"></i>En attente</span>
-                                {% elif req.statut == 'ACCEPTEE' %}
-                                    <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Acceptée</span>
-                                {% elif req.statut == 'REFUSEE' %}
-                                    <span class="badge bg-danger"><i class="bi bi-x-circle me-1"></i>Refusée</span>
-                                {% else %}
-                                    <span class="badge bg-secondary">{{ req.statut }}</span>
-                                {% endif %}
-                            </td>
-                            <td class="text-end">
-                                {% if req.statut == 'EN_ATTENTE' %}
-                                    <a href="{% url 'update_request_status' req.id 'accepter' %}" class="btn btn-sm btn-success rounded-pill me-1">
-                                        <i class="bi bi-check-lg"></i> Accepter
-                                    </a>
-                                    <a href="{% url 'update_request_status' req.id 'refuser' %}" class="btn btn-sm btn-outline-danger rounded-pill">
-                                        <i class="bi bi-x-lg"></i> Refuser
-                                    </a>
-                                {% else %}
-                                    <span class="text-muted small">Traité</span>
-                                {% endif %}
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+        <!-- KPI 2 : Demandes Envoyées -->
+        <div class="col-6 col-lg-3">
+            <div class="kpi-card d-flex align-items-center gap-3">
+                <div class="kpi-icon-box" style="background-color: #f5f3ff; color: #7c3aed;">
+                    <i class="bi bi-send-fill"></i>
+                </div>
+                <div>
+                    <div class="kpi-val">{{ count_envoyees }}</div>
+                    <div class="kpi-lbl">Demandes envoyées</div>
+                </div>
             </div>
-        {% else %}
-            <div class="text-center py-4 text-muted">
-                <i class="bi bi-inbox fs-2 d-block mb-2"></i>
-                Vous n'avez reçu aucune demande de mentorat pour le moment.
-            </div>
-        {% endif %}
-    </div>
-    {% endif %}
+        </div>
 
-    <!-- Section des demandes envoyées (Mentoré) -->
+        <!-- KPI 3 : En Attente -->
+        <div class="col-6 col-lg-3">
+            <div class="kpi-card d-flex align-items-center gap-3">
+                <div class="kpi-icon-box" style="background-color: #fefce8; color: #ca8a04;">
+                    <i class="bi bi-hourglass-split"></i>
+                </div>
+                <div>
+                    <div class="kpi-val">{{ count_en_attente }}</div>
+                    <div class="kpi-lbl">En attente</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- KPI 4 : Mentorats Validés -->
+        <div class="col-6 col-lg-3">
+            <div class="kpi-card d-flex align-items-center gap-3">
+                <div class="kpi-icon-box" style="background-color: #ecfdf5; color: #059669;">
+                    <i class="bi bi-check2-circle"></i>
+                </div>
+                <div>
+                    <div class="kpi-val">{{ count_acceptees }}</div>
+                    <div class="kpi-lbl">Sessions validées</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Onglets de Navigation pour les Demandes -->
     <div class="card p-4 bg-white border shadow-sm">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h4 class="fw-bold mb-0 text-dark">
-                <i class="bi bi-send-fill text-primary me-2"></i>Mes demandes envoyées (en tant que mentoré)
-            </h4>
-            <span class="badge bg-secondary">{{ demandes_envoyees.count }} au total</span>
-        </div>
+        <ul class="nav nav-tabs nav-tabs-custom mb-4" id="dashboardTabs" role="tablist">
+            {% if profile.est_mentor %}
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="recues-tab" data-bs-toggle="tab" data-bs-target="#recues" type="button" role="tab">
+                    <i class="bi bi-inbox me-2"></i>Demandes reçues
+                    <span class="badge rounded-pill bg-primary ms-1" style="font-size: 0.72rem;">{{ demandes_recues.count }}</span>
+                </button>
+            </li>
+            {% endif %}
 
-        {% if demandes_envoyees %}
-            <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0">
-                    <thead class="table-light">
-                        <tr>
-                            <th>Mentor sollicité</th>
-                            <th>Matière</th>
-                            <th>Date d'envoi</th>
-                            <th>Message</th>
-                            <th>Statut</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for req in demandes_envoyees %}
-                        <tr>
-                            <td>
-                                <strong class="text-dark">{{ req.mentor.user.get_full_name|default:req.mentor.user.username }}</strong>
-                                <div class="small text-muted">{{ req.mentor.filiere }}</div>
-                            </td>
-                            <td><span class="badge badge-fn-subject">{{ req.matiere.nom }}</span></td>
-                            <td class="small text-muted">{{ req.date_creation|date:"d/m/Y H:i" }}</td>
-                            <td class="small text-secondary" style="max-width: 300px;">{{ req.message|truncatewords:20 }}</td>
-                            <td>
-                                {% if req.statut == 'EN_ATTENTE' %}
-                                    <span class="badge bg-warning text-dark"><i class="bi bi-hourglass-split me-1"></i>En attente</span>
-                                {% elif req.statut == 'ACCEPTEE' %}
-                                    <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Acceptée !</span>
-                                    {% if req.mentor.telephone %}
-                                        <div class="small mt-1 text-success fw-bold">Contact : {{ req.mentor.telephone }}</div>
-                                    {% endif %}
-                                {% elif req.statut == 'REFUSEE' %}
-                                    <span class="badge bg-danger"><i class="bi bi-x-circle me-1"></i>Refusée</span>
-                                {% else %}
-                                    <span class="badge bg-secondary">{{ req.statut }}</span>
-                                {% endif %}
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link {% if not profile.est_mentor %}active{% endif %}" id="envoyees-tab" data-bs-toggle="tab" data-bs-target="#envoyees" type="button" role="tab">
+                    <i class="bi bi-send me-2"></i>Mes demandes envoyées
+                    <span class="badge rounded-pill bg-secondary ms-1" style="font-size: 0.72rem;">{{ demandes_envoyees.count }}</span>
+                </button>
+            </li>
+
+            {% if profile.est_mentor %}
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="skills-tab" data-bs-toggle="tab" data-bs-target="#skills" type="button" role="tab">
+                    <i class="bi bi-award me-2"></i>Mes matières enseignées
+                </button>
+            </li>
+            {% endif %}
+        </ul>
+
+        <div class="tab-content" id="dashboardTabsContent">
+            <!-- ONGLET 1 : Demandes Reçues (Mentor) -->
+            {% if profile.est_mentor %}
+            <div class="tab-pane fade show active" id="recues" role="tabpanel">
+                {% if demandes_recues %}
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr class="text-secondary small">
+                                    <th>Mentoré</th>
+                                    <th>Matière</th>
+                                    <th>Date</th>
+                                    <th>Message / Besoin</th>
+                                    <th>Statut</th>
+                                    <th class="text-end">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for req in demandes_recues %}
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <div class="rounded-circle d-flex align-items-center justify-content-center text-white fw-bold" style="width: 38px; height: 38px; background: linear-gradient(135deg, #0052cc, #3b82f6); font-size: 0.85rem;">
+                                                {{ req.mentore.user.first_name|first|default:req.mentore.user.username|first|upper }}
+                                            </div>
+                                            <div>
+                                                <div class="fw-bold text-dark">{{ req.mentore.user.get_full_name|default:req.mentore.user.username }}</div>
+                                                <small class="text-muted">{{ req.mentore.filiere|default:"Étudiant" }} &bull; {{ req.mentore.get_niveau_display }}</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="badge-skill-pill">{{ req.matiere.nom }}</span>
+                                    </td>
+                                    <td class="small text-muted">{{ req.date_creation|date:"d M Y, H:i" }}</td>
+                                    <td>
+                                        <div class="small text-secondary" style="max-width: 280px;" title="{{ req.message }}">
+                                            {{ req.message|truncatewords:15 }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {% if req.statut == 'EN_ATTENTE' %}
+                                            <span class="badge-status-pending"><i class="bi bi-hourglass-split me-1"></i>En attente</span>
+                                        {% elif req.statut == 'ACCEPTEE' %}
+                                            <span class="badge-status-accepted"><i class="bi bi-check-circle-fill me-1"></i>Acceptée</span>
+                                        {% elif req.statut == 'REFUSEE' %}
+                                            <span class="badge-status-rejected"><i class="bi bi-x-circle-fill me-1"></i>Refusée</span>
+                                        {% else %}
+                                            <span class="badge bg-secondary">{{ req.statut }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-end">
+                                        {% if req.statut == 'EN_ATTENTE' %}
+                                            <div class="btn-group btn-group-sm">
+                                                <a href="{% url 'update_request_status' req.id 'accepter' %}" class="btn btn-success btn-sm px-3 rounded-pill me-1" title="Accepter la demande">
+                                                    <i class="bi bi-check-lg me-1"></i>Accepter
+                                                </a>
+                                                <a href="{% url 'update_request_status' req.id 'refuser' %}" class="btn btn-outline-danger btn-sm px-3 rounded-pill" title="Décliner la demande">
+                                                    <i class="bi bi-x-lg me-1"></i>Refuser
+                                                </a>
+                                            </div>
+                                        {% elif req.statut == 'ACCEPTEE' %}
+                                            <span class="text-success small fw-semibold"><i class="bi bi-check-all me-1"></i>Session planifiée</span>
+                                        {% else %}
+                                            <span class="text-muted small">Fermé</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="text-center py-5 text-muted">
+                        <i class="bi bi-inbox fs-1 d-block mb-2 text-primary opacity-50"></i>
+                        <h5 class="fw-bold text-dark">Aucune demande reçue pour le moment</h5>
+                        <p class="small text-muted col-md-6 mx-auto">
+                            Lorsque des étudiants souhaiteront être accompagnés dans vos matières d'expertise, leurs demandes apparaîtront ici.
+                        </p>
+                    </div>
+                {% endif %}
             </div>
-        {% else %}
-            <div class="text-center py-4 text-muted">
-                <i class="bi bi-chat-left-dots fs-2 d-block mb-2"></i>
-                Vous n'avez envoyé aucune demande de mentorat pour le moment.<br>
-                <a href="{% url 'mentor_list' %}" class="btn btn-fn-primary btn-sm rounded-pill mt-3">Trouver un mentor maintenant</a>
+            {% endif %}
+
+            <!-- ONGLET 2 : Demandes Envoyées (Mentoré) -->
+            <div class="tab-pane fade {% if not profile.est_mentor %}show active{% endif %}" id="envoyees" role="tabpanel">
+                {% if demandes_envoyees %}
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr class="text-secondary small">
+                                    <th>Mentor sollicité</th>
+                                    <th>Matière</th>
+                                    <th>Date d'envoi</th>
+                                    <th>Votre message</th>
+                                    <th>Statut & Contact</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for req in demandes_envoyees %}
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <div class="rounded-circle d-flex align-items-center justify-content-center text-white fw-bold" style="width: 38px; height: 38px; background: linear-gradient(135deg, #10b981, #059669); font-size: 0.85rem;">
+                                                {{ req.mentor.user.first_name|first|default:req.mentor.user.username|first|upper }}
+                                            </div>
+                                            <div>
+                                                <div class="fw-bold text-dark">{{ req.mentor.user.get_full_name|default:req.mentor.user.username }}</div>
+                                                <small class="text-muted">{{ req.mentor.filiere|default:"Mentor" }}</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="badge-skill-pill">{{ req.matiere.nom }}</span>
+                                    </td>
+                                    <td class="small text-muted">{{ req.date_creation|date:"d M Y, H:i" }}</td>
+                                    <td>
+                                        <div class="small text-secondary" style="max-width: 300px;" title="{{ req.message }}">
+                                            {{ req.message|truncatewords:15 }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {% if req.statut == 'EN_ATTENTE' %}
+                                            <span class="badge-status-pending"><i class="bi bi-hourglass-split me-1"></i>En attente de réponse</span>
+                                        {% elif req.statut == 'ACCEPTEE' %}
+                                            <div>
+                                                <span class="badge-status-accepted mb-1 d-inline-block"><i class="bi bi-check-circle-fill me-1"></i>Demande validée !</span>
+                                                {% if req.mentor.telephone %}
+                                                    <div class="small text-success fw-bold">
+                                                        <i class="bi bi-whatsapp me-1"></i>WhatsApp : {{ req.mentor.telephone }}
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        {% elif req.statut == 'REFUSEE' %}
+                                            <span class="badge-status-rejected"><i class="bi bi-x-circle-fill me-1"></i>Non disponible</span>
+                                        {% else %}
+                                            <span class="badge bg-secondary">{{ req.statut }}</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="text-center py-5 text-muted">
+                        <i class="bi bi-send fs-1 d-block mb-2 text-primary opacity-50"></i>
+                        <h5 class="fw-bold text-dark">Vous n'avez envoyé aucune demande</h5>
+                        <p class="small text-muted col-md-6 mx-auto mb-3">
+                            Besoin d'aide sur une matière ? Parcourez l'annuaire pour trouver le mentor qui vous correspond.
+                        </p>
+                        <a href="{% url 'mentor_list' %}" class="btn btn-fn-primary px-4 py-2 rounded-pill fw-semibold">
+                            <i class="bi bi-search me-1"></i>Trouver un mentor maintenant
+                        </a>
+                    </div>
+                {% endif %}
             </div>
-        {% endif %}
+
+            <!-- ONGLET 3 : Matières Enseignées (si mentor) -->
+            {% if profile.est_mentor %}
+            <div class="tab-pane fade" id="skills" role="tabpanel">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold text-dark mb-0">Mes domaines d'accompagnement</h5>
+                    <a href="{% url 'profile' %}" class="btn btn-sm btn-outline-primary rounded-pill">
+                        <i class="bi bi-pencil me-1"></i>Modifier mes matières
+                    </a>
+                </div>
+
+                <div class="row g-3">
+                    {% for comp in competences %}
+                    <div class="col-md-6 col-lg-4">
+                        <div class="p-3 border rounded-3 bg-light d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="fw-bold mb-1 text-dark">{{ comp.matiere.nom }}</h6>
+                                <small class="text-muted">{{ comp.matiere.description|truncatewords:6 }}</small>
+                            </div>
+                            <span class="badge bg-primary rounded-pill">{{ comp.get_niveau_expertise_display }}</span>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="col-12 text-muted py-3">
+                        Aucune matière liée à votre profil. Rendez-vous dans <a href="{% url 'profile' %}">Mon Profil</a> pour ajouter vos compétences.
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
     </div>
 </div>
 {% endblock %}
