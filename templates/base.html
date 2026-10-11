@@ -15,6 +15,8 @@
 </head>
 <body>
 
+    {% block navbar %}
+    {% if request.resolver_match.url_name != 'login' and request.resolver_match.url_name != 'register' %}
     <!-- Barre de Navigation : Logo seul (sans texte) & Menu épuré -->
     <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
         <div class="container">
@@ -96,6 +98,8 @@
             </div>
         </div>
     </nav>
+    {% endif %}
+    {% endblock navbar %}
 
     <!-- Messages Flash Django -->
     {% if messages %}
@@ -114,6 +118,8 @@
         {% block content %}{% endblock %}
     </main>
 
+    {% block footer %}
+    {% if request.resolver_match.url_name != 'login' and request.resolver_match.url_name != 'register' %}
     <!-- Pied de page officiel épuré avec Logo seul -->
     <footer class="py-4 mt-5 text-center text-muted border-top bg-light">
         <div class="container d-flex flex-column flex-sm-row justify-content-between align-items-center gap-2">
@@ -126,6 +132,8 @@
             </div>
         </div>
     </footer>
+    {% endif %}
+    {% endblock footer %}
 
     <!-- Bootstrap 5 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
