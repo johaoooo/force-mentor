@@ -3,7 +3,7 @@
   --muted:#4b5675; --line:#e3e8f2; --bg:#f7f9fd; --star:#f5b301;--orange:#cb732b;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:"Inter","Segoe UI",Arial,sans-serif;color:var(--ink);background:#fff;line-height:1.55}
+body{font-family:'Poppins',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;color:var(--ink);background:#fff;line-height:1.6}
 a{color:inherit;text-decoration:none}
 .container{width:min(1100px,92%);margin-inline:auto}
 
