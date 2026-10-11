@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Apprendre — Trouvez le mentor idéal pour progresser{% endblock %}
+{% block title %}Trouvez le mentor idéal pour progresser — Apprendre{% endblock %}
 
 {% block content %}
-<!-- Section Hero Pro & Épurée -->
+<!-- Section Hero Pro & Épurée (INCHANGÉE COMME DEMANDÉ) -->
 <section class="hero-pro-section">
     <div class="container">
         <div class="row align-items-center">
@@ -38,140 +38,387 @@
     </div>
 </section>
 
-<!-- Contenu Principal -->
-<div class="container py-5">
-    <!-- SECTION 1 : COMMENT ÇA MARCHE -->
+<!-- 1. BANDEAU DE POINTS FORTS (Inspiré de CNIB, juste sous le hero) -->
+<div class="container home-feature-strip">
+    <div class="row g-3">
+        <div class="col-6 col-lg-3">
+            <div class="feature-pill-card">
+                <div class="feature-icon-box feature-icon-blue">
+                    <i class="bi bi-mortarboard-fill"></i>
+                </div>
+                <div>
+                    <h6 class="feature-pill-title">Mentors Qualifiés</h6>
+                    <p class="feature-pill-desc">Profils certifiés et sélectionnés</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="feature-pill-card">
+                <div class="feature-icon-box feature-icon-green">
+                    <i class="bi bi-calendar2-check-fill"></i>
+                </div>
+                <div>
+                    <h6 class="feature-pill-title">100% Flexible</h6>
+                    <p class="feature-pill-desc">Horaires adaptés à vos études</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="feature-pill-card">
+                <div class="feature-icon-box feature-icon-purple">
+                    <i class="bi bi-lightning-charge-fill"></i>
+                </div>
+                <div>
+                    <h6 class="feature-pill-title">En Moins de 3 Clics</h6>
+                    <p class="feature-pill-desc">Contact simple et direct</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="feature-pill-card">
+                <div class="feature-icon-box feature-icon-amber">
+                    <i class="bi bi-people-fill"></i>
+                </div>
+                <div>
+                    <h6 class="feature-pill-title">Entraide & Partage</h6>
+                    <p class="feature-pill-desc">Communauté collaborative</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container py-4">
+    <!-- 2. SECTION : COMMENT ÇA MARCHE -->
     <section class="mb-5 pb-4">
-        <h2 class="section-title-clean">COMMENT ÇA MARCHE</h2>
-        <div class="row g-4 mt-2 justify-content-center">
+        <div class="text-center mb-5">
+            <span class="badge rounded-pill bg-primary-subtle text-primary fw-bold px-3 py-2 mb-2" style="font-size: 0.8rem; letter-spacing: 0.5px;">
+                PROCESSUS SIMPLE & RAPIDE
+            </span>
+            <h2 class="fw-bold text-dark fs-2 mb-2" style="letter-spacing: -0.5px;">Comment ça marche ?</h2>
+            <p class="text-muted mx-auto" style="max-width: 580px; font-size: 0.95rem;">
+                Trois étapes transparentes pour trouver le bon accompagnement et accélérer votre progression académique.
+            </p>
+        </div>
+
+        <div class="row g-4 justify-content-center">
             <!-- Étape 01 -->
-            <div class="col-md-4 text-center">
-                <div class="step-number-circle">01</div>
-                <h4 class="step-card-title">Créez votre profil</h4>
-                <p class="step-card-text">
-                    Inscrivez-vous gratuitement et complétez votre profil en quelques minutes.
-                </p>
+            <div class="col-md-4">
+                <div class="step-card-pro">
+                    <div class="step-badge-gradient">01</div>
+                    <i class="bi bi-person-badge step-icon-subtle"></i>
+                    <h5 class="fw-bold text-dark mb-2">Créez votre profil</h5>
+                    <p class="text-muted small mb-0" style="line-height: 1.6;">
+                        Inscrivez-vous en moins de 2 minutes et précisez votre filière, votre niveau d'études ainsi que vos objectifs d'apprentissage.
+                    </p>
+                </div>
             </div>
 
             <!-- Étape 02 -->
-            <div class="col-md-4 text-center">
-                <div class="step-number-circle">02</div>
-                <h4 class="step-card-title">Choisissez un mentor</h4>
-                <p class="step-card-text">
-                    Explorez notre réseau de mentors et trouvez celui qui correspond à vos besoins.
-                </p>
+            <div class="col-md-4">
+                <div class="step-card-pro">
+                    <div class="step-badge-gradient">02</div>
+                    <i class="bi bi-search-heart step-icon-subtle"></i>
+                    <h5 class="fw-bold text-dark mb-2">Choisissez votre mentor</h5>
+                    <p class="text-muted small mb-0" style="line-height: 1.6;">
+                        Parcourez l'annuaire filtrable par matière et spécialité. Consultez les compétences, disponibilités et avis des mentors.
+                    </p>
+                </div>
             </div>
 
             <!-- Étape 03 -->
-            <div class="col-md-4 text-center">
-                <div class="step-number-circle">03</div>
-                <h4 class="step-card-title">Progressez ensemble</h4>
-                <p class="step-card-text">
-                    Échangez, apprenez et atteignez vos objectifs grâce à un accompagnement personnalisé.
-                </p>
+            <div class="col-md-4">
+                <div class="step-card-pro">
+                    <div class="step-badge-gradient">03</div>
+                    <i class="bi bi-rocket-takeoff step-icon-subtle"></i>
+                    <h5 class="fw-bold text-dark mb-2">Progressez ensemble</h5>
+                    <p class="text-muted small mb-0" style="line-height: 1.6;">
+                        Envoyez votre demande d'accompagnement, échangez directement et planifiez vos sessions de travail en toute sérénité.
+                    </p>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- SECTION 2 : LES MENTORS -->
+    <!-- 3. SECTION : DOMAINES & MATIÈRES CLÉS -->
+    {% if matieres %}
     <section class="mb-5 pb-4">
-        <h2 class="section-title-clean">LES MENTORS</h2>
-        <p class="section-subtitle-clean">
-            Découvrez des professionnels de différents domaines, prêts à partager leur expertise<br class="d-none d-md-block"> et leur expérience pour vous aider à avancer.
-        </p>
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4">
+            <div>
+                <span class="badge rounded-pill bg-primary-subtle text-primary fw-bold px-3 py-2 mb-2" style="font-size: 0.8rem;">
+                    COMPÉTENCES RECHERCHÉES
+                </span>
+                <h2 class="fw-bold text-dark fs-2 mb-1" style="letter-spacing: -0.5px;">Domaines Populaires</h2>
+                <p class="text-muted small mb-0">Découvrez les matières et filières les plus actives sur la plateforme.</p>
+            </div>
+            <a href="{% url 'mentor_list' %}" class="btn btn-sm btn-outline-primary rounded-pill px-3 py-2 fw-bold mt-3 mt-md-0 align-self-start align-self-md-auto">
+                Voir toutes les matières <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+        </div>
+
+        <div class="row g-3">
+            {% for mat in matieres %}
+            <div class="col-6 col-md-4 col-lg-2">
+                <a href="{% url 'mentor_list' %}?matiere={{ mat.id }}" class="matiere-card-home text-center">
+                    <div class="matiere-icon-circle mx-auto">
+                        <i class="bi bi-journal-code"></i>
+                    </div>
+                    <h6 class="fw-bold mb-1" style="font-size: 0.92rem;">{{ mat.nom }}</h6>
+                    <small class="text-muted" style="font-size: 0.75rem;">Voir les mentors &rarr;</small>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- 4. SECTION : LES MENTORS À LA UNE -->
+    <section class="mb-5 pb-4">
+        <div class="text-center mb-5">
+            <span class="badge rounded-pill bg-primary-subtle text-primary fw-bold px-3 py-2 mb-2" style="font-size: 0.8rem;">
+                ACCOMPAGNEMENT D'EXCELLENCE
+            </span>
+            <h2 class="fw-bold text-dark fs-2 mb-2" style="letter-spacing: -0.5px;">Mentors à la Une</h2>
+            <p class="text-muted mx-auto" style="max-width: 620px; font-size: 0.95rem;">
+                Des étudiants avancés et des professionnels prêts à partager leur expertise pour vous faire progresser.
+            </p>
+        </div>
 
         <div class="row g-4">
-            <!-- Mentor 1 : Aminata Diallo -->
-            <div class="col-md-4">
-                <div class="mentor-card-clean d-flex flex-column">
-                    <div class="d-flex align-items-center mb-2">
-                        <img src="{% static 'img/avatar_aminata.png' %}" alt="Aminata Diallo" class="avatar-round-mockup me-3">
-                        <div>
-                            <h5 class="fw-bold mb-0 text-dark" style="font-size: 1.05rem;">Aminata Diallo</h5>
-                            <span class="text-muted small">Marketing Digital</span>
+            {% if mentors_recents %}
+                {% for mentor in mentors_recents %}
+                <div class="col-md-6 col-lg-3">
+                    <div class="mentor-card-clean d-flex flex-column h-100 p-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="me-3">
+                                {% if mentor.photo %}
+                                    <img src="{{ mentor.photo.url }}" alt="{{ mentor.user.get_full_name }}" class="avatar-round-mockup">
+                                {% else %}
+                                    <div class="rounded-circle d-flex align-items-center justify-content-center text-white fw-bold" style="width: 54px; height: 54px; background: linear-gradient(135deg, var(--fn-blue-hero), var(--fn-blue-primary)); font-size: 1.15rem;">
+                                        {{ mentor.user.first_name|slice:":1" }}{{ mentor.user.last_name|slice:":1" }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-0 text-dark">{{ mentor.user.get_full_name|default:mentor.user.username }}</h6>
+                                <small class="text-primary fw-semibold">{{ mentor.filiere|default:"Mentor Référent" }}</small>
+                            </div>
                         </div>
-                    </div>
-                    <div class="mb-2">
-                        <span class="rating-stars-clean">★★★★★</span>
-                        <span class="rating-score-clean">4.8 (32 avis)</span>
-                    </div>
-                    <p class="text-secondary small flex-grow-1 mb-3" style="line-height: 1.55;">
-                        Spécialiste en marketing digital, j'aide les entrepreneurs à développer leur présence en ligne.
-                    </p>
-                    <div class="pt-2 border-top">
-                        <a href="{% url 'mentor_list' %}?q=Aminata" class="btn btn-sm btn-outline-primary rounded-pill w-100 fw-semibold">
-                            Consulter le profil
-                        </a>
+
+                        <div class="d-flex align-items-center mb-2">
+                            <span class="rating-stars-clean">★★★★★</span>
+                            <span class="rating-score-clean">4.9</span>
+                            <span class="badge bg-success-subtle text-success ms-auto rounded-pill" style="font-size: 0.72rem;">Disponible</span>
+                        </div>
+
+                        <p class="text-muted small flex-grow-1 mb-3" style="line-height: 1.5; font-size: 0.84rem;">
+                            {{ mentor.bio|truncatechars:95|default:"Passionné par le partage de connaissances, je vous accompagne dans vos devoirs et projets." }}
+                        </p>
+
+                        <div class="pt-3 border-top mt-auto">
+                            <a href="{% url 'mentor_list' %}?q={{ mentor.user.first_name }}" class="btn btn-sm btn-outline-primary rounded-pill w-100 fw-bold py-2">
+                                <i class="bi bi-person-check me-1"></i>Voir le profil
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            <!-- Mentor 2 : Koffi Mensah -->
-            <div class="col-md-4">
-                <div class="mentor-card-clean d-flex flex-column">
-                    <div class="d-flex align-items-center mb-2">
-                        <img src="{% static 'img/avatar_koffi.png' %}" alt="Koffi Mensah" class="avatar-round-mockup me-3">
-                        <div>
-                            <h5 class="fw-bold mb-0 text-dark" style="font-size: 1.05rem;">Koffi Mensah</h5>
-                            <span class="text-muted small">Développement Web</span>
+                {% endfor %}
+            {% else %}
+                <!-- Fallback gracieux si la base n'est pas encore alimentée -->
+                <div class="col-md-4">
+                    <div class="mentor-card-clean d-flex flex-column h-100 p-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <img src="{% static 'img/avatar_aminata.png' %}" alt="Aminata Diallo" class="avatar-round-mockup me-3">
+                            <div>
+                                <h6 class="fw-bold mb-0 text-dark">Aminata Diallo</h6>
+                                <small class="text-primary fw-semibold">Marketing & Data</small>
+                            </div>
                         </div>
-                    </div>
-                    <div class="mb-2">
-                        <span class="rating-stars-clean">★★★★★</span>
-                        <span class="rating-score-clean">4.9 (45 avis)</span>
-                    </div>
-                    <p class="text-secondary small flex-grow-1 mb-3" style="line-height: 1.55;">
-                        Développeur web full-stack, je vous accompagne dans la création de sites internet sur mesure.
-                    </p>
-                    <div class="pt-2 border-top">
-                        <a href="{% url 'mentor_list' %}?q=Koffi" class="btn btn-sm btn-outline-primary rounded-pill w-100 fw-semibold">
-                            Consulter le profil
-                        </a>
+                        <div class="d-flex align-items-center mb-2">
+                            <span class="rating-stars-clean">★★★★★</span>
+                            <span class="rating-score-clean">4.9 (32 avis)</span>
+                            <span class="badge bg-success-subtle text-success ms-auto rounded-pill" style="font-size: 0.72rem;">Disponible</span>
+                        </div>
+                        <p class="text-muted small flex-grow-1 mb-3">
+                            Spécialiste en marketing digital et analyse de données, j'aide les étudiants à réussir leurs projets de fin d'études.
+                        </p>
+                        <div class="pt-3 border-top mt-auto">
+                            <a href="{% url 'mentor_list' %}?q=Aminata" class="btn btn-sm btn-outline-primary rounded-pill w-100 fw-bold py-2">
+                                Consulter le profil
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            <!-- Mentor 3 : Sophie Laurent -->
-            <div class="col-md-4">
-                <div class="mentor-card-clean d-flex flex-column">
-                    <div class="d-flex align-items-center mb-2">
-                        <img src="{% static 'img/avatar_sophie.png' %}" alt="Sophie Laurent" class="avatar-round-mockup me-3">
-                        <div>
-                            <h5 class="fw-bold mb-0 text-dark" style="font-size: 1.05rem;">Sophie Laurent</h5>
-                            <span class="text-muted small">Communication</span>
+                <div class="col-md-4">
+                    <div class="mentor-card-clean d-flex flex-column h-100 p-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <img src="{% static 'img/avatar_koffi.png' %}" alt="Koffi Mensah" class="avatar-round-mockup me-3">
+                            <div>
+                                <h6 class="fw-bold mb-0 text-dark">Koffi Mensah</h6>
+                                <small class="text-primary fw-semibold">Génie Logiciel</small>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center mb-2">
+                            <span class="rating-stars-clean">★★★★★</span>
+                            <span class="rating-score-clean">5.0 (45 avis)</span>
+                            <span class="badge bg-success-subtle text-success ms-auto rounded-pill" style="font-size: 0.72rem;">Disponible</span>
+                        </div>
+                        <p class="text-muted small flex-grow-1 mb-3">
+                            Développeur web et mobile full-stack, je vous accompagne dans vos revues de code et l'apprentissage des frameworks.
+                        </p>
+                        <div class="pt-3 border-top mt-auto">
+                            <a href="{% url 'mentor_list' %}?q=Koffi" class="btn btn-sm btn-outline-primary rounded-pill w-100 fw-bold py-2">
+                                Consulter le profil
+                            </a>
                         </div>
                     </div>
-                    <div class="mb-2">
-                        <span class="rating-stars-clean">★★★★★</span>
-                        <span class="rating-score-clean">4.7 (28 avis)</span>
+                </div>
+                <div class="col-md-4">
+                    <div class="mentor-card-clean d-flex flex-column h-100 p-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <img src="{% static 'img/avatar_sophie.png' %}" alt="Sophie Laurent" class="avatar-round-mockup me-3">
+                            <div>
+                                <h6 class="fw-bold mb-0 text-dark">Sophie Laurent</h6>
+                                <small class="text-primary fw-semibold">Réseaux & Sécurité</small>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center mb-2">
+                            <span class="rating-stars-clean">★★★★★</span>
+                            <span class="rating-score-clean">4.8 (28 avis)</span>
+                            <span class="badge bg-success-subtle text-success ms-auto rounded-pill" style="font-size: 0.72rem;">Disponible</span>
+                        </div>
+                        <p class="text-muted small flex-grow-1 mb-3">
+                            Étudiante en Master Sécurité Informatique, disponible pour vous épauler dans la configuration réseau et les TPs.
+                        </p>
+                        <div class="pt-3 border-top mt-auto">
+                            <a href="{% url 'mentor_list' %}?q=Sophie" class="btn btn-sm btn-outline-primary rounded-pill w-100 fw-bold py-2">
+                                Consulter le profil
+                            </a>
+                        </div>
                     </div>
-                    <p class="text-secondary small flex-grow-1 mb-3" style="line-height: 1.55;">
-                        Experte en communication digitale, je vous aide à construire une stratégie de visibilité efficace.
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="text-center mt-5">
+            <a href="{% url 'mentor_list' %}" class="btn btn-primary rounded-pill px-4 py-2 fw-bold shadow-sm" style="background-color: var(--fn-blue-primary); border: none;">
+                <i class="bi bi-grid-fill me-2"></i>Explorer tous les mentors
+            </a>
+        </div>
+    </section>
+
+    <!-- 5. SECTION : POURQUOI CHOISIR NOTRE PLATEFORME (PROPOSITION DE VALEUR) -->
+    <section class="mb-5 pb-4">
+        <div class="value-box-home">
+            <div class="row align-items-center g-4">
+                <div class="col-lg-5">
+                    <span class="badge rounded-pill bg-white text-primary border fw-bold px-3 py-2 mb-2" style="font-size: 0.78rem;">
+                        POURQUOI NOUS CHOISIR ?
+                    </span>
+                    <h3 class="fw-bold text-dark fs-2 mb-3" style="letter-spacing: -0.5px;">Un tremplin pour votre réussite universitaire</h3>
+                    <p class="text-muted small mb-4" style="line-height: 1.65;">
+                        Le mentorat entre pairs est le moyen le plus efficace de surmonter les blocages scolaires, de préparer ses examens et de construire son réseau professionnel.
                     </p>
-                    <div class="pt-2 border-top">
-                        <a href="{% url 'mentor_list' %}?q=Sophie" class="btn btn-sm btn-outline-primary rounded-pill w-100 fw-semibold">
-                            Consulter le profil
-                        </a>
+                    <div class="p-3 bg-white rounded-3 border d-flex align-items-center gap-3 shadow-sm">
+                        <i class="bi bi-award-fill fs-2 text-warning"></i>
+                        <div>
+                            <div class="fw-bold text-dark small">Taux de réussite de 98%</div>
+                            <small class="text-muted">Chez les étudiants suivant au moins 3 sessions</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-7">
+                    <div class="value-item-card">
+                        <div class="value-icon-box">
+                            <i class="bi bi-stopwatch"></i>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold text-dark mb-1">Prise de contact en moins de 3 clics</h6>
+                            <p class="text-muted small mb-0">Recherchez par matière, sélectionnez un profil vérifié et envoyez votre demande instantanément.</p>
+                        </div>
+                    </div>
+
+                    <div class="value-item-card">
+                        <div class="value-icon-box">
+                            <i class="bi bi-mortarboard"></i>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold text-dark mb-1">Pédagogie bienveillante et adaptée</h6>
+                            <p class="text-muted small mb-0">Des mentors passés par les mêmes cours, comprenant vos défis et expliquant avec clarté.</p>
+                        </div>
+                    </div>
+
+                    <div class="value-item-card mb-0">
+                        <div class="value-icon-box">
+                            <i class="bi bi-shield-check"></i>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold text-dark mb-1">Plateforme 100% gratuite et sécurisée</h6>
+                            <p class="text-muted small mb-0">Une initiative solidaire pour l'égalité des chances et la réussite de tous les étudiants.</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- SECTION 3 : CHIFFRES CLÉS -->
-    <section class="py-4 border-top">
-        <div class="row g-4 text-center justify-content-center">
-            <div class="col-md-4">
-                <div class="metric-big-number">25</div>
-                <div class="metric-description">Mentors disponibles dans plusieurs domaines</div>
+    <!-- 6. SECTION : CHIFFRES CLÉS & IMPACT -->
+    <section class="mb-5 pb-2">
+        <div class="stats-banner-home">
+            <div class="row g-4 text-center justify-content-center">
+                <div class="col-6 col-md-3">
+                    <div class="stat-item-home">
+                        <div class="stat-num-home">{{ total_mentors|default:25 }}+</div>
+                        <div class="stat-label-home">Mentors Actifs</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-item-home">
+                        <div class="stat-num-home">{{ total_matieres|default:12 }}+</div>
+                        <div class="stat-label-home">Domaines Clés</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-item-home">
+                        <div class="stat-num-home">{{ total_demandes|default:87 }}+</div>
+                        <div class="stat-label-home">Sessions Réalisées</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-item-home">
+                        <div class="stat-num-home">98%</div>
+                        <div class="stat-label-home">Satisfaction</div>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-4">
-                <div class="metric-big-number">12</div>
-                <div class="metric-description">Domaines de compétences pour tous vos projets</div>
-            </div>
-            <div class="col-md-4">
-                <div class="metric-big-number">87</div>
-                <div class="metric-description">Utilisateurs accompagnés et satisfaits</div>
+        </div>
+    </section>
+
+    <!-- 7. SECTION : BANNIÈRE CALL TO ACTION (CTA) -->
+    <section class="mb-4">
+        <div class="cta-banner-home text-center">
+            <div class="cta-banner-glow cta-banner-glow-1"></div>
+            <div class="cta-banner-glow cta-banner-glow-2"></div>
+            
+            <div class="position-relative" style="z-index: 2;">
+                <span class="badge rounded-pill bg-white text-primary fw-bold px-3 py-2 mb-3" style="font-size: 0.8rem;">
+                    REJOIGNEZ LA COMMUNAUTÉ
+                </span>
+                <h2 class="fw-bold text-white fs-1 mb-3" style="letter-spacing: -0.5px;">
+                    Prêt à faire décoller vos compétences ?
+                </h2>
+                <p class="text-white-50 mx-auto mb-4" style="max-width: 620px; font-size: 1.05rem; line-height: 1.6;">
+                    Trouvez un mentor pour vous accompagner dans vos projets ou partagez votre savoir avec des étudiants motivés.
+                </p>
+                <div class="d-flex flex-column flex-sm-row justify-content-center gap-3">
+                    <a href="{% url 'mentor_list' %}" class="btn-cta-white">
+                        <i class="bi bi-search me-2"></i>Trouver un mentor
+                    </a>
+                    <a href="{% url 'register' %}" class="btn-cta-ghost">
+                        <i class="bi bi-person-plus me-2"></i>Créer mon profil
+                    </a>
+                </div>
             </div>
         </div>
     </section>

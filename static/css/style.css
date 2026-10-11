@@ -355,7 +355,306 @@ body {
     font-weight: 500;
     max-width: 210px;
     margin: 0 auto;
-    line-height: 1.4;
+/* ================== HOME PAGE PREMIUM SECTIONS ================== */
+
+/* 1. Barres de mise en avant rapide (Sous le Hero) */
+.home-feature-strip {
+    margin-top: -36px;
+    position: relative;
+    z-index: 20;
+    margin-bottom: 50px;
+}
+
+.feature-pill-card {
+    background: #ffffff;
+    border: 1px solid var(--fn-border-color);
+    border-radius: 16px;
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
+    transition: all 0.25s ease;
+    height: 100%;
+}
+
+.feature-pill-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 28px rgba(0, 86, 238, 0.1);
+    border-color: #93c5fd;
+}
+
+.feature-icon-box {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+}
+
+.feature-icon-blue {
+    background: #eff6ff;
+    color: var(--fn-blue-primary);
+}
+
+.feature-icon-green {
+    background: #f0fdf4;
+    color: var(--fn-green-cta);
+}
+
+.feature-icon-purple {
+    background: #faf5ff;
+    color: #9333ea;
+}
+
+.feature-icon-amber {
+    background: #fffbeb;
+    color: #d97706;
+}
+
+.feature-pill-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--fn-text-dark);
+    margin-bottom: 2px;
+}
+
+.feature-pill-desc {
+    font-size: 0.78rem;
+    color: var(--fn-text-muted);
+    margin: 0;
+    line-height: 1.35;
+}
+
+/* 2. Processus d'étapes (Comment ça marche) */
+.step-card-pro {
+    background: #ffffff;
+    border: 1px solid var(--fn-border-color);
+    border-radius: 20px;
+    padding: 32px 24px;
+    text-align: center;
+    position: relative;
+    height: 100%;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+}
+
+.step-card-pro:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 14px 30px rgba(0, 86, 238, 0.1);
+    border-color: #93c5fd;
+}
+
+.step-badge-gradient {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--fn-blue-hero) 0%, var(--fn-blue-primary) 100%);
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    box-shadow: 0 6px 16px rgba(0, 86, 238, 0.28);
+}
+
+.step-icon-subtle {
+    font-size: 2rem;
+    color: var(--fn-blue-primary);
+    margin-bottom: 12px;
+    display: inline-block;
+}
+
+/* 3. Matières & Domaines populaires */
+.matiere-card-home {
+    background: #ffffff;
+    border: 1px solid var(--fn-border-color);
+    border-radius: 16px;
+    padding: 22px 18px;
+    text-decoration: none;
+    color: var(--fn-text-dark);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.matiere-card-home:hover {
+    border-color: var(--fn-blue-primary);
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgba(0, 86, 238, 0.1);
+    color: var(--fn-blue-primary);
+}
+
+.matiere-icon-circle {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: #eff6ff;
+    color: var(--fn-blue-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    margin-bottom: 14px;
+    transition: all 0.2s ease;
+}
+
+.matiere-card-home:hover .matiere-icon-circle {
+    background: var(--fn-blue-primary);
+    color: #ffffff;
+}
+
+/* 4. Pourquoi choisir la plateforme (Split value proposition) */
+.value-box-home {
+    background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%);
+    border: 1px solid var(--fn-border-color);
+    border-radius: 24px;
+    padding: 38px 32px;
+}
+
+.value-item-card {
+    background: #ffffff;
+    border: 1px solid var(--fn-border-color);
+    border-radius: 16px;
+    padding: 20px 22px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    transition: all 0.2s ease;
+    margin-bottom: 14px;
+}
+
+.value-item-card:hover {
+    border-color: #93c5fd;
+    transform: translateX(4px);
+    box-shadow: 0 6px 16px rgba(0, 86, 238, 0.08);
+}
+
+.value-icon-box {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: #eff6ff;
+    color: var(--fn-blue-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+
+/* 5. Chiffres clés interactifs */
+.stats-banner-home {
+    background: #ffffff;
+    border: 1px solid var(--fn-border-color);
+    border-radius: 20px;
+    padding: 36px 24px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.03);
+}
+
+.stat-item-home {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+}
+
+.stat-num-home {
+    font-size: 2.75rem;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--fn-blue-hero);
+    margin-bottom: 8px;
+    letter-spacing: -1px;
+}
+
+.stat-label-home {
+    font-size: 0.9rem;
+    color: var(--fn-text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* 6. Bannière d'appel à l'action (CTA final) */
+.cta-banner-home {
+    background: linear-gradient(135deg, #061539 0%, #064fc0 60%, #0056ee 100%);
+    border-radius: 24px;
+    padding: 56px 40px;
+    color: #ffffff;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 16px 45px rgba(6, 21, 57, 0.18);
+}
+
+.cta-banner-glow {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.12) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.cta-banner-glow-1 {
+    top: -100px;
+    right: -100px;
+}
+
+.cta-banner-glow-2 {
+    bottom: -150px;
+    left: -100px;
+}
+
+.btn-cta-white {
+    background: #ffffff;
+    color: var(--fn-blue-hero) !important;
+    font-weight: 700;
+    font-size: 0.95rem;
+    padding: 12px 30px;
+    border-radius: 50px;
+    text-decoration: none;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-cta-white:hover {
+    background: #f8fafc;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
+}
+
+.btn-cta-ghost {
+    background: rgba(255, 255, 255, 0.12);
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    color: #ffffff !important;
+    font-weight: 700;
+    font-size: 0.95rem;
+    padding: 10px 28px;
+    border-radius: 50px;
+    text-decoration: none;
+    backdrop-filter: blur(4px);
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-cta-ghost:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: #ffffff;
+    transform: translateY(-2px);
 }
 
 /* Styles pour la page Trouver un Mentor Améliorée */
