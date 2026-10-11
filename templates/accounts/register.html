@@ -33,6 +33,22 @@
                                 <p class="cnib-overlay-text">
                                     Vous possédez déjà un compte sur la plateforme ? Connectez-vous pour retrouver vos échanges et vos sessions.
                                 </p>
+
+                                <!-- Badge Communauté & Preuve Sociale -->
+                                <div class="cnib-overlay-stat-badge mb-4">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="d-flex">
+                                            <span class="badge-mini-avatar bg-primary">A</span>
+                                            <span class="badge-mini-avatar bg-warning">M</span>
+                                            <span class="badge-mini-avatar bg-success">K</span>
+                                        </div>
+                                        <div class="text-start">
+                                            <div class="fw-bold fs-6 text-white">+500 étudiants</div>
+                                            <small style="color: rgba(255, 255, 255, 0.78); font-size: 0.72rem;">accompagnés et connectés</small>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <a href="{% url 'login' %}" class="cnib-ghost-btn">
                                     Se connecter
                                 </a>
@@ -41,7 +57,7 @@
 
                         <!-- Colonne Formulaire Inscription (Droite) -->
                         <div class="col-12 col-lg-8 cnib-form-panel d-flex flex-column justify-content-center">
-                            <!-- Logo seul (sans le mot Apprendre) -->
+                            <!-- Logo seul (sans texte) -->
                             <div class="mb-3 text-start">
                                 <img src="{% static 'img/logo_emblem.png' %}" alt="Logo" height="46">
                             </div>
@@ -55,7 +71,7 @@
                                 <!-- SECTION 1 : Informations de connexion -->
                                 <div class="mb-4">
                                     <div class="d-flex align-items-center gap-2 mb-3">
-                                        <span class="badge rounded-circle" style="background-color: var(--cnib-blue-primary); width: 24px; height: 24px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.78rem; color: #fff;">1</span>
+                                        <span class="cnib-step-badge">1</span>
                                         <span class="fw-bold text-dark small">Informations de connexion</span>
                                     </div>
 
@@ -124,7 +140,7 @@
                                 <!-- SECTION 2 : Rôle & Profil étudiant -->
                                 <div class="mb-4">
                                     <div class="d-flex align-items-center gap-2 mb-3">
-                                        <span class="badge rounded-circle" style="background-color: var(--cnib-blue-primary); width: 24px; height: 24px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.78rem; color: #fff;">2</span>
+                                        <span class="cnib-step-badge">2</span>
                                         <span class="fw-bold text-dark small">Rôle & Profil étudiant</span>
                                     </div>
 
@@ -134,6 +150,7 @@
                                         <div class="col-md-4">
                                             <label class="cnib-role-card active" id="card-mentore">
                                                 <input type="radio" name="role" value="MENTORE" checked onchange="handleRoleChange(this)">
+                                                <span class="role-badge-check"><i class="bi bi-check-lg"></i></span>
                                                 <i class="bi bi-mortarboard-fill cnib-role-icon"></i>
                                                 <div class="fw-bold text-dark" style="font-size: 0.9rem;">Mentoré</div>
                                                 <small class="text-muted" style="font-size: 0.72rem;">Je cherche un accompagnement</small>
@@ -142,6 +159,7 @@
                                         <div class="col-md-4">
                                             <label class="cnib-role-card" id="card-mentor">
                                                 <input type="radio" name="role" value="MENTOR" onchange="handleRoleChange(this)">
+                                                <span class="role-badge-check"><i class="bi bi-check-lg"></i></span>
                                                 <i class="bi bi-award-fill cnib-role-icon"></i>
                                                 <div class="fw-bold text-dark" style="font-size: 0.9rem;">Mentor</div>
                                                 <small class="text-muted" style="font-size: 0.72rem;">Je partage mes compétences</small>
@@ -150,6 +168,7 @@
                                         <div class="col-md-4">
                                             <label class="cnib-role-card" id="card-lesdeux">
                                                 <input type="radio" name="role" value="LES_DEUX" onchange="handleRoleChange(this)">
+                                                <span class="role-badge-check"><i class="bi bi-check-lg"></i></span>
                                                 <i class="bi bi-people-fill cnib-role-icon"></i>
                                                 <div class="fw-bold text-dark" style="font-size: 0.9rem;">Les deux</div>
                                                 <small class="text-muted" style="font-size: 0.72rem;">Aider et recevoir du mentorat</small>

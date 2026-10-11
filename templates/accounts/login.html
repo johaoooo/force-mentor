@@ -12,6 +12,12 @@
     <div class="cnib-bg-glow-1"></div>
     <div class="cnib-bg-glow-2"></div>
 
+    <!-- Toast feedback interactif -->
+    <div id="demoToast" class="cnib-mini-toast">
+        <i class="bi bi-check-circle-fill text-success fs-5"></i>
+        <span id="toastMsg">Identifiants remplis</span>
+    </div>
+
     <!-- Bouton Retour à l'accueil flottant style CNIB -->
     <a href="{% url 'home' %}" class="cnib-home-btn" title="Retour à l'accueil">
         <i class="bi bi-arrow-left"></i>
@@ -25,29 +31,30 @@
                     <div class="row g-0 align-items-stretch">
                         <!-- Colonne Formulaire Connexion (Gauche) -->
                         <div class="col-12 col-lg-7 cnib-form-panel d-flex flex-column justify-content-center">
-                            <!-- Logo seul (sans le mot Apprendre) -->
+                            <!-- Logo seul (sans texte) -->
                             <div class="mb-3 text-start">
                                 <img src="{% static 'img/logo_emblem.png' %}" alt="Logo" height="46">
                             </div>
 
                             <h2 class="cnib-form-title">Connexion</h2>
-                            <p class="cnib-form-subtitle">Bon retour sur votre plateforme de mentorat.</p>
+                            <p class="cnib-form-subtitle">Accédez à votre espace de mentorat et d'apprentissage.</p>
 
                             <!-- Accès rapide Démo avec comptes fictifs standards -->
                             <div class="p-2 mb-4 rounded-3" style="background-color: var(--cnib-blue-rgba-10); border: 1px dashed var(--cnib-blue-primary);">
-                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                <div class="d-flex align-items-center justify-content-between mb-2 px-1">
                                     <span class="small fw-bold" style="color: var(--cnib-blue-dark); font-size: 0.78rem;">
-                                        <i class="bi bi-lightning-charge-fill me-1"></i>Accès rapide (Démo standard) :
+                                        <i class="bi bi-lightning-charge-fill text-warning me-1"></i>Accès rapide Démo (1 clic) :
                                     </span>
+                                    <span class="badge bg-white text-primary border rounded-pill px-2 py-0" style="font-size: 0.68rem;">Prêt à tester</span>
                                 </div>
                                 <div class="d-flex flex-wrap gap-2">
-                                    <button type="button" class="cnib-quick-btn" onclick="fillCredentials('moussa_diop', 'passer123')" title="Compte Mentor">
+                                    <button type="button" class="cnib-quick-btn flex-fill" onclick="fillCredentials('moussa_diop', 'passer123', 'Moussa Diop (Mentor)')" title="Compte Mentor">
                                         <i class="bi bi-award me-1"></i>Mentor (Moussa)
                                     </button>
-                                    <button type="button" class="cnib-quick-btn" onclick="fillCredentials('awa_sow', 'passer123')" title="Compte Mentorée standard">
+                                    <button type="button" class="cnib-quick-btn flex-fill" onclick="fillCredentials('awa_sow', 'passer123', 'Awa Sow (Mentorée)')" title="Compte Mentorée standard">
                                         <i class="bi bi-mortarboard me-1"></i>Mentorée (Awa)
                                     </button>
-                                    <button type="button" class="cnib-quick-btn" onclick="fillCredentials('admin', 'admin123')" title="Compte Administrateur">
+                                    <button type="button" class="cnib-quick-btn flex-fill" onclick="fillCredentials('admin', 'admin123', 'Administrateur')" title="Compte Administrateur">
                                         <i class="bi bi-shield-lock me-1"></i>Admin
                                     </button>
                                 </div>
@@ -69,7 +76,7 @@
                                 <div class="mb-3">
                                     <div class="d-flex justify-content-between align-items-center mb-1">
                                         <label for="id_password" class="cnib-label mb-0">Mot de passe *</label>
-                                        <a href="#" class="cnib-link" style="font-size: 11.5px;" onclick="alert('Pour réinitialiser votre mot de passe, veuillez contacter le support ou utiliser un compte démo.'); return false;">
+                                        <a href="#" class="cnib-link" style="font-size: 11.5px;" onclick="alert('Pour réinitialiser votre mot de passe, contactez l\'assistance ou utilisez un des comptes de test démo.'); return false;">
                                             Mot de passe oublié ?
                                         </a>
                                     </div>
@@ -86,7 +93,7 @@
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="rememberMe" checked style="accent-color: var(--cnib-blue-primary);">
                                         <label class="form-check-label small text-muted" for="rememberMe">
-                                            Se souvenir de moi
+                                            Se souvenir de moi sur cet appareil
                                         </label>
                                     </div>
                                 </div>
@@ -98,7 +105,7 @@
 
                                 <div class="text-center d-block d-lg-none pt-2">
                                     <span class="small text-muted">Pas encore de compte ?</span>
-                                    <a href="{% url 'register' %}" class="cnib-link ms-1">Créer un compte</a>
+                                    <a href="{% url 'register' %}" class="cnib-link ms-1">Créer un profil gratuitement</a>
                                 </div>
                             </form>
                         </div>
@@ -111,8 +118,34 @@
                                 </div>
                                 <h3 class="cnib-overlay-title">Ravi de vous revoir !</h3>
                                 <p class="cnib-overlay-text">
-                                    Rejoignez la communauté de mentorat pour partager vos compétences ou bénéficier de l'accompagnement personnalisé d'un aîné.
+                                    Retrouvez vos échanges, vos demandes d'accompagnement et vos sessions de mentorat en direct.
                                 </p>
+
+                                <!-- Points forts en glassmorphism -->
+                                <div class="cnib-overlay-features mb-4">
+                                    <div class="cnib-overlay-feature-item">
+                                        <i class="bi bi-mortarboard-fill"></i>
+                                        <div>
+                                            <strong>Mentorat personnalisé</strong>
+                                            <small>Guidé par des aînés d'expérience</small>
+                                        </div>
+                                    </div>
+                                    <div class="cnib-overlay-feature-item">
+                                        <i class="bi bi-chat-heart-fill"></i>
+                                        <div>
+                                            <strong>Entraide & Partage</strong>
+                                            <small>Revue de code, conseils et entraide</small>
+                                        </div>
+                                    </div>
+                                    <div class="cnib-overlay-feature-item">
+                                        <i class="bi bi-shield-check"></i>
+                                        <div>
+                                            <strong>Profils certifiés</strong>
+                                            <small>Communauté étudiante de confiance</small>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <a href="{% url 'register' %}" class="cnib-ghost-btn">
                                     Créer un compte
                                 </a>
@@ -126,9 +159,20 @@
 </div>
 
 <script>
-    function fillCredentials(username, password) {
+    function fillCredentials(username, password, label) {
         document.getElementById('id_username').value = username;
         document.getElementById('id_password').value = password;
+        
+        // Affichage Toast
+        const toast = document.getElementById('demoToast');
+        const msg = document.getElementById('toastMsg');
+        if (toast && msg) {
+            msg.innerText = "Identifiants remplis : " + (label || username);
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2200);
+        }
     }
 
     function togglePasswordVisibility() {
