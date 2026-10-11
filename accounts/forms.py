@@ -10,8 +10,8 @@ class CustomUserCreationForm(UserCreationForm):
     
     role = forms.ChoiceField(choices=Profile.ROLE_CHOICES, label="Votre Rôle", initial='MENTORE')
     filiere = forms.CharField(max_length=150, required=False, label="Filière / Spécialité")
-    niveau = forms.ChoiceField(choices=Profile.NIVEAU_CHOICES, label="Niveau d'études", initial='L1')
-    bio = forms.CharField(widget=forms.Textarea(attrs={'rows': 3}), required=False, label="Petite présentation")
+    niveau = forms.ChoiceField(choices=Profile.NIVEAU_CHOICES, label="Niveau d'études", initial='L1', widget=forms.Select(attrs={'class': 'cnib-select-field'}))
+    bio = forms.CharField(widget=forms.Textarea(attrs={'rows': 3, 'class': 'cnib-textarea-field'}), required=False, label="Petite présentation")
 
     class Meta:
         model = User

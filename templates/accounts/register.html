@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Inscription — Apprendre{% endblock %}
+{% block title %}Inscription — Force Mentor{% endblock %}
 
 {% block navbar %}{% endblock %}
 {% block footer %}{% endblock %}
@@ -13,7 +13,7 @@
     <div class="cnib-bg-glow-2"></div>
 
     <!-- Bouton Retour à l'accueil flottant style CNIB -->
-    <a href="{% url 'home' %}" class="cnib-home-btn" title="Retour à l'accueil">
+    <a href="{% url 'mentors:home' %}" class="cnib-home-btn" title="Retour à l'accueil">
         <i class="bi bi-arrow-left"></i>
         <span>Accueil</span>
     </a>
@@ -27,12 +27,39 @@
                         <div class="col-lg-4 d-none d-lg-flex flex-column align-self-stretch">
                             <div class="cnib-overlay-panel flex-grow-1 w-100">
                                 <div class="p-2 px-3 rounded-3 mb-4" style="background: rgba(255, 255, 255, 0.95); display: inline-block;">
-                                    <img src="{% static 'img/Logo_Force_Mentor.png' %}" alt="Force Mentor" height="38" style="max-height: 38px; width: auto; display: block;">
+                                    <a href="{% url 'mentors:home' %}" title="Retour à l'accueil">
+                                        <img src="{% static 'img/Logo_Force_Mentor.png' %}" alt="Force Mentor" height="38" style="max-height: 38px; width: auto; display: block;">
+                                    </a>
                                 </div>
-                                <h3 class="cnib-overlay-title">Bon retour !</h3>
+                                <h3 class="cnib-overlay-title">Bienvenue !</h3>
                                 <p class="cnib-overlay-text">
-                                    Vous possédez déjà un compte sur la plateforme ? Connectez-vous pour retrouver vos échanges et vos sessions.
+                                    Rejoignez la communauté Force Mentor pour échanger, progresser et propulser vos compétences tech.
                                 </p>
+
+                                <!-- Points forts en glassmorphism -->
+                                <div class="cnib-overlay-features mb-4">
+                                    <div class="cnib-overlay-feature-item">
+                                        <i class="bi bi-patch-check-fill"></i>
+                                        <div>
+                                            <strong>100% Gratuit</strong>
+                                            <small>Pour tous les étudiants Force-N</small>
+                                        </div>
+                                    </div>
+                                    <div class="cnib-overlay-feature-item">
+                                        <i class="bi bi-award-fill"></i>
+                                        <div>
+                                            <strong>Mentors certifiés</strong>
+                                            <small>Accompagnement par des pairs d'expérience</small>
+                                        </div>
+                                    </div>
+                                    <div class="cnib-overlay-feature-item">
+                                        <i class="bi bi-lightning-charge-fill"></i>
+                                        <div>
+                                            <strong>Projets & Déblocage</strong>
+                                            <small>Conseils méthodologiques & revues</small>
+                                        </div>
+                                    </div>
+                                </div>
 
                                 <!-- Badge Communauté & Preuve Sociale -->
                                 <div class="cnib-overlay-stat-badge mb-4">
@@ -44,14 +71,17 @@
                                         </div>
                                         <div class="text-start">
                                             <div class="fw-bold fs-6 text-white">+500 étudiants</div>
-                                            <small style="color: rgba(255, 255, 255, 0.78); font-size: 0.72rem;">accompagnés et connectés</small>
+                                            <small style="color: rgba(255, 255, 255, 0.78); font-size: 0.72rem;">connectés et accompagnés</small>
                                         </div>
                                     </div>
                                 </div>
 
-                                <a href="{% url 'login' %}" class="cnib-ghost-btn">
-                                    Se connecter
-                                </a>
+                                <div class="mt-auto pt-3">
+                                    <p class="small text-white-50 mb-2">Vous avez déjà un compte ?</p>
+                                    <a href="{% url 'login' %}" class="cnib-ghost-btn">
+                                        Se connecter
+                                    </a>
+                                </div>
                             </div>
                         </div>
 
@@ -59,11 +89,36 @@
                         <div class="col-12 col-lg-8 cnib-form-panel d-flex flex-column justify-content-center">
                             <!-- Logo officiel Force Mentor -->
                             <div class="mb-4 text-start">
-                                <img src="{% static 'img/Logo_Force_Mentor.png' %}" alt="Force Mentor" height="42" style="max-height: 42px; width: auto;">
+                                <a href="{% url 'mentors:home' %}" title="Retour à l'accueil">
+                                    <img src="{% static 'img/Logo_Force_Mentor.png' %}" alt="Force Mentor" height="42" style="max-height: 42px; width: auto;">
+                                </a>
                             </div>
 
                             <h2 class="cnib-form-title">Créer un compte</h2>
                             <p class="cnib-form-subtitle">Rejoignez la communauté pour progresser ou accompagner vos pairs.</p>
+
+                            <!-- Messages flash Django -->
+                            {% if messages %}
+                                {% for message in messages %}
+                                <div class="alert alert-{{ message.tags|default:'info' }} d-flex align-items-center py-2 px-3 mb-3 rounded-3" role="alert" style="font-size: 13px;">
+                                    <i class="bi bi-info-circle-fill me-2 fs-5"></i>
+                                    <div>{{ message }}</div>
+                                </div>
+                                {% endfor %}
+                            {% endif %}
+
+                            <!-- Erreurs globales du formulaire -->
+                            {% if form.non_field_errors %}
+                            <div class="cnib-alert-danger mb-3">
+                                <i class="bi bi-exclamation-triangle-fill fs-5 me-2 flex-shrink-0"></i>
+                                <div>
+                                    <strong>Erreurs de validation :</strong>
+                                    {% for error in form.non_field_errors %}
+                                        <div>{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% endif %}
 
                             <form method="post" action="{% url 'register' %}" id="registerForm">
                                 {% csrf_token %}
@@ -79,25 +134,25 @@
                                         <div class="col-md-6">
                                             <label class="cnib-label">Prénom *</label>
                                             <input type="text" name="first_name" value="{{ form.first_name.value|default:'' }}" class="cnib-input-field" placeholder="Amadou" required>
-                                            {% if form.first_name.errors %}<div class="text-danger small mt-1">{{ form.first_name.errors }}</div>{% endif %}
+                                            {% if form.first_name.errors %}<div class="cnib-field-error"><i class="bi bi-exclamation-circle me-1"></i>{{ form.first_name.errors.0 }}</div>{% endif %}
                                         </div>
 
                                         <div class="col-md-6">
                                             <label class="cnib-label">Nom *</label>
                                             <input type="text" name="last_name" value="{{ form.last_name.value|default:'' }}" class="cnib-input-field" placeholder="Diallo" required>
-                                            {% if form.last_name.errors %}<div class="text-danger small mt-1">{{ form.last_name.errors }}</div>{% endif %}
+                                            {% if form.last_name.errors %}<div class="cnib-field-error"><i class="bi bi-exclamation-circle me-1"></i>{{ form.last_name.errors.0 }}</div>{% endif %}
                                         </div>
 
                                         <div class="col-md-6">
                                             <label class="cnib-label">Nom d'utilisateur *</label>
                                             <input type="text" name="username" value="{{ form.username.value|default:'' }}" class="cnib-input-field" placeholder="amadou_d" required>
-                                            {% if form.username.errors %}<div class="text-danger small mt-1">{{ form.username.errors }}</div>{% endif %}
+                                            {% if form.username.errors %}<div class="cnib-field-error"><i class="bi bi-exclamation-circle me-1"></i>{{ form.username.errors.0 }}</div>{% endif %}
                                         </div>
 
                                         <div class="col-md-6">
                                             <label class="cnib-label">Adresse Email *</label>
                                             <input type="email" name="email" value="{{ form.email.value|default:'' }}" class="cnib-input-field" placeholder="amadou.diallo@email.com" required>
-                                            {% if form.email.errors %}<div class="text-danger small mt-1">{{ form.email.errors }}</div>{% endif %}
+                                            {% if form.email.errors %}<div class="cnib-field-error"><i class="bi bi-exclamation-circle me-1"></i>{{ form.email.errors.0 }}</div>{% endif %}
                                         </div>
 
                                         <div class="col-md-6">
@@ -118,7 +173,7 @@
                                                 </div>
                                                 <span id="strengthLabel" class="cnib-strength-text"></span>
                                             </div>
-                                            {% if form.password1.errors %}<div class="text-danger small mt-1">{{ form.password1.errors }}</div>{% endif %}
+                                            {% if form.password1.errors %}<div class="cnib-field-error"><i class="bi bi-exclamation-circle me-1"></i>{{ form.password1.errors.0 }}</div>{% endif %}
                                         </div>
 
                                         <div class="col-md-6">
@@ -130,7 +185,7 @@
                                                 </button>
                                             </div>
                                             <div id="matchFeedback" class="small mt-1" style="display: none;"></div>
-                                            {% if form.password2.errors %}<div class="text-danger small mt-1">{{ form.password2.errors }}</div>{% endif %}
+                                            {% if form.password2.errors %}<div class="cnib-field-error"><i class="bi bi-exclamation-circle me-1"></i>{{ form.password2.errors.0 }}</div>{% endif %}
                                         </div>
                                     </div>
                                 </div>
@@ -147,31 +202,31 @@
                                     <!-- Cartes interactives de Rôle style CNIB en Bleu Royal -->
                                     <label class="cnib-label mb-2">Quel sera votre rôle principal ? *</label>
                                     <div class="row g-2 mb-3">
-                                        <div class="col-md-4">
-                                            <label class="cnib-role-card active" id="card-mentore">
-                                                <input type="radio" name="role" value="MENTORE" checked onchange="handleRoleChange(this)">
+                                        <div class="col-4">
+                                            <label class="cnib-role-card {% if form.role.value == 'MENTORE' or not form.role.value %}active{% endif %}" id="card-mentore">
+                                                <input type="radio" name="role" value="MENTORE" {% if form.role.value == 'MENTORE' or not form.role.value %}checked{% endif %} onchange="handleRoleChange(this)">
                                                 <span class="role-badge-check"><i class="bi bi-check-lg"></i></span>
                                                 <i class="bi bi-mortarboard-fill cnib-role-icon"></i>
-                                                <div class="fw-bold text-dark" style="font-size: 0.9rem;">Mentoré</div>
-                                                <small class="text-muted" style="font-size: 0.72rem;">Je cherche un accompagnement</small>
+                                                <div class="fw-bold text-dark role-card-title">Mentoré</div>
+                                                <small class="text-muted role-card-desc">Accompagnement</small>
                                             </label>
                                         </div>
-                                        <div class="col-md-4">
-                                            <label class="cnib-role-card" id="card-mentor">
-                                                <input type="radio" name="role" value="MENTOR" onchange="handleRoleChange(this)">
+                                        <div class="col-4">
+                                            <label class="cnib-role-card {% if form.role.value == 'MENTOR' %}active{% endif %}" id="card-mentor">
+                                                <input type="radio" name="role" value="MENTOR" {% if form.role.value == 'MENTOR' %}checked{% endif %} onchange="handleRoleChange(this)">
                                                 <span class="role-badge-check"><i class="bi bi-check-lg"></i></span>
                                                 <i class="bi bi-award-fill cnib-role-icon"></i>
-                                                <div class="fw-bold text-dark" style="font-size: 0.9rem;">Mentor</div>
-                                                <small class="text-muted" style="font-size: 0.72rem;">Je partage mes compétences</small>
+                                                <div class="fw-bold text-dark role-card-title">Mentor</div>
+                                                <small class="text-muted role-card-desc">Partager</small>
                                             </label>
                                         </div>
-                                        <div class="col-md-4">
-                                            <label class="cnib-role-card" id="card-lesdeux">
-                                                <input type="radio" name="role" value="LES_DEUX" onchange="handleRoleChange(this)">
+                                        <div class="col-4">
+                                            <label class="cnib-role-card {% if form.role.value == 'LES_DEUX' %}active{% endif %}" id="card-lesdeux">
+                                                <input type="radio" name="role" value="LES_DEUX" {% if form.role.value == 'LES_DEUX' %}checked{% endif %} onchange="handleRoleChange(this)">
                                                 <span class="role-badge-check"><i class="bi bi-check-lg"></i></span>
                                                 <i class="bi bi-people-fill cnib-role-icon"></i>
-                                                <div class="fw-bold text-dark" style="font-size: 0.9rem;">Les deux</div>
-                                                <small class="text-muted" style="font-size: 0.72rem;">Aider et recevoir du mentorat</small>
+                                                <div class="fw-bold text-dark role-card-title">Les deux</div>
+                                                <small class="text-muted role-card-desc">Aider & Apprendre</small>
                                             </label>
                                         </div>
                                     </div>
@@ -182,19 +237,19 @@
                                             <div class="cnib-select-wrapper">
                                                 {{ form.niveau }}
                                             </div>
-                                            {% if form.niveau.errors %}<div class="text-danger small mt-1">{{ form.niveau.errors }}</div>{% endif %}
+                                            {% if form.niveau.errors %}<div class="cnib-field-error"><i class="bi bi-exclamation-circle me-1"></i>{{ form.niveau.errors.0 }}</div>{% endif %}
                                         </div>
 
                                         <div class="col-md-6">
                                             <label class="cnib-label">Filière / Spécialité</label>
                                             <input type="text" name="filiere" value="{{ form.filiere.value|default:'' }}" class="cnib-input-field" placeholder="Ex: Informatique, Développement Web...">
-                                            {% if form.filiere.errors %}<div class="text-danger small mt-1">{{ form.filiere.errors }}</div>{% endif %}
+                                            {% if form.filiere.errors %}<div class="cnib-field-error"><i class="bi bi-exclamation-circle me-1"></i>{{ form.filiere.errors.0 }}</div>{% endif %}
                                         </div>
 
                                         <div class="col-12">
                                             <label class="cnib-label">Présentation / Objectifs</label>
                                             <textarea name="bio" class="cnib-textarea-field" rows="3" placeholder="Présentez brièvement vos attentes ou votre parcours...">{{ form.bio.value|default:'' }}</textarea>
-                                            {% if form.bio.errors %}<div class="text-danger small mt-1">{{ form.bio.errors }}</div>{% endif %}
+                                            {% if form.bio.errors %}<div class="cnib-field-error"><i class="bi bi-exclamation-circle me-1"></i>{{ form.bio.errors.0 }}</div>{% endif %}
                                         </div>
                                     </div>
                                 </div>
@@ -203,7 +258,7 @@
                                 <div class="form-check mb-4">
                                     <input class="form-check-input" type="checkbox" id="termsCheck" required checked style="accent-color: var(--cnib-blue-primary);">
                                     <label class="form-check-label small text-muted" for="termsCheck">
-                                        J'accepte les conditions d'utilisation et la politique de confidentialité de la plateforme.
+                                        J'accepte les conditions d'utilisation et la charte de respect de Force Mentor.
                                     </label>
                                 </div>
 

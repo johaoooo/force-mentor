@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Connexion — Apprendre{% endblock %}
+{% block title %}Connexion — Force Mentor{% endblock %}
 
 {% block navbar %}{% endblock %}
 {% block footer %}{% endblock %}
@@ -19,7 +19,7 @@
     </div>
 
     <!-- Bouton Retour à l'accueil flottant style CNIB -->
-    <a href="{% url 'home' %}" class="cnib-home-btn" title="Retour à l'accueil">
+    <a href="{% url 'mentors:home' %}" class="cnib-home-btn" title="Retour à l'accueil">
         <i class="bi bi-arrow-left"></i>
         <span>Accueil</span>
     </a>
@@ -33,11 +33,34 @@
                         <div class="col-12 col-lg-7 cnib-form-panel d-flex flex-column justify-content-center">
                             <!-- Logo officiel Force Mentor -->
                             <div class="mb-4 text-start">
-                                <img src="{% static 'img/Logo_Force_Mentor.png' %}" alt="Force Mentor" height="42" style="max-height: 42px; width: auto;">
+                                <a href="{% url 'mentors:home' %}" title="Retour à l'accueil">
+                                    <img src="{% static 'img/Logo_Force_Mentor.png' %}" alt="Force Mentor" height="42" style="max-height: 42px; width: auto;">
+                                </a>
                             </div>
 
                             <h2 class="cnib-form-title">Connexion</h2>
                             <p class="cnib-form-subtitle">Accédez à votre espace de mentorat et d'apprentissage.</p>
+
+                            <!-- Messages flash Django -->
+                            {% if messages %}
+                                {% for message in messages %}
+                                <div class="alert alert-{{ message.tags|default:'info' }} d-flex align-items-center py-2 px-3 mb-3 rounded-3" role="alert" style="font-size: 13px;">
+                                    <i class="bi bi-info-circle-fill me-2 fs-5"></i>
+                                    <div>{{ message }}</div>
+                                </div>
+                                {% endfor %}
+                            {% endif %}
+
+                            <!-- Alerte Erreur Authentification Django -->
+                            {% if form.errors %}
+                            <div class="cnib-alert-danger mb-3">
+                                <i class="bi bi-exclamation-triangle-fill fs-5 me-2 flex-shrink-0"></i>
+                                <div>
+                                    <strong>Identifiants invalides :</strong>
+                                    <div>Nom d'utilisateur ou mot de passe incorrect.</div>
+                                </div>
+                            </div>
+                            {% endif %}
 
                             <!-- Accès rapide Démo avec comptes fictifs standards -->
                             <div class="p-2 mb-4 rounded-3" style="background-color: var(--cnib-blue-rgba-10); border: 1px dashed var(--cnib-blue-primary);">
