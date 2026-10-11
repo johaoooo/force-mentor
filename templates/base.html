@@ -24,7 +24,9 @@
     <footer class="footer">
       <div class="container footer__inner">
         <div class="footer__col">
-          <a href="{% url 'mentors:home' %}" class="logo" aria-label="Force Mentor">FORCE <span class="logo__m">M</span>ENTOR</a>
+          <a href="{% url 'mentors:home' %}" class="logo-brand" aria-label="Force Mentor" style="display: inline-block; background: rgba(255,255,255,0.95); padding: 6px 12px; border-radius: 8px;">
+            <img src="{% static 'img/Logo_Force_Mentor.png' %}" alt="Force Mentor" height="32" style="max-height: 32px; width: auto; display: block;">
+          </a>
           <p class="footer__desc">
             Plateforme d'accompagnement et d'entraide académique pour les apprenants du programme Force-N. Trouvez un mentor certifié en quelques clics.
           </p>
