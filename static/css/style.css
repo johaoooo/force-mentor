@@ -357,3 +357,168 @@ body {
     margin: 0 auto;
     line-height: 1.4;
 }
+
+/* Styles pour la page Trouver un Mentor Améliorée */
+.page-header-banner {
+    background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%);
+    border: 1px solid var(--fn-border-color);
+    border-radius: 16px;
+    padding: 32px 28px;
+    margin-bottom: 28px;
+}
+
+.search-filter-card {
+    background: #ffffff;
+    border: 1px solid var(--fn-border-color);
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 28px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.pill-subject-filter {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: 30px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    text-decoration: none;
+    border: 1.5px solid var(--fn-border-color);
+    background: #ffffff;
+    color: #475569;
+    transition: all 0.15s ease;
+}
+
+.pill-subject-filter:hover {
+    border-color: var(--fn-blue-primary);
+    color: var(--fn-blue-primary);
+    background: #f0f7ff;
+}
+
+.pill-subject-filter.active {
+    background: var(--fn-blue-hero);
+    border-color: var(--fn-blue-hero);
+    color: #ffffff;
+    box-shadow: 0 4px 10px rgba(0, 73, 196, 0.25);
+}
+
+.mentor-card-pro {
+    background: #ffffff;
+    border: 1px solid var(--fn-border-color);
+    border-radius: 16px;
+    padding: 24px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.mentor-card-pro:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 73, 196, 0.1);
+    border-color: #93c5fd;
+}
+
+.mentor-avatar-box {
+    position: relative;
+    width: 62px;
+    height: 62px;
+    flex-shrink: 0;
+}
+
+.mentor-avatar-circle {
+    width: 62px;
+    height: 62px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ffffff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.mentor-avatar-initials {
+    width: 62px;
+    height: 62px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--fn-blue-hero) 0%, #3b82f6 100%);
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #ffffff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.online-dot {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background-color: #22c55e;
+    border: 2px solid #ffffff;
+}
+
+.badge-level-pill {
+    background-color: #f1f5f9;
+    color: #475569;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+}
+
+.badge-skill-pill {
+    background-color: #eff6ff;
+    color: #1d4ed8;
+    border: 1px solid #dbeafe;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 6px;
+}
+
+.btn-card-details {
+    border: 1.5px solid #cbd5e1;
+    color: #334155;
+    font-weight: 600;
+    font-size: 0.88rem;
+    padding: 8px 14px;
+    border-radius: 8px;
+    background: transparent;
+    text-decoration: none;
+    transition: all 0.15s ease;
+    text-align: center;
+}
+
+.btn-card-details:hover {
+    background-color: #f8fafc;
+    border-color: #94a3b8;
+    color: #0f172a;
+}
+
+.btn-card-request {
+    background-color: var(--fn-green-cta);
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 0.88rem;
+    padding: 8px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    border: none;
+    transition: all 0.15s ease;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0, 168, 84, 0.25);
+}
+
+.btn-card-request:hover {
+    background-color: var(--fn-green-hover);
+    color: #ffffff;
+    box-shadow: 0 4px 10px rgba(0, 168, 84, 0.35);
+}

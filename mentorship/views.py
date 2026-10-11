@@ -30,12 +30,16 @@ def mentor_list(request):
     Répond à la contrainte du cahier des charges : trouver un mentor en moins de 3 clics.
     """
     matiere_id = request.GET.get('matiere')
+    niveau_filter = request.GET.get('niveau')
     search_query = request.GET.get('q', '').strip()
 
     mentors = Profile.objects.filter(role__in=['MENTOR', 'LES_DEUX'], est_disponible=True).select_related('user').prefetch_related('competences__matiere')
 
-    if matiere_id:
+    if matiere_id and matiere_id.isdigit():
         mentors = mentors.filter(competences__matiere_id=matiere_id)
+
+    if niveau_filter:
+        mentors = mentors.filter(niveau=niveau_filter)
 
     if search_query:
         mentors = mentors.filter(
@@ -52,7 +56,9 @@ def mentor_list(request):
         'mentors': mentors,
         'matieres': matieres,
         'selected_matiere': int(matiere_id) if matiere_id and matiere_id.isdigit() else None,
+        'selected_niveau': niveau_filter,
         'search_query': search_query,
+        'niveaux': Profile.NIVEAU_CHOICES,
     }
     return render(request, 'mentorship/mentor_list.html', context)
 
