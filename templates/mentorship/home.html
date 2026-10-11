@@ -1,141 +1,175 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %}Accueil — Force Mentor | Force-N{% endblock %}
+{% block title %}A1 — Trouvez le mentor idéal pour progresser{% endblock %}
 
 {% block content %}
-<div class="container">
-    <!-- Section Hero Institutionnelle -->
-    <div class="hero-forcen p-4 p-md-5 mb-5 shadow-sm">
+<!-- Section Hero (Bandeau Bleu Royal) -->
+<div class="hero-container">
+    <div class="container">
         <div class="row align-items-center">
-            <div class="col-lg-8 text-center text-lg-start">
-                <span class="badge bg-white text-dark px-3 py-2 rounded-pill fw-semibold mb-3 shadow-sm">
-                    <i class="bi bi-mortarboard-fill text-primary me-1"></i>Plateforme de Mentorat Étudiant
-                </span>
-                <h1 class="display-5 fw-bold mb-3">L'excellence par l'entraide et le partage</h1>
-                <p class="lead mb-4 text-light opacity-90 col-lg-10">
-                    Trouvez un étudiant mentor dans votre filière pour progresser rapidement sur vos matières clés, ou partagez vos connaissances pour accompagner vos pairs.
+            <!-- Colonne Gauche : Textes & Moteur de Recherche -->
+            <div class="col-lg-7 text-center text-lg-start mb-4 mb-lg-0">
+                <h1 class="hero-title">
+                    Trouvez le mentor idéal<br>pour progresser
+                </h1>
+                <p class="hero-subtitle">
+                    Bénéficiez de l'accompagnement de professionnels expérimentés qui vous guideront dans votre parcours, vous aideront à développer vos compétences et à atteindre vos objectifs.
                 </p>
-                <div class="d-flex flex-wrap justify-content-center justify-content-lg-start gap-3">
-                    <a href="{% url 'mentor_list' %}" class="btn btn-fn-accent px-4 py-2">
-                        <i class="bi bi-search me-2"></i>Trouver un mentor
-                    </a>
-                    {% if not user.is_authenticated %}
-                    <a href="{% url 'register' %}" class="btn btn-outline-light px-4 py-2 rounded-pill">
-                        <i class="bi bi-person-plus me-2"></i>Devenir mentor
-                    </a>
-                    {% endif %}
-                </div>
+
+                <!-- Barre de recherche blanche avec bouton vert -->
+                <form action="{% url 'mentor_list' %}" method="get" class="search-bar-mockup mx-auto mx-lg-0">
+                    <i class="bi bi-search text-muted me-2 fs-6"></i>
+                    <input type="text" name="q" placeholder="Rechercher un mentor, une compétence, un domaine...">
+                    <button type="submit" class="btn-search-mockup">
+                        Rechercher &gt;
+                    </button>
+                </form>
             </div>
-            <div class="col-lg-4 d-none d-lg-block text-center">
-                <i class="bi bi-people-fill text-white opacity-25" style="font-size: 11rem;"></i>
+
+            <!-- Colonne Droite : Illustration Maquette -->
+            <div class="col-lg-5 hero-illustration-wrapper">
+                <img src="{% static 'img/hero_illustration.png' %}" alt="Illustration Trouvez le mentor idéal" class="hero-illustration-img shadow-sm">
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Métriques / Statistiques clés -->
-    <div class="row g-4 mb-5 text-center">
-        <div class="col-md-4">
-            <div class="card p-4 h-100 border-0 shadow-sm">
-                <div class="text-primary mb-2"><i class="bi bi-people-fill fs-1"></i></div>
-                <h3 class="fw-bold mb-1 text-dark">{{ total_mentors }}</h3>
-                <p class="text-muted mb-0">Mentors disponibles</p>
+<div class="container py-5">
+    <!-- SECTION 1 : COMMENT ÇA MARCHE -->
+    <section class="mb-5 pb-3">
+        <h2 class="section-heading-mockup">COMMENT ÇA MARCHE</h2>
+        <div class="row g-4 mt-2 justify-content-center">
+            <!-- Étape 01 -->
+            <div class="col-md-4 text-center">
+                <div class="step-circle-mockup">01</div>
+                <h4 class="step-title-mockup">Créez votre profil</h4>
+                <p class="step-desc-mockup">
+                    Inscrivez-vous gratuitement et complétez votre profil en quelques minutes.
+                </p>
             </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card p-4 h-100 border-0 shadow-sm">
-                <div class="text-primary mb-2"><i class="bi bi-journal-code fs-1" style="color: var(--fn-orange-accent) !important;"></i></div>
-                <h3 class="fw-bold mb-1 text-dark">{{ total_matieres }}</h3>
-                <p class="text-muted mb-0">Matières & Modules couverts</p>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card p-4 h-100 border-0 shadow-sm">
-                <div class="text-success mb-2"><i class="bi bi-chat-left-text-fill fs-1"></i></div>
-                <h3 class="fw-bold mb-1 text-dark">{{ total_demandes }}</h3>
-                <p class="text-muted mb-0">Demandes de mise en relation</p>
-            </div>
-        </div>
-    </div>
 
-    <!-- Matières Disponibles -->
-    <div class="mb-5">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div>
-                <h3 class="fw-bold mb-1 text-dark">Matières & Spécialités</h3>
-                <p class="text-muted mb-0">Sélectionnez une matière pour afficher les mentors en moins de 3 clics</p>
+            <!-- Étape 02 -->
+            <div class="col-md-4 text-center">
+                <div class="step-circle-mockup">02</div>
+                <h4 class="step-title-mockup">Choisissez un mentor</h4>
+                <p class="step-desc-mockup">
+                    Explorez notre réseau de mentors et trouvez celui qui correspond à vos besoins.
+                </p>
             </div>
-            <a href="{% url 'mentor_list' %}" class="btn btn-fn-outline btn-sm">Voir tout le catalogue</a>
-        </div>
 
-        <div class="row g-3">
-            {% for matiere in matieres %}
-            <div class="col-md-4 col-sm-6">
-                <a href="{% url 'mentor_list' %}?matiere={{ matiere.id }}" class="text-decoration-none">
-                    <div class="card p-3 h-100 d-flex flex-row align-items-center">
-                        <div class="p-3 rounded-3 me-3" style="background-color: var(--fn-blue-subtle); color: var(--fn-blue-primary);">
-                            <i class="bi {{ matiere.icone|default:'bi-book' }} fs-3"></i>
-                        </div>
-                        <div>
-                            <h5 class="fw-bold text-dark mb-1">{{ matiere.nom }}</h5>
-                            <small class="text-muted">{{ matiere.mentors_associes.count }} mentor(s) actif(s)</small>
-                        </div>
-                    </div>
-                </a>
+            <!-- Étape 03 -->
+            <div class="col-md-4 text-center">
+                <div class="step-circle-mockup">03</div>
+                <h4 class="step-title-mockup">Progressez ensemble</h4>
+                <p class="step-desc-mockup">
+                    Échangez, apprenez et atteignez vos objectifs grâce à un accompagnement personnalisé.
+                </p>
             </div>
-            {% empty %}
-            <div class="col-12 text-muted text-center py-4">Aucune matière enregistrée pour le moment.</div>
-            {% endfor %}
         </div>
-    </div>
+    </section>
 
-    <!-- Mentors Récents -->
-    {% if mentors_recents %}
-    <div class="mb-5">
-        <h3 class="fw-bold mb-4 text-dark">Quelques mentors disponibles</h3>
+    <!-- SECTION 2 : LES MENTORS -->
+    <section class="mb-5 pb-4">
+        <h2 class="section-heading-mockup">LES MENTORS</h2>
+        <p class="section-subheading-mockup">
+            Découvrez des professionnels de différents domaines, prêts à partager leur expertise et leur expérience pour vous aider à avancer.
+        </p>
+
         <div class="row g-4">
-            {% for mentor in mentors_recents %}
-            <div class="col-md-3 col-sm-6">
-                <div class="card h-100 text-center p-3 border">
-                    <div class="mx-auto mb-3 rounded-circle d-flex align-items-center justify-content-center" style="width: 65px; height: 65px; background-color: var(--fn-blue-subtle); color: var(--fn-blue-primary);">
-                        <i class="bi bi-person-fill fs-2"></i>
+            <!-- Carte 1 : Aminata Diallo -->
+            <div class="col-md-4">
+                <div class="mentor-card-mockup d-flex flex-column">
+                    <div class="d-flex align-items-center mb-2">
+                        <img src="{% static 'img/avatar_aminata.png' %}" alt="Aminata Diallo" class="mentor-avatar-img">
+                        <div>
+                            <div class="mentor-name-mockup">Aminata Diallo</div>
+                            <div class="mentor-domain-mockup">Marketing Digital</div>
+                        </div>
                     </div>
-                    <h6 class="fw-bold mb-1 text-dark">{{ mentor.user.get_full_name|default:mentor.user.username }}</h6>
-                    <p class="small text-muted mb-2">{{ mentor.filiere|default:"Force-N" }} &bull; {{ mentor.get_niveau_display }}</p>
-                    <div class="mb-3">
-                        {% for comp in mentor.competences.all|slice:":2" %}
-                            <span class="badge badge-fn-subject me-1">{{ comp.matiere.nom }}</span>
-                        {% endfor %}
+                    <div class="mb-2">
+                        <span class="rating-stars">★★★★★</span>
+                        <span class="rating-text">4.8 (32 avis)</span>
                     </div>
-                    <a href="{% url 'mentor_detail' mentor.id %}" class="btn btn-fn-outline btn-sm mt-auto">
-                        Voir le profil
-                    </a>
+                    <p class="mentor-quote-mockup flex-grow-1">
+                        Spécialiste en marketing digital, j'aide les entrepreneurs à développer leur présence en ligne.
+                    </p>
+                    <div class="mt-3 pt-2 border-top">
+                        <a href="{% url 'mentor_list' %}?q=Aminata" class="btn btn-sm btn-outline-primary rounded-pill w-100">
+                            Voir le profil
+                        </a>
+                    </div>
                 </div>
             </div>
-            {% endfor %}
-        </div>
-    </div>
-    {% endif %}
 
-    <!-- Comment ça marche -->
-    <div class="card p-4 p-md-5 mb-4 border-0 shadow-sm" style="background: #ffffff;">
-        <h4 class="fw-bold text-center mb-4 text-dark">Comment fonctionne la mise en relation ?</h4>
-        <div class="row g-4 text-center">
+            <!-- Carte 2 : Koffi Mensah -->
             <div class="col-md-4">
-                <div class="rounded-circle p-3 fs-4 mb-3 d-inline-block fw-bold" style="width: 55px; height: 55px; background-color: var(--fn-blue-subtle); color: var(--fn-blue-primary); line-height: 25px;">1</div>
-                <h5 class="fw-bold text-dark">1. Choisissez une matière</h5>
-                <p class="text-muted small">Filtrez les profils d'étudiants mentors selon vos besoins académiques ou techniques.</p>
+                <div class="mentor-card-mockup d-flex flex-column">
+                    <div class="d-flex align-items-center mb-2">
+                        <img src="{% static 'img/avatar_koffi.png' %}" alt="Koffi Mensah" class="mentor-avatar-img">
+                        <div>
+                            <div class="mentor-name-mockup">Koffi Mensah</div>
+                            <div class="mentor-domain-mockup">Développement Web</div>
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <span class="rating-stars">★★★★★</span>
+                        <span class="rating-text">4.9 (45 avis)</span>
+                    </div>
+                    <p class="mentor-quote-mockup flex-grow-1">
+                        Développeur web full-stack, je vous accompagne dans la création de sites internet sur mesure.
+                    </p>
+                    <div class="mt-3 pt-2 border-top">
+                        <a href="{% url 'mentor_list' %}?q=Koffi" class="btn btn-sm btn-outline-primary rounded-pill w-100">
+                            Voir le profil
+                        </a>
+                    </div>
+                </div>
             </div>
+
+            <!-- Carte 3 : Sophie Laurent -->
             <div class="col-md-4">
-                <div class="rounded-circle p-3 fs-4 mb-3 d-inline-block fw-bold text-white" style="width: 55px; height: 55px; background-color: var(--fn-orange-accent); line-height: 25px;">2</div>
-                <h5 class="fw-bold text-dark">2. Envoyez votre demande</h5>
-                <p class="text-muted small">Rédigez un court message expliquant vos points de blocage ou vos objectifs.</p>
-            </div>
-            <div class="col-md-4">
-                <div class="rounded-circle p-3 fs-4 mb-3 d-inline-block fw-bold text-white" style="width: 55px; height: 55px; background-color: var(--fn-green); line-height: 25px;">3</div>
-                <h5 class="fw-bold text-dark">3. Suivez & Échangez</h5>
-                <p class="text-muted small">Dès validation par le mentor, commencez votre accompagnement pour débloquer votre projet.</p>
+                <div class="mentor-card-mockup d-flex flex-column">
+                    <div class="d-flex align-items-center mb-2">
+                        <img src="{% static 'img/avatar_sophie.png' %}" alt="Sophie Laurent" class="mentor-avatar-img">
+                        <div>
+                            <div class="mentor-name-mockup">Sophie Laurent</div>
+                            <div class="mentor-domain-mockup">Communication</div>
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <span class="rating-stars">★★★★★</span>
+                        <span class="rating-text">4.7 (28 avis)</span>
+                    </div>
+                    <p class="mentor-quote-mockup flex-grow-1">
+                        Experte en communication digitale, je vous aide à construire une stratégie de visibilité efficace.
+                    </p>
+                    <div class="mt-3 pt-2 border-top">
+                        <a href="{% url 'mentor_list' %}?q=Sophie" class="btn btn-sm btn-outline-primary rounded-pill w-100">
+                            Voir le profil
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
+
+    <!-- SECTION 3 : CHIFFRES CLÉS / STATISTIQUES -->
+    <section class="py-4">
+        <div class="row g-4 text-center justify-content-center">
+            <div class="col-md-4">
+                <div class="stat-number-mockup">25</div>
+                <div class="stat-label-mockup">Mentors disponibles dans plusieurs domaines</div>
+            </div>
+            <div class="col-md-4">
+                <div class="stat-number-mockup">12</div>
+                <div class="stat-label-mockup">Domaines de compétences pour tous vos projets</div>
+            </div>
+            <div class="col-md-4">
+                <div class="stat-number-mockup">87</div>
+                <div class="stat-label-mockup">Utilisateurs accompagnés et satisfaits</div>
+            </div>
+        </div>
+    </section>
 </div>
 {% endblock %}

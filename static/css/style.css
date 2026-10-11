@@ -1,135 +1,294 @@
-/* Charte graphique officielle Force-N */
+/* Reproduction exacte de la maquette A1 */
 :root {
-    --fn-blue-dark: #0f2b48;
-    --fn-blue-primary: #1d5b9f;
-    --fn-blue-medium: #2b72bb;
-    --fn-blue-subtle: #eef5fc;
-    --fn-orange-accent: #ce7229;
-    --fn-green: #2e7d32;
-    --fn-gray-light: #f8fafc;
-    --fn-text: #1e293b;
-    --fn-border: #e2e8f0;
+    --mockup-blue: #0049c4;
+    --mockup-blue-hover: #003da6;
+    --mockup-green: #00a854;
+    --mockup-green-hover: #008f47;
+    --text-main: #111827;
+    --text-sub: #6b7280;
+    --card-border: #e5e7eb;
+    --bg-page: #ffffff;
 }
 
 body {
-    background-color: var(--fn-gray-light);
-    color: var(--fn-text);
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+    background-color: var(--bg-page);
+    color: var(--text-main);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
-/* Navbar */
-.navbar-forcen {
+/* En-tête / Navbar */
+.navbar-mockup {
     background-color: #ffffff;
-    border-bottom: 2px solid var(--fn-blue-primary);
-    box-shadow: 0 2px 4px rgba(15, 43, 72, 0.06);
+    padding: 16px 0;
+    border-bottom: 1px solid transparent;
 }
 
-.navbar-brand-title {
-    color: var(--fn-blue-dark);
-    font-weight: 700;
-    font-size: 1.25rem;
-    letter-spacing: -0.3px;
+.brand-a1 {
+    font-size: 1.85rem;
+    font-weight: 800;
+    color: var(--mockup-blue);
+    text-decoration: none;
+    letter-spacing: -0.5px;
+    line-height: 1;
 }
 
-.nav-link {
-    color: #475569 !important;
+.brand-a1:hover {
+    color: var(--mockup-blue-hover);
+}
+
+.nav-link-mockup {
+    color: #4b5563 !important;
     font-weight: 500;
-    transition: color 0.2s ease;
+    font-size: 0.95rem;
+    padding: 8px 16px !important;
+    transition: color 0.15s ease;
 }
 
-.nav-link:hover, .nav-link.active {
-    color: var(--fn-blue-primary) !important;
+.nav-link-mockup:hover, .nav-link-mockup.active {
+    color: var(--mockup-blue) !important;
 }
 
-/* Boutons personnalisés selon la charte */
-.btn-fn-primary {
-    background-color: var(--fn-blue-primary);
-    border-color: var(--fn-blue-primary);
-    color: #ffffff;
+.btn-login-mockup {
+    border: 1px solid #d1d5db;
+    color: #374151;
     font-weight: 600;
-    border-radius: 8px;
-    transition: all 0.2s ease;
-}
-
-.btn-fn-primary:hover {
-    background-color: var(--fn-blue-dark);
-    border-color: var(--fn-blue-dark);
-    color: #ffffff;
-}
-
-.btn-fn-accent {
-    background-color: var(--fn-orange-accent);
-    border-color: var(--fn-orange-accent);
-    color: #ffffff;
-    font-weight: 600;
-    border-radius: 8px;
-    transition: all 0.2s ease;
-}
-
-.btn-fn-accent:hover {
-    background-color: #b35e1d;
-    border-color: #b35e1d;
-    color: #ffffff;
-}
-
-.btn-fn-outline {
-    border: 1.5px solid var(--fn-blue-primary);
-    color: var(--fn-blue-primary);
-    font-weight: 600;
-    border-radius: 8px;
-    background: transparent;
-    transition: all 0.2s ease;
-}
-
-.btn-fn-outline:hover {
-    background-color: var(--fn-blue-primary);
-    color: #ffffff;
-}
-
-/* Cartes */
-.card {
-    border: 1px solid var(--fn-border);
-    border-radius: 12px;
-    background-color: #ffffff;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.card:hover {
-    box-shadow: 0 4px 14px rgba(15, 43, 72, 0.08);
-}
-
-/* Badges */
-.badge-fn-subject {
-    background-color: var(--fn-blue-subtle);
-    color: var(--fn-blue-primary);
-    border: 1px solid #bfdbfe;
-    font-weight: 500;
+    font-size: 0.9rem;
+    padding: 8px 18px;
     border-radius: 6px;
-    padding: 6px 10px;
+    background-color: transparent;
+    text-decoration: none;
+    transition: all 0.15s ease;
 }
 
-.badge-fn-accent {
-    background-color: #fef3c7;
-    color: #92400e;
+.btn-login-mockup:hover {
+    background-color: #f3f4f6;
+    color: #111827;
+}
+
+.btn-register-mockup {
+    background-color: var(--mockup-blue);
+    color: #ffffff !important;
     font-weight: 600;
+    font-size: 0.9rem;
+    padding: 8px 22px;
+    border-radius: 6px;
+    border: none;
+    text-decoration: none;
+    transition: background-color 0.15s ease;
 }
 
-/* Hero Section */
-.hero-forcen {
-    background: linear-gradient(135deg, var(--fn-blue-dark) 0%, var(--fn-blue-primary) 100%);
+.btn-register-mockup:hover {
+    background-color: var(--mockup-blue-hover);
+}
+
+/* Section Hero */
+.hero-container {
+    background-color: var(--mockup-blue);
     color: #ffffff;
-    border-radius: 16px;
+    border-radius: 0;
+    padding: 60px 40px;
     position: relative;
     overflow: hidden;
 }
 
-/* Footer */
-.footer {
-    margin-top: auto;
+.hero-title {
+    font-size: 2.85rem;
+    font-weight: 800;
+    line-height: 1.15;
+    margin-bottom: 20px;
+    letter-spacing: -0.5px;
+}
+
+.hero-subtitle {
+    font-size: 1rem;
+    line-height: 1.55;
+    color: #e0e7ff;
+    max-width: 540px;
+    margin-bottom: 35px;
+    font-weight: 400;
+}
+
+/* Barre de recherche dans le Hero */
+.search-bar-mockup {
     background: #ffffff;
-    border-top: 1px solid var(--fn-border);
+    border-radius: 30px;
+    padding: 6px 8px 6px 20px;
+    display: flex;
+    align-items: center;
+    max-width: 520px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+}
+
+.search-bar-mockup input {
+    border: none;
+    outline: none;
+    font-size: 0.92rem;
+    color: #374151;
+    width: 100%;
+    background: transparent;
+}
+
+.search-bar-mockup input::placeholder {
+    color: #9ca3af;
+}
+
+.btn-search-mockup {
+    background-color: var(--mockup-green);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border: none;
+    border-radius: 25px;
+    padding: 8px 20px;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.btn-search-mockup:hover {
+    background-color: var(--mockup-green-hover);
+}
+
+/* Illustration Hero */
+.hero-illustration-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.hero-illustration-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+}
+
+/* Titres de sections */
+.section-heading-mockup {
+    font-size: 1.45rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-main);
+    text-align: center;
+    margin-bottom: 12px;
+}
+
+.section-subheading-mockup {
+    text-align: center;
+    color: var(--text-sub);
+    font-size: 0.95rem;
+    max-width: 620px;
+    margin: 0 auto 40px auto;
+    line-height: 1.45;
+}
+
+/* Section Comment ça marche */
+.step-circle-mockup {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: var(--mockup-blue);
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 1.15rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px auto;
+}
+
+.step-title-mockup {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+.step-desc-mockup {
+    color: var(--text-sub);
+    font-size: 0.9rem;
+    line-height: 1.45;
+    text-align: center;
+    max-width: 250px;
+    margin: 0 auto;
+}
+
+/* Section Les Mentors (Cartes) */
+.mentor-card-mockup {
+    background: #ffffff;
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 24px;
+    height: 100%;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.mentor-card-mockup:hover {
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+    transform: translateY(-2px);
+}
+
+.mentor-avatar-img {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 14px;
+}
+
+.mentor-name-mockup {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 2px;
+}
+
+.mentor-domain-mockup {
+    font-size: 0.85rem;
+    color: var(--text-sub);
+    margin-bottom: 0;
+}
+
+.rating-stars {
+    color: #f59e0b;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+}
+
+.rating-text {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #374151;
+    margin-left: 6px;
+}
+
+.mentor-quote-mockup {
+    font-size: 0.9rem;
+    color: #4b5563;
+    line-height: 1.5;
+    margin-top: 12px;
+    margin-bottom: 0;
+}
+
+/* Section Statistiques / Chiffres */
+.stat-number-mockup {
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--mockup-blue);
+    line-height: 1;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.stat-label-mockup {
+    font-size: 0.95rem;
+    color: #374151;
+    text-align: center;
+    max-width: 200px;
+    margin: 0 auto;
+    line-height: 1.35;
 }

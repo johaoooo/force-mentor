@@ -4,124 +4,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Force Mentor — Plateforme de Mentorat Force-N{% endblock %}</title>
+    <title>{% block title %}A1 — Trouvez le mentor idéal pour progresser{% endblock %}</title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <!-- Feuille de style personnalisée Force-N -->
+    <!-- Feuille de style Maquette A1 -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     {% block extra_css %}{% endblock %}
 </head>
 <body>
 
-    <!-- Bandeau institutionnel d'en-tête (Logo / Partenaires Force-N) -->
-    <header class="bg-white border-bottom py-2">
-        <div class="container d-flex justify-content-between align-items-center">
-            <a href="{% url 'home' %}" class="d-flex align-items-center text-decoration-none">
-                <img src="{% static 'img/logo_header.png' %}" alt="Logo Force N & Partenaires" style="height: 38px; width: auto; max-width: 100%; object-fit: contain;" class="me-3">
-                <div class="d-none d-sm-block border-start ps-3 py-1">
-                    <span class="fw-bold text-dark fs-5">Force Mentor</span>
-                    <span class="d-block text-muted" style="font-size: 0.75rem;">Plateforme d'entraide entre étudiants</span>
-                </div>
-            </a>
-            <div class="d-none d-md-flex align-items-center gap-3">
-                <span class="badge bg-light text-secondary border px-3 py-2">
-                    <i class="bi bi-mortarboard-fill text-primary me-1"></i>UN-CHK &bull; Fondation Mastercard
-                </span>
+    <!-- Barre de Navigation exacte Maquette A1 -->
+    <header class="navbar-mockup sticky-top">
+        <div class="container d-flex align-items-center justify-content-between">
+            <!-- Logo A1 -->
+            <div class="d-flex align-items-center">
+                <a href="{% url 'home' %}" class="brand-a1">A1</a>
+            </div>
+
+            <!-- Liens de navigation centrés -->
+            <nav class="d-none d-lg-flex align-items-center gap-1">
+                <a class="nav-link-mockup {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'home' %}">Accueil</a>
+                <a class="nav-link-mockup" href="{% url 'mentor_list' %}">Formations</a>
+                <a class="nav-link-mockup" href="{% url 'mentor_list' %}">Accompagnement</a>
+                <a class="nav-link-mockup" href="{% url 'mentor_list' %}">Ressources</a>
+                <a class="nav-link-mockup" href="{% url 'mentor_list' %}">FAQ</a>
+            </nav>
+
+            <!-- Actions droite (Se connecter / S'inscrire) -->
+            <div class="d-flex align-items-center gap-2">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'dashboard' %}" class="btn-login-mockup">
+                        <i class="bi bi-speedometer2 me-1"></i>Tableau de bord
+                    </a>
+                    <a href="{% url 'profile' %}" class="btn-register-mockup d-none d-sm-inline-block">
+                        <i class="bi bi-person me-1"></i>{{ user.first_name|default:user.username }}
+                    </a>
+                    <form method="post" action="{% url 'logout' %}" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Déconnexion">
+                            <i class="bi bi-box-arrow-right"></i>
+                        </button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn-login-mockup">Se connecter</a>
+                    <a href="{% url 'register' %}" class="btn-register-mockup">S'inscrire</a>
+                {% endif %}
             </div>
         </div>
     </header>
 
-    <!-- Barre de Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-forcen sticky-top">
-        <div class="container">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'home' %}">
-                            <i class="bi bi-house-door me-1"></i>Accueil
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {% if request.resolver_match.url_name == 'mentor_list' %}active{% endif %}" href="{% url 'mentor_list' %}">
-                            <i class="bi bi-people me-1"></i>Trouver un mentor
-                        </a>
-                    </li>
-                    {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" href="{% url 'dashboard' %}">
-                            <i class="bi bi-speedometer2 me-1"></i>Tableau de bord
-                        </a>
-                    </li>
-                    {% endif %}
-                </ul>
-
-                <ul class="navbar-nav ms-auto align-items-center">
-                    {% if user.is_authenticated %}
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-dark d-flex align-items-center fw-semibold" href="#" role="button" data-bs-toggle="dropdown">
-                                <span class="badge bg-primary rounded-circle p-2 me-2">
-                                    <i class="bi bi-person-fill text-white"></i>
-                                </span>
-                                <span>{{ user.get_full_name|default:user.username }}</span>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end shadow-sm">
-                                <li><a class="dropdown-item" href="{% url 'profile' %}"><i class="bi bi-person me-2"></i>Mon Profil</a></li>
-                                <li><a class="dropdown-item" href="{% url 'dashboard' %}"><i class="bi bi-journal-text me-2"></i>Mes Demandes</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li>
-                                    <form method="post" action="{% url 'logout' %}">
-                                        {% csrf_token %}
-                                        <button type="submit" class="dropdown-item text-danger"><i class="bi bi-box-arrow-right me-2"></i>Déconnexion</button>
-                                    </form>
-                                </li>
-                            </ul>
-                        </li>
-                    {% else %}
-                        <li class="nav-item me-2">
-                            <a class="btn btn-outline-secondary btn-sm px-3 rounded-pill" href="{% url 'login' %}">Connexion</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="btn btn-fn-primary btn-sm px-3 rounded-pill" href="{% url 'register' %}">Inscription</a>
-                        </li>
-                    {% endif %}
-                </ul>
-            </div>
-        </div>
-    </nav>
-
     <!-- Messages Flash Django -->
-    <div class="container mt-3">
-        {% if messages %}
+    {% if messages %}
+        <div class="container mt-2">
             {% for message in messages %}
                 <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show shadow-sm" role="alert">
                     {{ message }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
             {% endfor %}
-        {% endif %}
-    </div>
+        </div>
+    {% endif %}
 
     <!-- Contenu Principal -->
-    <main class="py-4 flex-grow-1">
+    <main>
         {% block content %}{% endblock %}
     </main>
 
-    <!-- Pied de page officiel -->
-    <footer class="footer py-4 mt-5 text-center text-muted">
+    <!-- Pied de page épuré -->
+    <footer class="py-4 mt-5 text-center text-muted border-top">
         <div class="container">
-            <div class="row align-items-center">
-                <div class="col-md-6 text-md-start mb-2 mb-md-0">
-                    <small>&copy; 2026 <strong>Force Mentor</strong> — Réalisé dans le cadre du parcours de développement Python.</small>
-                </div>
-                <div class="col-md-6 text-md-end">
-                    <small>Projet pédagogique — <strong>Force-N</strong> / UN-CHK / Fondation Mastercard</small>
-                </div>
-            </div>
+            <small>&copy; 2026 <strong>A1 / Force Mentor</strong> &bull; Plateforme de Mentorat Étudiant</small>
         </div>
     </footer>
 
