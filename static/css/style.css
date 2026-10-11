@@ -1,294 +1,352 @@
-/* Reproduction exacte de la maquette A1 */
+/* Charte et styles A1 / Force-N - Ultra Pro */
 :root {
-    --mockup-blue: #0049c4;
-    --mockup-blue-hover: #003da6;
-    --mockup-green: #00a854;
-    --mockup-green-hover: #008f47;
-    --text-main: #111827;
-    --text-sub: #6b7280;
-    --card-border: #e5e7eb;
-    --bg-page: #ffffff;
+    --fn-blue-hero: #0049c4;
+    --fn-blue-primary: #0052cc;
+    --fn-blue-dark: #00368a;
+    --fn-green-cta: #00a854;
+    --fn-green-hover: #008f47;
+    --fn-text-dark: #0f172a;
+    --fn-text-muted: #64748b;
+    --fn-border-color: #e2e8f0;
+    --fn-bg-light: #f8fafc;
 }
 
 body {
-    background-color: var(--bg-page);
-    color: var(--text-main);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-}
-
-/* En-tête / Navbar */
-.navbar-mockup {
     background-color: #ffffff;
-    padding: 16px 0;
-    border-bottom: 1px solid transparent;
+    color: var(--fn-text-dark);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
-.brand-a1 {
-    font-size: 1.85rem;
-    font-weight: 800;
-    color: var(--mockup-blue);
+/* ================== NAVBAR PRO ================== */
+.navbar-custom {
+    background-color: #ffffff;
+    border-bottom: 1px solid var(--fn-border-color);
+    padding: 14px 0;
+    transition: all 0.2s ease;
+}
+
+.brand-wrapper {
+    display: flex;
+    align-items: center;
     text-decoration: none;
+    gap: 12px;
+}
+
+.brand-logo-img {
+    height: 38px;
+    width: auto;
+    object-fit: contain;
+}
+
+.brand-text {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--fn-blue-hero);
     letter-spacing: -0.5px;
     line-height: 1;
 }
 
-.brand-a1:hover {
-    color: var(--mockup-blue-hover);
-}
-
-.nav-link-mockup {
-    color: #4b5563 !important;
-    font-weight: 500;
-    font-size: 0.95rem;
-    padding: 8px 16px !important;
-    transition: color 0.15s ease;
-}
-
-.nav-link-mockup:hover, .nav-link-mockup.active {
-    color: var(--mockup-blue) !important;
-}
-
-.btn-login-mockup {
-    border: 1px solid #d1d5db;
-    color: #374151;
-    font-weight: 600;
-    font-size: 0.9rem;
-    padding: 8px 18px;
+.brand-badge {
+    background-color: #eff6ff;
+    color: var(--fn-blue-primary);
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 3px 8px;
     border-radius: 6px;
-    background-color: transparent;
+    border: 1px solid #bfdbfe;
+}
+
+.navbar-nav-custom {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 auto;
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
+.nav-link-custom {
+    color: #475569;
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 8px 14px;
+    border-radius: 8px;
     text-decoration: none;
     transition: all 0.15s ease;
 }
 
-.btn-login-mockup:hover {
-    background-color: #f3f4f6;
-    color: #111827;
+.nav-link-custom:hover {
+    color: var(--fn-blue-primary);
+    background-color: #f1f5f9;
 }
 
-.btn-register-mockup {
-    background-color: var(--mockup-blue);
+.nav-link-custom.active {
+    color: var(--fn-blue-primary);
+    background-color: #eff6ff;
+}
+
+.btn-auth-login {
+    border: 1px solid #cbd5e1;
+    color: #334155;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 8px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    background-color: #ffffff;
+    transition: all 0.15s ease;
+}
+
+.btn-auth-login:hover {
+    background-color: #f8fafc;
+    border-color: #94a3b8;
+    color: #0f172a;
+}
+
+.btn-auth-register {
+    background-color: var(--fn-blue-hero);
     color: #ffffff !important;
     font-weight: 600;
     font-size: 0.9rem;
     padding: 8px 22px;
-    border-radius: 6px;
-    border: none;
+    border-radius: 8px;
     text-decoration: none;
-    transition: background-color 0.15s ease;
+    border: 1px solid var(--fn-blue-hero);
+    box-shadow: 0 2px 4px rgba(0, 73, 196, 0.2);
+    transition: all 0.15s ease;
 }
 
-.btn-register-mockup:hover {
-    background-color: var(--mockup-blue-hover);
+.btn-auth-register:hover {
+    background-color: var(--fn-blue-dark);
+    box-shadow: 0 4px 8px rgba(0, 73, 196, 0.3);
 }
 
-/* Section Hero */
-.hero-container {
-    background-color: var(--mockup-blue);
+/* ================== HERO SECTION PRO ================== */
+.hero-pro-section {
+    background-color: var(--fn-blue-hero);
+    background-image: radial-gradient(circle at 85% 30%, rgba(255, 255, 255, 0.08) 0%, transparent 60%);
     color: #ffffff;
-    border-radius: 0;
-    padding: 60px 40px;
+    padding: 65px 0 75px 0;
     position: relative;
     overflow: hidden;
 }
 
-.hero-title {
-    font-size: 2.85rem;
+.hero-pro-title {
+    font-size: 3rem;
     font-weight: 800;
     line-height: 1.15;
-    margin-bottom: 20px;
-    letter-spacing: -0.5px;
+    letter-spacing: -0.8px;
+    margin-bottom: 22px;
 }
 
-.hero-subtitle {
-    font-size: 1rem;
-    line-height: 1.55;
-    color: #e0e7ff;
-    max-width: 540px;
-    margin-bottom: 35px;
+.hero-pro-subtitle {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: #e2e8f0;
+    max-width: 530px;
+    margin-bottom: 36px;
     font-weight: 400;
 }
 
-/* Barre de recherche dans le Hero */
-.search-bar-mockup {
+/* Barre de recherche Pro */
+.hero-search-box {
     background: #ffffff;
-    border-radius: 30px;
+    border-radius: 50px;
     padding: 6px 8px 6px 20px;
     display: flex;
     align-items: center;
-    max-width: 520px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+    max-width: 530px;
+    box-shadow: 0 10px 25px rgba(0, 20, 60, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.4);
 }
 
-.search-bar-mockup input {
+.hero-search-box input {
     border: none;
     outline: none;
-    font-size: 0.92rem;
-    color: #374151;
+    font-size: 0.95rem;
+    color: #1e293b;
     width: 100%;
     background: transparent;
 }
 
-.search-bar-mockup input::placeholder {
-    color: #9ca3af;
+.hero-search-box input::placeholder {
+    color: #94a3b8;
 }
 
-.btn-search-mockup {
-    background-color: var(--mockup-green);
+.btn-search-green {
+    background-color: var(--fn-green-cta);
     color: #ffffff;
-    font-weight: 600;
-    font-size: 0.9rem;
+    font-weight: 700;
+    font-size: 0.92rem;
     border: none;
-    border-radius: 25px;
-    padding: 8px 20px;
+    border-radius: 50px;
+    padding: 10px 22px;
     white-space: nowrap;
     cursor: pointer;
-    transition: background-color 0.15s ease;
+    box-shadow: 0 3px 8px rgba(0, 168, 84, 0.35);
+    transition: all 0.15s ease;
 }
 
-.btn-search-mockup:hover {
-    background-color: var(--mockup-green-hover);
+.btn-search-green:hover {
+    background-color: var(--fn-green-hover);
+    transform: translateY(-1px);
 }
 
-/* Illustration Hero */
-.hero-illustration-wrapper {
+/* Illustration et cartes flottantes du Hero */
+.hero-illustration-container {
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative;
 }
 
-.hero-illustration-img {
-    max-width: 100%;
+.hero-vector-graphic {
+    width: 100%;
+    max-width: 480px;
     height: auto;
-    border-radius: 12px;
+    filter: drop-shadow(0 15px 25px rgba(0, 20, 70, 0.3));
 }
 
-/* Titres de sections */
-.section-heading-mockup {
-    font-size: 1.45rem;
+.floating-badge {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 12px;
+    padding: 10px 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    color: #0f172a;
+    font-size: 0.85rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 2;
+    animation: floatAnim 3s ease-in-out infinite alternate;
+}
+
+.badge-top-left {
+    top: 25px;
+    left: -10px;
+}
+
+.badge-bottom-right {
+    bottom: 25px;
+    right: 0px;
+    animation-delay: 1.5s;
+}
+
+@keyframes floatAnim {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-6px); }
+}
+
+/* ================== SECTIONS CONTENU ================== */
+.section-title-clean {
+    font-size: 1.5rem;
     font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: var(--text-main);
+    letter-spacing: 0.8px;
+    color: var(--fn-text-dark);
     text-align: center;
     margin-bottom: 12px;
 }
 
-.section-subheading-mockup {
+.section-subtitle-clean {
     text-align: center;
-    color: var(--text-sub);
+    color: var(--fn-text-muted);
     font-size: 0.95rem;
-    max-width: 620px;
-    margin: 0 auto 40px auto;
-    line-height: 1.45;
+    max-width: 650px;
+    margin: 0 auto 45px auto;
+    line-height: 1.5;
 }
 
-/* Section Comment ça marche */
-.step-circle-mockup {
-    width: 48px;
-    height: 48px;
+/* Comment ça marche */
+.step-number-circle {
+    width: 52px;
+    height: 52px;
     border-radius: 50%;
-    background-color: var(--mockup-blue);
+    background-color: var(--fn-blue-hero);
     color: #ffffff;
-    font-weight: 700;
-    font-size: 1.15rem;
+    font-weight: 800;
+    font-size: 1.25rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 16px auto;
+    margin: 0 auto 18px auto;
+    box-shadow: 0 4px 10px rgba(0, 73, 196, 0.25);
 }
 
-.step-title-mockup {
-    font-size: 1.05rem;
+.step-card-title {
+    font-size: 1.1rem;
     font-weight: 700;
-    color: var(--text-main);
+    color: var(--fn-text-dark);
     margin-bottom: 8px;
-    text-align: center;
 }
 
-.step-desc-mockup {
-    color: var(--text-sub);
-    font-size: 0.9rem;
-    line-height: 1.45;
-    text-align: center;
-    max-width: 250px;
+.step-card-text {
+    color: var(--fn-text-muted);
+    font-size: 0.92rem;
+    line-height: 1.5;
+    max-width: 270px;
     margin: 0 auto;
 }
 
-/* Section Les Mentors (Cartes) */
-.mentor-card-mockup {
+/* Cartes Mentors */
+.mentor-card-clean {
     background: #ffffff;
-    border: 1px solid var(--card-border);
-    border-radius: 12px;
+    border: 1px solid var(--fn-border-color);
+    border-radius: 14px;
     padding: 24px;
     height: 100%;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+    transition: all 0.2s ease;
 }
 
-.mentor-card-mockup:hover {
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
-    transform: translateY(-2px);
+.mentor-card-clean:hover {
+    border-color: #93c5fd;
+    box-shadow: 0 10px 24px rgba(0, 73, 196, 0.08);
+    transform: translateY(-3px);
 }
 
-.mentor-avatar-img {
-    width: 54px;
-    height: 54px;
+.avatar-round-mockup {
+    width: 56px;
+    height: 56px;
     border-radius: 50%;
     object-fit: cover;
-    margin-right: 14px;
+    border: 2px solid #e2e8f0;
 }
 
-.mentor-name-mockup {
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: var(--text-main);
-    margin-bottom: 2px;
-}
-
-.mentor-domain-mockup {
-    font-size: 0.85rem;
-    color: var(--text-sub);
-    margin-bottom: 0;
-}
-
-.rating-stars {
+.rating-stars-clean {
     color: #f59e0b;
-    font-size: 0.85rem;
-    letter-spacing: 1px;
+    font-size: 0.9rem;
 }
 
-.rating-text {
+.rating-score-clean {
     font-size: 0.85rem;
-    font-weight: 600;
-    color: #374151;
+    font-weight: 700;
+    color: #334155;
     margin-left: 6px;
 }
 
-.mentor-quote-mockup {
-    font-size: 0.9rem;
-    color: #4b5563;
-    line-height: 1.5;
-    margin-top: 12px;
-    margin-bottom: 0;
-}
-
-/* Section Statistiques / Chiffres */
-.stat-number-mockup {
-    font-size: 3rem;
+/* Statistiques */
+.metric-big-number {
+    font-size: 3.25rem;
     font-weight: 800;
-    color: var(--mockup-blue);
+    color: var(--fn-blue-hero);
     line-height: 1;
-    margin-bottom: 10px;
-    text-align: center;
+    margin-bottom: 12px;
 }
 
-.stat-label-mockup {
+.metric-description {
     font-size: 0.95rem;
-    color: #374151;
-    text-align: center;
-    max-width: 200px;
+    color: #475569;
+    font-weight: 500;
+    max-width: 210px;
     margin: 0 auto;
-    line-height: 1.35;
+    line-height: 1.4;
 }
