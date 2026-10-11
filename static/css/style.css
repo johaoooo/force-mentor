@@ -935,18 +935,18 @@ a{color:inherit;text-decoration:none}
   font-weight: 700;
 }
 .badge-status-pending {
-  background-color: #fef3c7;
-  color: #92400e;
-  border: 1px solid #fde68a;
+  background-color: rgba(203, 115, 43, 0.12);
+  color: #cb732b;
+  border: 1px solid rgba(203, 115, 43, 0.35);
   font-size: 0.78rem;
   font-weight: 700;
   padding: 4px 10px;
   border-radius: 20px;
 }
 .badge-status-accepted {
-  background-color: #dcfce7;
-  color: #166534;
-  border: 1px solid #bbf7d0;
+  background-color: rgba(69, 168, 70, 0.12);
+  color: #45a846;
+  border: 1px solid rgba(69, 168, 70, 0.35);
   font-size: 0.78rem;
   font-weight: 700;
   padding: 4px 10px;

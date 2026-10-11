@@ -69,6 +69,25 @@
                 {{ form.bio }}
             </div>
 
+            {% if profile.est_mentor %}
+            <div style="margin-bottom: 22px;" id="matieresSection">
+                <label style="display: block; font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 8px;">
+                    <i class="bi bi-journal-check" style="color: var(--blue); margin-right: 4px;"></i> Matières que vous pouvez encadrer (Mentorat) :
+                </label>
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; background: var(--bg); border: 1.5px solid var(--line); border-radius: 8px; padding: 14px;">
+                    {% for mat in all_matieres %}
+                    <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500; color: var(--ink); cursor: pointer; margin: 0;">
+                        <input type="checkbox" name="matieres" value="{{ mat.id }}" {% if mat.id in user_matiere_ids %}checked{% endif %} style="accent-color: var(--blue); width: 16px; height: 16px;">
+                        <span>{{ mat.nom }}</span>
+                    </label>
+                    {% endfor %}
+                </div>
+                <small style="color: var(--muted); font-size: 12px; display: block; margin-top: 6px;">
+                    Cochez les matières dans lesquelles vous acceptez d'accompagner des étudiants.
+                </small>
+            </div>
+            {% endif %}
+
             <div style="background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; margin-bottom: 24px; display: flex; align-items: center; gap: 12px;">
                 {{ form.est_disponible }}
                 <label for="{{ form.est_disponible.id_for_label }}" style="font-size: 13.5px; font-weight: 600; color: var(--ink); cursor: pointer; margin: 0;">
