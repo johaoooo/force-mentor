@@ -1,78 +1,61 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Force Mentor — Plateforme d'Entraide Étudiante{% endblock %}</title>
+    <title>{% block title %}Force Mentor — Plateforme de Mentorat Force-N{% endblock %}</title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <style>
-        :root {
-            --primary-color: #0d6efd;
-            --secondary-color: #198754;
-        }
-        body {
-            background-color: #f8fafc;
-            color: #1e293b;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-        .navbar-brand {
-            font-weight: 700;
-            letter-spacing: -0.5px;
-        }
-        .card {
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-        .card:hover {
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-        }
-        .btn-rounded {
-            border-radius: 8px;
-        }
-        .footer {
-            margin-top: auto;
-            background: #ffffff;
-            border-top: 1px solid #e2e8f0;
-        }
-        .badge-subject {
-            background-color: #e0f2fe;
-            color: #0369a1;
-            font-weight: 500;
-            border-radius: 6px;
-            padding: 6px 10px;
-        }
-    </style>
+    <!-- Feuille de style personnalisée Force-N -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
     {% block extra_css %}{% endblock %}
 </head>
 <body>
 
-    <!-- Barre de Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow-sm">
-        <div class="container">
-            <a class="navbar-brand text-white" href="{% url 'home' %}">
-                <i class="bi bi-mortarboard-fill text-warning me-2"></i>Force Mentor
+    <!-- Bandeau institutionnel d'en-tête (Logo / Partenaires Force-N) -->
+    <header class="bg-white border-bottom py-2">
+        <div class="container d-flex justify-content-between align-items-center">
+            <a href="{% url 'home' %}" class="d-flex align-items-center text-decoration-none">
+                <img src="{% static 'img/logo_header.png' %}" alt="Logo Force N & Partenaires" style="height: 38px; width: auto; max-width: 100%; object-fit: contain;" class="me-3">
+                <div class="d-none d-sm-block border-start ps-3 py-1">
+                    <span class="fw-bold text-dark fs-5">Force Mentor</span>
+                    <span class="d-block text-muted" style="font-size: 0.75rem;">Plateforme d'entraide entre étudiants</span>
+                </div>
             </a>
+            <div class="d-none d-md-flex align-items-center gap-3">
+                <span class="badge bg-light text-secondary border px-3 py-2">
+                    <i class="bi bi-mortarboard-fill text-primary me-1"></i>UN-CHK &bull; Fondation Mastercard
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Barre de Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-forcen sticky-top">
+        <div class="container">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'home' %}"><i class="bi bi-house-door me-1"></i>Accueil</a>
+                        <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'home' %}">
+                            <i class="bi bi-house-door me-1"></i>Accueil
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'mentor_list' %}"><i class="bi bi-people me-1"></i>Trouver un mentor</a>
+                        <a class="nav-link {% if request.resolver_match.url_name == 'mentor_list' %}active{% endif %}" href="{% url 'mentor_list' %}">
+                            <i class="bi bi-people me-1"></i>Trouver un mentor
+                        </a>
                     </li>
                     {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'dashboard' %}"><i class="bi bi-speedometer2 me-1"></i>Tableau de bord</a>
+                        <a class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" href="{% url 'dashboard' %}">
+                            <i class="bi bi-speedometer2 me-1"></i>Tableau de bord
+                        </a>
                     </li>
                     {% endif %}
                 </ul>
@@ -80,8 +63,10 @@
                 <ul class="navbar-nav ms-auto align-items-center">
                     {% if user.is_authenticated %}
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-white d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
-                                <i class="bi bi-person-circle fs-5 me-2 text-warning"></i>
+                            <a class="nav-link dropdown-toggle text-dark d-flex align-items-center fw-semibold" href="#" role="button" data-bs-toggle="dropdown">
+                                <span class="badge bg-primary rounded-circle p-2 me-2">
+                                    <i class="bi bi-person-fill text-white"></i>
+                                </span>
                                 <span>{{ user.get_full_name|default:user.username }}</span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end shadow-sm">
@@ -98,10 +83,10 @@
                         </li>
                     {% else %}
                         <li class="nav-item me-2">
-                            <a class="btn btn-outline-light btn-sm btn-rounded px-3" href="{% url 'login' %}">Connexion</a>
+                            <a class="btn btn-outline-secondary btn-sm px-3 rounded-pill" href="{% url 'login' %}">Connexion</a>
                         </li>
                         <li class="nav-item">
-                            <a class="btn btn-warning btn-sm btn-rounded px-3 text-dark fw-bold" href="{% url 'register' %}">Inscription</a>
+                            <a class="btn btn-fn-primary btn-sm px-3 rounded-pill" href="{% url 'register' %}">Inscription</a>
                         </li>
                     {% endif %}
                 </ul>
@@ -126,10 +111,17 @@
         {% block content %}{% endblock %}
     </main>
 
-    <!-- Pied de page -->
-    <footer class="footer py-3 text-center text-muted">
+    <!-- Pied de page officiel -->
+    <footer class="footer py-4 mt-5 text-center text-muted">
         <div class="container">
-            <small>&copy; 2026 <strong>Force Mentor</strong> — Programme Force-N &bull; Développé avec Python & Django</small>
+            <div class="row align-items-center">
+                <div class="col-md-6 text-md-start mb-2 mb-md-0">
+                    <small>&copy; 2026 <strong>Force Mentor</strong> — Réalisé dans le cadre du parcours de développement Python.</small>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <small>Projet pédagogique — <strong>Force-N</strong> / UN-CHK / Fondation Mastercard</small>
+                </div>
+            </div>
         </div>
     </footer>
 

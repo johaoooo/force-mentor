@@ -6,42 +6,42 @@
 <div class="container py-4">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card shadow-sm p-4 bg-white mb-4">
+            <div class="card shadow-sm p-4 bg-white mb-4 border">
                 <div class="d-flex align-items-center mb-4 pb-3 border-bottom">
-                    <div class="bg-primary text-white rounded-circle p-4 me-4 d-flex align-items-center justify-content-center" style="width: 75px; height: 75px;">
+                    <div class="rounded-circle p-4 me-4 d-flex align-items-center justify-content-center" style="width: 75px; height: 75px; background-color: var(--fn-blue-subtle); color: var(--fn-blue-primary);">
                         <i class="bi bi-person-fill fs-1"></i>
                     </div>
                     <div>
-                        <h2 class="fw-bold mb-1">{{ mentor.user.get_full_name|default:mentor.user.username }}</h2>
+                        <h2 class="fw-bold mb-1 text-dark">{{ mentor.user.get_full_name|default:mentor.user.username }}</h2>
                         <p class="text-muted mb-1">{{ mentor.filiere|default:"Filière non renseignée" }} &bull; {{ mentor.get_niveau_display }}</p>
                         {% if mentor.est_disponible %}
                             <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Disponible pour mentorat</span>
                         {% else %}
-                            <span class="badge bg-secondary"><i class="bi bi-pause-circle me-1"></i>Indisponible actuellement</span>
+                            <span class="badge bg-secondary"><i class="bi bi-pause-circle me-1"></i>Indisponible</span>
                         {% endif %}
                     </div>
                 </div>
 
                 <!-- Biographie -->
                 <div class="mb-4">
-                    <h5 class="fw-bold text-secondary mb-2"><i class="bi bi-card-text me-2"></i>À propos de ce mentor</h5>
-                    <div class="bg-light p-3 rounded-3 text-secondary">
+                    <h5 class="fw-bold text-dark mb-2"><i class="bi bi-card-text text-primary me-2"></i>À propos de ce mentor</h5>
+                    <div class="p-3 rounded-3 text-secondary" style="background-color: var(--fn-gray-light); border: 1px solid var(--fn-border);">
                         {{ mentor.bio|linebreaks|default:"Ce mentor n'a pas encore rédigé de biographie détaillée." }}
                     </div>
                 </div>
 
                 <!-- Compétences / Matières -->
                 <div class="mb-4">
-                    <h5 class="fw-bold text-secondary mb-3"><i class="bi bi-award me-2"></i>Matières & Technologies maîtrisées</h5>
+                    <h5 class="fw-bold text-dark mb-3"><i class="bi bi-award text-primary me-2"></i>Matières & Domaines d'expertise</h5>
                     <div class="row g-2">
                         {% for comp in competences %}
                         <div class="col-md-6">
-                            <div class="p-3 border rounded-3 d-flex align-items-center justify-content-between">
+                            <div class="p-3 border rounded-3 d-flex align-items-center justify-content-between bg-white">
                                 <div>
                                     <h6 class="fw-bold mb-0 text-dark">{{ comp.matiere.nom }}</h6>
                                     <small class="text-muted">{{ comp.matiere.description|truncatewords:6 }}</small>
                                 </div>
-                                <span class="badge bg-primary">{{ comp.get_niveau_expertise_display }}</span>
+                                <span class="badge badge-fn-subject">{{ comp.get_niveau_expertise_display }}</span>
                             </div>
                         </div>
                         {% empty %}
@@ -52,11 +52,11 @@
 
                 <!-- Action de mise en relation -->
                 <div class="d-flex gap-3 pt-3 border-top justify-content-between align-items-center">
-                    <a href="{% url 'mentor_list' %}" class="btn btn-outline-secondary btn-rounded">
+                    <a href="{% url 'mentor_list' %}" class="btn btn-outline-secondary rounded-pill">
                         <i class="bi bi-arrow-left me-1"></i>Retour à l'annuaire
                     </a>
                     {% if mentor.est_disponible %}
-                        <a href="{% url 'create_request' mentor.id %}" class="btn btn-warning px-4 py-2 fw-bold btn-rounded">
+                        <a href="{% url 'create_request' mentor.id %}" class="btn btn-fn-accent px-4 py-2 rounded-pill">
                             <i class="bi bi-envelope-plus me-2"></i>Envoyer une demande de mentorat
                         </a>
                     {% endif %}

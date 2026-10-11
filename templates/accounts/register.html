@@ -6,11 +6,13 @@
 <div class="container py-4">
     <div class="row justify-content-center">
         <div class="col-md-7">
-            <div class="card shadow-sm p-4">
+            <div class="card shadow-sm p-4 bg-white border">
                 <div class="text-center mb-4">
-                    <i class="bi bi-person-plus-fill fs-1 text-warning"></i>
-                    <h3 class="fw-bold mt-2">Rejoindre Force Mentor</h3>
-                    <p class="text-muted small">Créez votre profil pour partager vos connaissances ou progresser</p>
+                    <div class="rounded-circle d-inline-flex p-3 mb-2" style="background-color: var(--fn-blue-subtle); color: var(--fn-blue-primary);">
+                        <i class="bi bi-person-plus-fill fs-2"></i>
+                    </div>
+                    <h3 class="fw-bold mt-2 text-dark">Rejoindre Force Mentor</h3>
+                    <p class="text-muted small">Créez votre profil d'étudiant mentoré ou accompagnateur</p>
                 </div>
 
                 <form method="post">
@@ -56,7 +58,7 @@
                     </div>
 
                     <hr class="my-3">
-                    <h5 class="fw-bold mb-3 text-secondary"><i class="bi bi-mortarboard me-2"></i>Informations d'Étudiant</h5>
+                    <h5 class="fw-bold mb-3 text-dark"><i class="bi bi-mortarboard text-primary me-2"></i>Informations d'Étudiant</h5>
 
                     <div class="row">
                         <div class="col-md-6 mb-3">
@@ -75,18 +77,18 @@
                     </div>
 
                     <div class="mb-4">
-                        <label class="form-label fw-semibold">Petite présentation / Objectifs</label>
+                        <label class="form-label fw-semibold">Présentation / Objectifs</label>
                         {{ form.bio }}
                     </div>
 
-                    <button type="submit" class="btn btn-warning w-100 py-2 fw-bold btn-rounded">
+                    <button type="submit" class="btn btn-fn-primary w-100 py-2 fw-bold rounded-pill">
                         <i class="bi bi-check-circle me-2"></i>Créer mon compte
                     </button>
                 </form>
 
                 <div class="text-center mt-3 border-top pt-3">
                     <p class="small text-muted mb-0">Déjà inscrit ? 
-                        <a href="{% url 'login' %}" class="fw-bold text-decoration-none">Se connecter</a>
+                        <a href="{% url 'login' %}" class="fw-bold text-decoration-none" style="color: var(--fn-blue-primary);">Se connecter</a>
                     </p>
                 </div>
             </div>
@@ -95,7 +97,6 @@
 </div>
 
 <script>
-    // Ajoute la classe bootstrap form-control à tous les inputs du formulaire
     document.addEventListener("DOMContentLoaded", function() {
         document.querySelectorAll("form input, form select, form textarea").forEach(function(el) {
             el.classList.add("form-control");

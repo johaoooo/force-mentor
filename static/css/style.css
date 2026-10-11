@@ -1,0 +1,135 @@
+/* Charte graphique officielle Force-N */
+:root {
+    --fn-blue-dark: #0f2b48;
+    --fn-blue-primary: #1d5b9f;
+    --fn-blue-medium: #2b72bb;
+    --fn-blue-subtle: #eef5fc;
+    --fn-orange-accent: #ce7229;
+    --fn-green: #2e7d32;
+    --fn-gray-light: #f8fafc;
+    --fn-text: #1e293b;
+    --fn-border: #e2e8f0;
+}
+
+body {
+    background-color: var(--fn-gray-light);
+    color: var(--fn-text);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Navbar */
+.navbar-forcen {
+    background-color: #ffffff;
+    border-bottom: 2px solid var(--fn-blue-primary);
+    box-shadow: 0 2px 4px rgba(15, 43, 72, 0.06);
+}
+
+.navbar-brand-title {
+    color: var(--fn-blue-dark);
+    font-weight: 700;
+    font-size: 1.25rem;
+    letter-spacing: -0.3px;
+}
+
+.nav-link {
+    color: #475569 !important;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.nav-link:hover, .nav-link.active {
+    color: var(--fn-blue-primary) !important;
+}
+
+/* Boutons personnalisés selon la charte */
+.btn-fn-primary {
+    background-color: var(--fn-blue-primary);
+    border-color: var(--fn-blue-primary);
+    color: #ffffff;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.btn-fn-primary:hover {
+    background-color: var(--fn-blue-dark);
+    border-color: var(--fn-blue-dark);
+    color: #ffffff;
+}
+
+.btn-fn-accent {
+    background-color: var(--fn-orange-accent);
+    border-color: var(--fn-orange-accent);
+    color: #ffffff;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.btn-fn-accent:hover {
+    background-color: #b35e1d;
+    border-color: #b35e1d;
+    color: #ffffff;
+}
+
+.btn-fn-outline {
+    border: 1.5px solid var(--fn-blue-primary);
+    color: var(--fn-blue-primary);
+    font-weight: 600;
+    border-radius: 8px;
+    background: transparent;
+    transition: all 0.2s ease;
+}
+
+.btn-fn-outline:hover {
+    background-color: var(--fn-blue-primary);
+    color: #ffffff;
+}
+
+/* Cartes */
+.card {
+    border: 1px solid var(--fn-border);
+    border-radius: 12px;
+    background-color: #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    box-shadow: 0 4px 14px rgba(15, 43, 72, 0.08);
+}
+
+/* Badges */
+.badge-fn-subject {
+    background-color: var(--fn-blue-subtle);
+    color: var(--fn-blue-primary);
+    border: 1px solid #bfdbfe;
+    font-weight: 500;
+    border-radius: 6px;
+    padding: 6px 10px;
+}
+
+.badge-fn-accent {
+    background-color: #fef3c7;
+    color: #92400e;
+    font-weight: 600;
+}
+
+/* Hero Section */
+.hero-forcen {
+    background: linear-gradient(135deg, var(--fn-blue-dark) 0%, var(--fn-blue-primary) 100%);
+    color: #ffffff;
+    border-radius: 16px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Footer */
+.footer {
+    margin-top: auto;
+    background: #ffffff;
+    border-top: 1px solid var(--fn-border);
+}

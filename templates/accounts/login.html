@@ -6,10 +6,12 @@
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-md-5">
-            <div class="card shadow-sm p-4">
+            <div class="card shadow-sm p-4 bg-white border">
                 <div class="text-center mb-4">
-                    <i class="bi bi-person-lock fs-1 text-primary"></i>
-                    <h3 class="fw-bold mt-2">Connexion</h3>
+                    <div class="rounded-circle d-inline-flex p-3 mb-2" style="background-color: var(--fn-blue-subtle); color: var(--fn-blue-primary);">
+                        <i class="bi bi-person-lock fs-2"></i>
+                    </div>
+                    <h3 class="fw-bold mt-2 text-dark">Connexion</h3>
                     <p class="text-muted small">Accédez à votre espace Force Mentor</p>
                 </div>
 
@@ -25,14 +27,14 @@
                         <input type="password" name="password" class="form-control" id="id_password" required>
                     </div>
 
-                    <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold btn-rounded">
+                    <button type="submit" class="btn btn-fn-primary w-100 py-2 fw-semibold rounded-pill">
                         <i class="bi bi-box-arrow-in-right me-2"></i>Se connecter
                     </button>
                 </form>
 
                 <div class="text-center mt-4 border-top pt-3">
                     <p class="small text-muted mb-0">Pas encore de compte ? 
-                        <a href="{% url 'register' %}" class="fw-bold text-decoration-none">Créer un compte</a>
+                        <a href="{% url 'register' %}" class="fw-bold text-decoration-none" style="color: var(--fn-blue-primary);">Créer un compte</a>
                     </p>
                 </div>
             </div>
