@@ -12,174 +12,161 @@
     <div class="cnib-bg-glow-1"></div>
     <div class="cnib-bg-glow-2"></div>
 
-    <!-- Bouton Retour à l'accueil flottant style CNIB -->
+    <!-- Bouton Retour à l'accueil flottant style CNIB (styles.homeBtn) -->
     <a href="{% url 'home' %}" class="cnib-home-btn" title="Retour à l'accueil">
         <i class="bi bi-arrow-left"></i>
         <span>Accueil</span>
     </a>
 
-    <div class="container position-relative py-4" style="z-index: 10;">
+    <div class="container position-relative py-3" style="z-index: 10;">
         <div class="row justify-content-center">
-            <div class="col-md-9 col-lg-8 col-xl-7">
-                <div class="cnib-card">
-                    <!-- En-tête avec Emblème seul -->
-                    <div class="text-center mb-4">
-                        <img src="{% static 'img/logo_emblem.png' %}" alt="Logo" height="56" class="mb-3">
-                        <h2 class="fw-bold text-dark mb-1" style="letter-spacing: -0.5px;">
-                            Créer Votre <span class="cnib-title-pill">Compte</span>
-                        </h2>
-                        <p class="text-muted small mt-2">Rejoignez la communauté pour progresser ou accompagner vos pairs</p>
-                    </div>
-
-                    <form method="post" action="{% url 'register' %}" id="registerForm">
-                        {% csrf_token %}
-
-                        <!-- SECTION 1 : Identifiants & Connexion -->
-                        <div class="mb-4">
-                            <div class="d-flex align-items-center gap-2 mb-3">
-                                <span class="badge rounded-circle" style="background-color: var(--cnib-teal); width: 26px; height: 26px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.82rem; color: #fff;">1</span>
-                                <h6 class="fw-bold text-dark mb-0">Informations de connexion</h6>
-                            </div>
-
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <label class="form-label small fw-bold text-dark mb-1 ms-2">Prénom *</label>
-                                    <div class="input-group cnib-input-group">
-                                        <span class="input-group-text"><i class="bi bi-person"></i></span>
-                                        <input type="text" name="first_name" value="{{ form.first_name.value|default:'' }}" class="form-control" placeholder="Ex: Amadou" required>
-                                    </div>
-                                    {% if form.first_name.errors %}<div class="text-danger small mt-1 ms-2">{{ form.first_name.errors }}</div>{% endif %}
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label class="form-label small fw-bold text-dark mb-1 ms-2">Nom *</label>
-                                    <div class="input-group cnib-input-group">
-                                        <span class="input-group-text"><i class="bi bi-person"></i></span>
-                                        <input type="text" name="last_name" value="{{ form.last_name.value|default:'' }}" class="form-control" placeholder="Ex: Diallo" required>
-                                    </div>
-                                    {% if form.last_name.errors %}<div class="text-danger small mt-1 ms-2">{{ form.last_name.errors }}</div>{% endif %}
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label class="form-label small fw-bold text-dark mb-1 ms-2">Nom d'utilisateur *</label>
-                                    <div class="input-group cnib-input-group">
-                                        <span class="input-group-text"><i class="bi bi-at"></i></span>
-                                        <input type="text" name="username" value="{{ form.username.value|default:'' }}" class="form-control" placeholder="amadou_d" required>
-                                    </div>
-                                    {% if form.username.errors %}<div class="text-danger small mt-1 ms-2">{{ form.username.errors }}</div>{% endif %}
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label class="form-label small fw-bold text-dark mb-1 ms-2">Adresse Email *</label>
-                                    <div class="input-group cnib-input-group">
-                                        <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-                                        <input type="email" name="email" value="{{ form.email.value|default:'' }}" class="form-control" placeholder="amadou.diallo@exemple.sn" required>
-                                    </div>
-                                    {% if form.email.errors %}<div class="text-danger small mt-1 ms-2">{{ form.email.errors }}</div>{% endif %}
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label class="form-label small fw-bold text-dark mb-1 ms-2">Mot de passe *</label>
-                                    <div class="input-group cnib-input-group">
-                                        <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                                        <input type="password" name="password1" id="pass1" class="form-control" placeholder="Minimum 8 caractères" required oninput="checkPassMatch()">
-                                    </div>
-                                    {% if form.password1.errors %}<div class="text-danger small mt-1 ms-2">{{ form.password1.errors }}</div>{% endif %}
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label class="form-label small fw-bold text-dark mb-1 ms-2">Confirmer mot de passe *</label>
-                                    <div class="input-group cnib-input-group">
-                                        <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
-                                        <input type="password" name="password2" id="pass2" class="form-control" placeholder="Confirmer mot de passe" required oninput="checkPassMatch()">
-                                    </div>
-                                    <div id="matchFeedback" class="small mt-1 ms-2" style="display: none;"></div>
-                                    {% if form.password2.errors %}<div class="text-danger small mt-1 ms-2">{{ form.password2.errors }}</div>{% endif %}
-                                </div>
-                            </div>
-                        </div>
-
-                        <hr class="my-4" style="border-color: var(--cnib-border); opacity: 0.8;">
-
-                        <!-- SECTION 2 : Rôle & Parcours Étudiant -->
-                        <div class="mb-4">
-                            <div class="d-flex align-items-center gap-2 mb-3">
-                                <span class="badge rounded-circle" style="background-color: var(--cnib-teal); width: 26px; height: 26px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.82rem; color: #fff;">2</span>
-                                <h6 class="fw-bold text-dark mb-0">Rôle & Profil étudiant</h6>
-                            </div>
-
-                            <!-- Sélecteur de Rôle interactif en 3 Cartes CNIB -->
-                            <label class="form-label small fw-bold text-dark mb-2 ms-2">Quel sera votre rôle principal ? *</label>
-                            <div class="row g-2 mb-3">
-                                <div class="col-md-4">
-                                    <label class="cnib-role-card active" id="card-mentore">
-                                        <input type="radio" name="role" value="MENTORE" checked onchange="handleRoleChange(this)">
-                                        <i class="bi bi-mortarboard-fill cnib-role-icon"></i>
-                                        <div class="fw-bold text-dark">Mentoré</div>
-                                        <small class="text-muted" style="font-size: 0.74rem;">Je recherche un accompagnement</small>
-                                    </label>
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="cnib-role-card" id="card-mentor">
-                                        <input type="radio" name="role" value="MENTOR" onchange="handleRoleChange(this)">
-                                        <i class="bi bi-award-fill cnib-role-icon"></i>
-                                        <div class="fw-bold text-dark">Mentor</div>
-                                        <small class="text-muted" style="font-size: 0.74rem;">Je partage mes compétences</small>
-                                    </label>
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="cnib-role-card" id="card-lesdeux">
-                                        <input type="radio" name="role" value="LES_DEUX" onchange="handleRoleChange(this)">
-                                        <i class="bi bi-people-fill cnib-role-icon"></i>
-                                        <div class="fw-bold text-dark">Les deux</div>
-                                        <small class="text-muted" style="font-size: 0.74rem;">Aider et recevoir du mentorat</small>
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <label class="form-label small fw-bold text-dark mb-1 ms-2">Niveau d'études *</label>
-                                    <div class="input-group cnib-input-group">
-                                        <span class="input-group-text"><i class="bi bi-mortarboard"></i></span>
-                                        {{ form.niveau }}
-                                    </div>
-                                    {% if form.niveau.errors %}<div class="text-danger small mt-1 ms-2">{{ form.niveau.errors }}</div>{% endif %}
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label class="form-label small fw-bold text-dark mb-1 ms-2">Filière / Spécialité</label>
-                                    <div class="input-group cnib-input-group">
-                                        <span class="input-group-text"><i class="bi bi-book"></i></span>
-                                        <input type="text" name="filiere" value="{{ form.filiere.value|default:'' }}" class="form-control" placeholder="Ex: Développement Web, Génie Logiciel...">
-                                    </div>
-                                    {% if form.filiere.errors %}<div class="text-danger small mt-1 ms-2">{{ form.filiere.errors }}</div>{% endif %}
-                                </div>
-
-                                <div class="col-12">
-                                    <label class="form-label small fw-bold text-dark mb-1 ms-2">Présentation / Objectifs</label>
-                                    <div class="cnib-textarea-group">
-                                        <textarea name="bio" class="form-control border-0 bg-transparent" rows="3" placeholder="Présentez brièvement votre parcours, vos objectifs ou ce que vous aimeriez apprendre...">{{ form.bio.value|default:'' }}</textarea>
-                                    </div>
-                                    {% if form.bio.errors %}<div class="text-danger small mt-1 ms-2">{{ form.bio.errors }}</div>{% endif %}
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Bouton Création de compte -->
-                        <button type="submit" class="btn btn-cnib-primary w-100 py-3 mb-3">
-                            <i class="bi bi-check-circle-fill me-2"></i>Créer mon profil et commencer
-                        </button>
-                    </form>
-
-                    <!-- Lien de connexion -->
-                    <div class="text-center pt-3 border-top" style="border-color: var(--cnib-border) !important;">
-                        <p class="small text-muted mb-0">
-                            Déjà inscrit ? 
-                            <a href="{% url 'login' %}" class="fw-bold text-decoration-none" style="color: var(--cnib-teal);">
-                                Se connecter à mon compte
+            <div class="col-12 col-lg-11 col-xl-10">
+                <div class="cnib-split-container">
+                    <div class="row g-0">
+                        <!-- Colonne Overlay Dégradé CNIB (Gauche sur grand écran) -->
+                        <div class="col-lg-4 cnib-overlay-panel d-none d-lg-flex">
+                            <img src="{% static 'img/logo_emblem.png' %}" alt="Logo" height="60" class="mb-3" style="filter: brightness(0) invert(1);">
+                            <h3 class="cnib-overlay-title">Bon retour !</h3>
+                            <p class="cnib-overlay-text">
+                                Vous possédez déjà un compte sur la plateforme ? Connectez-vous pour retrouver vos échanges et vos sessions.
+                            </p>
+                            <a href="{% url 'login' %}" class="cnib-ghost-btn">
+                                Se connecter
                             </a>
-                        </p>
+                        </div>
+
+                        <!-- Colonne Formulaire Inscription (Droite) -->
+                        <div class="col-12 col-lg-8 cnib-form-panel">
+                            <div class="d-flex align-items-center gap-2 mb-3">
+                                <img src="{% static 'img/logo_emblem.png' %}" alt="Logo" height="38">
+                                <span class="fw-bold fs-5" style="color: var(--cnib-dark); letter-spacing: -0.3px;">Apprendre</span>
+                            </div>
+
+                            <h2 class="cnib-form-title">Créer un compte</h2>
+                            <p class="cnib-form-subtitle">Rejoignez la communauté pour progresser ou accompagner vos pairs.</p>
+
+                            <form method="post" action="{% url 'register' %}" id="registerForm">
+                                {% csrf_token %}
+
+                                <!-- SECTION 1 : Informations de connexion -->
+                                <div class="mb-4">
+                                    <div class="d-flex align-items-center gap-2 mb-3">
+                                        <span class="badge rounded-circle" style="background-color: var(--cnib-teal); width: 24px; height: 24px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.78rem; color: #fff;">1</span>
+                                        <span class="fw-bold text-dark small">Informations de connexion</span>
+                                    </div>
+
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="cnib-label">Prénom *</label>
+                                            <input type="text" name="first_name" value="{{ form.first_name.value|default:'' }}" class="cnib-input-field" placeholder="Amadou" required>
+                                            {% if form.first_name.errors %}<div class="text-danger small mt-1">{{ form.first_name.errors }}</div>{% endif %}
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="cnib-label">Nom *</label>
+                                            <input type="text" name="last_name" value="{{ form.last_name.value|default:'' }}" class="cnib-input-field" placeholder="Diallo" required>
+                                            {% if form.last_name.errors %}<div class="text-danger small mt-1">{{ form.last_name.errors }}</div>{% endif %}
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="cnib-label">Nom d'utilisateur *</label>
+                                            <input type="text" name="username" value="{{ form.username.value|default:'' }}" class="cnib-input-field" placeholder="amadou_d" required>
+                                            {% if form.username.errors %}<div class="text-danger small mt-1">{{ form.username.errors }}</div>{% endif %}
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="cnib-label">Adresse Email *</label>
+                                            <input type="email" name="email" value="{{ form.email.value|default:'' }}" class="cnib-input-field" placeholder="amadou.diallo@email.com" required>
+                                            {% if form.email.errors %}<div class="text-danger small mt-1">{{ form.email.errors }}</div>{% endif %}
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="cnib-label">Mot de passe *</label>
+                                            <input type="password" name="password1" id="pass1" class="cnib-input-field" placeholder="Minimum 8 caractères" required oninput="checkPassMatch()">
+                                            {% if form.password1.errors %}<div class="text-danger small mt-1">{{ form.password1.errors }}</div>{% endif %}
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="cnib-label">Confirmer mot de passe *</label>
+                                            <input type="password" name="password2" id="pass2" class="cnib-input-field" placeholder="Confirmer le mot de passe" required oninput="checkPassMatch()">
+                                            <div id="matchFeedback" class="small mt-1" style="display: none;"></div>
+                                            {% if form.password2.errors %}<div class="text-danger small mt-1">{{ form.password2.errors }}</div>{% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <hr class="my-4" style="border-color: var(--cnib-border);">
+
+                                <!-- SECTION 2 : Rôle & Profil étudiant -->
+                                <div class="mb-4">
+                                    <div class="d-flex align-items-center gap-2 mb-3">
+                                        <span class="badge rounded-circle" style="background-color: var(--cnib-teal); width: 24px; height: 24px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.78rem; color: #fff;">2</span>
+                                        <span class="fw-bold text-dark small">Rôle & Profil étudiant</span>
+                                    </div>
+
+                                    <!-- Cartes interactives de Rôle style CNIB -->
+                                    <label class="cnib-label mb-2">Quel sera votre rôle principal ? *</label>
+                                    <div class="row g-2 mb-3">
+                                        <div class="col-md-4">
+                                            <label class="cnib-role-card active" id="card-mentore">
+                                                <input type="radio" name="role" value="MENTORE" checked onchange="handleRoleChange(this)">
+                                                <i class="bi bi-mortarboard-fill cnib-role-icon"></i>
+                                                <div class="fw-bold text-dark" style="font-size: 0.9rem;">Mentoré</div>
+                                                <small class="text-muted" style="font-size: 0.72rem;">Je cherche un accompagnement</small>
+                                            </label>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="cnib-role-card" id="card-mentor">
+                                                <input type="radio" name="role" value="MENTOR" onchange="handleRoleChange(this)">
+                                                <i class="bi bi-award-fill cnib-role-icon"></i>
+                                                <div class="fw-bold text-dark" style="font-size: 0.9rem;">Mentor</div>
+                                                <small class="text-muted" style="font-size: 0.72rem;">Je partage mes compétences</small>
+                                            </label>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="cnib-role-card" id="card-lesdeux">
+                                                <input type="radio" name="role" value="LES_DEUX" onchange="handleRoleChange(this)">
+                                                <i class="bi bi-people-fill cnib-role-icon"></i>
+                                                <div class="fw-bold text-dark" style="font-size: 0.9rem;">Les deux</div>
+                                                <small class="text-muted" style="font-size: 0.72rem;">Aider et recevoir du mentorat</small>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="cnib-label">Niveau d'études *</label>
+                                            <div class="cnib-select-wrapper">
+                                                {{ form.niveau }}
+                                            </div>
+                                            {% if form.niveau.errors %}<div class="text-danger small mt-1">{{ form.niveau.errors }}</div>{% endif %}
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="cnib-label">Filière / Spécialité</label>
+                                            <input type="text" name="filiere" value="{{ form.filiere.value|default:'' }}" class="cnib-input-field" placeholder="Ex: Informatique, Développement Web...">
+                                            {% if form.filiere.errors %}<div class="text-danger small mt-1">{{ form.filiere.errors }}</div>{% endif %}
+                                        </div>
+
+                                        <div class="col-12">
+                                            <label class="cnib-label">Présentation / Objectifs</label>
+                                            <textarea name="bio" class="cnib-textarea-field" rows="3" placeholder="Présentez brièvement vos attentes ou votre parcours...">{{ form.bio.value|default:'' }}</textarea>
+                                            {% if form.bio.errors %}<div class="text-danger small mt-1">{{ form.bio.errors }}</div>{% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Bouton Inscription -->
+                                <button type="submit" class="cnib-submit-btn mb-3">
+                                    <i class="bi bi-check-circle-fill me-2"></i>Créer mon compte
+                                </button>
+
+                                <div class="text-center d-block d-lg-none pt-2">
+                                    <span class="small text-muted">Déjà un compte ?</span>
+                                    <a href="{% url 'login' %}" class="cnib-link ms-1">Se connecter</a>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -188,11 +175,11 @@
 </div>
 
 <script>
-    // Style automatique du select niveau généré par Django
+    // Style automatique du select Django
     document.addEventListener("DOMContentLoaded", function() {
-        const selectEl = document.querySelector(".cnib-input-group select");
+        const selectEl = document.querySelector("select");
         if (selectEl) {
-            selectEl.classList.add("form-select", "border-0", "bg-transparent");
+            selectEl.className = "cnib-select-field";
         }
     });
 
@@ -202,7 +189,7 @@
         radio.closest('.cnib-role-card').classList.add('active');
     }
 
-    // Vérification visuelle instantanée des mots de passe
+    // Validation instantanée des mots de passe
     const pass1 = document.getElementById('pass1');
     const pass2 = document.getElementById('pass2');
     const feedback = document.getElementById('matchFeedback');
@@ -214,10 +201,10 @@
         }
         feedback.style.display = 'block';
         if (pass1.value === pass2.value) {
-            feedback.className = 'small mt-1 ms-2 text-success';
+            feedback.className = 'small mt-1 text-success';
             feedback.innerHTML = '<i class="bi bi-check-circle-fill me-1"></i>Les mots de passe correspondent';
         } else {
-            feedback.className = 'small mt-1 ms-2 text-danger';
+            feedback.className = 'small mt-1 text-danger';
             feedback.innerHTML = '<i class="bi bi-exclamation-circle-fill me-1"></i>Les mots de passe ne correspondent pas';
         }
     }
