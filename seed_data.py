@@ -114,19 +114,19 @@ def seed():
                 defaults={"niveau_expertise": niveau_exp}
             )
 
-    # 4. Création d'un compte étudiant mentoré pour les tests
+    # 4. Création d'un compte étudiant mentoré pour les tests (Nom standardisé)
     etudiant_user, e_created = User.objects.get_or_create(
-        username="fatou_ndiaye",
+        username="awa_sow",
         defaults={
-            "first_name": "Fatou",
-            "last_name": "Ndiaye",
-            "email": "fatou.ndiaye@forcen.sn"
+            "first_name": "Awa",
+            "last_name": "Sow",
+            "email": "awa.sow@exemple.sn"
         }
     )
     if e_created:
         etudiant_user.set_password("passer123")
         etudiant_user.save()
-        print("✅ Étudiante mentorée créée : fatou_ndiaye (mot de passe: passer123)")
+        print("✅ Étudiante mentorée créée : awa_sow (mot de passe: passer123)")
 
     e_profile = etudiant_user.profile
     e_profile.role = 'MENTORE'

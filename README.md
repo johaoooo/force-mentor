@@ -48,7 +48,7 @@ Pour vos tests et votre présentation, plusieurs comptes sont déjà créés :
 | **Mentor (Python & Django)** | `moussa_diop` | `passer123` | Étudiant L3, mentor sur Python et Django |
 | **Mentor (Algorithmique & SQL)** | `aminata_diallo` | `passer123` | Étudiante M1, mentor sur Algorithmique et SQL |
 | **Mentor & Mentoré (Réseaux)** | `cheikh_fall` | `passer123` | Étudiant L3, double rôle |
-| **Mentorée (Apprenante L1)** | `fatou_ndiaye` | `passer123` | Étudiante L1, a envoyé une demande à Moussa |
+| **Mentorée (Apprenante L1)** | `awa_sow` | `passer123` | Étudiante L1, a envoyé une demande à Moussa |
 
 ---
 

@@ -10,19 +10,19 @@
             <div class="auth-card">
                 <!-- En-tête avec Emblème seul -->
                 <div class="text-center mb-4">
-                    <img src="{% static 'img/logo_emblem.png' %}" alt="Logo Apprendre" height="48" class="mb-3">
-                    <h3 class="fw-bold text-dark mb-1" style="letter-spacing: -0.5px;">Rejoindre Apprendre</h3>
-                    <p class="text-muted small">Créez votre profil pour progresser ou accompagner d'autres étudiants</p>
+                    <img src="{% static 'img/logo_emblem.png' %}" alt="Logo Apprendre" height="52" class="mb-3">
+                    <h3 class="fw-bold text-dark mb-1" style="letter-spacing: -0.5px;">Créer votre profil</h3>
+                    <p class="text-muted small">Rejoignez la communauté pour progresser ou accompagner vos pairs</p>
                 </div>
 
-                <form method="post" action="{% url 'register' %}">
+                <form method="post" action="{% url 'register' %}" id="registerForm">
                     {% csrf_token %}
 
                     <!-- SECTION 1 : Identifiants & Connexion -->
                     <div class="mb-4">
                         <div class="d-flex align-items-center gap-2 mb-3">
-                            <span class="badge bg-primary rounded-circle" style="width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.75rem;">1</span>
-                            <h6 class="fw-bold text-dark mb-0">Identifiants personnels</h6>
+                            <span class="badge bg-primary rounded-circle" style="width: 24px; height: 24px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.8rem;">1</span>
+                            <h6 class="fw-bold text-dark mb-0">Informations de connexion</h6>
                         </div>
 
                         <div class="row g-3">
@@ -30,7 +30,7 @@
                                 <label class="form-label small fw-bold text-dark mb-1">Prénom *</label>
                                 <div class="input-group auth-input-group">
                                     <span class="input-group-text"><i class="bi bi-person"></i></span>
-                                    <input type="text" name="first_name" value="{{ form.first_name.value|default:'' }}" class="form-control" placeholder="Ex: Fatou" required>
+                                    <input type="text" name="first_name" value="{{ form.first_name.value|default:'' }}" class="form-control" placeholder="Ex: Amadou" required>
                                 </div>
                                 {% if form.first_name.errors %}<div class="text-danger small mt-1">{{ form.first_name.errors }}</div>{% endif %}
                             </div>
@@ -39,7 +39,7 @@
                                 <label class="form-label small fw-bold text-dark mb-1">Nom *</label>
                                 <div class="input-group auth-input-group">
                                     <span class="input-group-text"><i class="bi bi-person"></i></span>
-                                    <input type="text" name="last_name" value="{{ form.last_name.value|default:'' }}" class="form-control" placeholder="Ex: Ndiaye" required>
+                                    <input type="text" name="last_name" value="{{ form.last_name.value|default:'' }}" class="form-control" placeholder="Ex: Diallo" required>
                                 </div>
                                 {% if form.last_name.errors %}<div class="text-danger small mt-1">{{ form.last_name.errors }}</div>{% endif %}
                             </div>
@@ -48,7 +48,7 @@
                                 <label class="form-label small fw-bold text-dark mb-1">Nom d'utilisateur *</label>
                                 <div class="input-group auth-input-group">
                                     <span class="input-group-text"><i class="bi bi-at"></i></span>
-                                    <input type="text" name="username" value="{{ form.username.value|default:'' }}" class="form-control" placeholder="identifiant_unique" required>
+                                    <input type="text" name="username" value="{{ form.username.value|default:'' }}" class="form-control" placeholder="amadou_d" required>
                                 </div>
                                 {% if form.username.errors %}<div class="text-danger small mt-1">{{ form.username.errors }}</div>{% endif %}
                             </div>
@@ -57,7 +57,7 @@
                                 <label class="form-label small fw-bold text-dark mb-1">Adresse Email *</label>
                                 <div class="input-group auth-input-group">
                                     <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-                                    <input type="email" name="email" value="{{ form.email.value|default:'' }}" class="form-control" placeholder="etudiant@domaine.sn" required>
+                                    <input type="email" name="email" value="{{ form.email.value|default:'' }}" class="form-control" placeholder="amadou.diallo@exemple.sn" required>
                                 </div>
                                 {% if form.email.errors %}<div class="text-danger small mt-1">{{ form.email.errors }}</div>{% endif %}
                             </div>
@@ -66,17 +66,18 @@
                                 <label class="form-label small fw-bold text-dark mb-1">Mot de passe *</label>
                                 <div class="input-group auth-input-group">
                                     <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                                    <input type="password" name="password1" class="form-control" placeholder="••••••••" required>
+                                    <input type="password" name="password1" id="pass1" class="form-control" placeholder="Minimum 8 caractères" required>
                                 </div>
                                 {% if form.password1.errors %}<div class="text-danger small mt-1">{{ form.password1.errors }}</div>{% endif %}
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label small fw-bold text-dark mb-1">Confirmation mot de passe *</label>
+                                <label class="form-label small fw-bold text-dark mb-1">Confirmer mot de passe *</label>
                                 <div class="input-group auth-input-group">
                                     <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
-                                    <input type="password" name="password2" class="form-control" placeholder="••••••••" required>
+                                    <input type="password" name="password2" id="pass2" class="form-control" placeholder="Confirmer mot de passe" required>
                                 </div>
+                                <div id="matchFeedback" class="small mt-1" style="display: none;"></div>
                                 {% if form.password2.errors %}<div class="text-danger small mt-1">{{ form.password2.errors }}</div>{% endif %}
                             </div>
                         </div>
@@ -84,22 +85,43 @@
 
                     <hr class="my-4 text-muted opacity-25">
 
-                    <!-- SECTION 2 : Profil Étudiant & Rôle -->
+                    <!-- SECTION 2 : Rôle & Parcours Étudiant -->
                     <div class="mb-4">
                         <div class="d-flex align-items-center gap-2 mb-3">
-                            <span class="badge bg-primary rounded-circle" style="width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.75rem;">2</span>
-                            <h6 class="fw-bold text-dark mb-0">Rôle & Parcours d'études</h6>
+                            <span class="badge bg-primary rounded-circle" style="width: 24px; height: 24px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.8rem;">2</span>
+                            <h6 class="fw-bold text-dark mb-0">Rôle & Profil étudiant</h6>
+                        </div>
+
+                        <!-- Sélecteur de Rôle interactif en 3 Cartes -->
+                        <label class="form-label small fw-bold text-dark mb-2">Quel sera votre rôle principal ? *</label>
+                        <div class="row g-2 mb-3">
+                            <div class="col-md-4">
+                                <label class="role-select-card active" id="card-mentore">
+                                    <input type="radio" name="role" value="MENTORE" checked onchange="handleRoleChange(this)">
+                                    <i class="bi bi-mortarboard-fill fs-3 text-primary mb-1 d-block"></i>
+                                    <div class="fw-bold text-dark">Mentoré</div>
+                                    <small class="text-muted" style="font-size: 0.74rem;">Je recherche un accompagnement</small>
+                                </label>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="role-select-card" id="card-mentor">
+                                    <input type="radio" name="role" value="MENTOR" onchange="handleRoleChange(this)">
+                                    <i class="bi bi-award-fill fs-3 text-warning mb-1 d-block"></i>
+                                    <div class="fw-bold text-dark">Mentor</div>
+                                    <small class="text-muted" style="font-size: 0.74rem;">Je souhaite partager mes compétences</small>
+                                </label>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="role-select-card" id="card-lesdeux">
+                                    <input type="radio" name="role" value="LES_DEUX" onchange="handleRoleChange(this)">
+                                    <i class="bi bi-people-fill fs-3 text-success mb-1 d-block"></i>
+                                    <div class="fw-bold text-dark">Les deux</div>
+                                    <small class="text-muted" style="font-size: 0.74rem;">Aider et recevoir du mentorat</small>
+                                </label>
+                            </div>
                         </div>
 
                         <div class="row g-3">
-                            <div class="col-md-6">
-                                <label class="form-label small fw-bold text-dark mb-1">Votre rôle principal *</label>
-                                <div class="auth-input-group p-1">
-                                    {{ form.role }}
-                                </div>
-                                <small class="text-muted" style="font-size: 0.78rem;">Vous pourrez modifier votre rôle à tout moment.</small>
-                            </div>
-
                             <div class="col-md-6">
                                 <label class="form-label small fw-bold text-dark mb-1">Niveau d'études *</label>
                                 <div class="auth-input-group p-1">
@@ -107,24 +129,24 @@
                                 </div>
                             </div>
 
-                            <div class="col-12">
+                            <div class="col-md-6">
                                 <label class="form-label small fw-bold text-dark mb-1">Filière / Spécialité</label>
                                 <div class="input-group auth-input-group">
-                                    <span class="input-group-text"><i class="bi bi-mortarboard"></i></span>
-                                    <input type="text" name="filiere" value="{{ form.filiere.value|default:'' }}" class="form-control" placeholder="Ex: Développement Logiciel, Réseaux, Web, Tronc commun...">
+                                    <span class="input-group-text"><i class="bi bi-book"></i></span>
+                                    <input type="text" name="filiere" value="{{ form.filiere.value|default:'' }}" class="form-control" placeholder="Ex: Développement Web, Génie Logiciel, Réseaux...">
                                 </div>
                             </div>
 
                             <div class="col-12">
-                                <label class="form-label small fw-bold text-dark mb-1">Petite présentation / Objectifs</label>
-                                <textarea name="bio" class="form-control auth-input-group p-3" rows="3" placeholder="Présentez brièvement vos attentes ou vos points forts...">{{ form.bio.value|default:'' }}</textarea>
+                                <label class="form-label small fw-bold text-dark mb-1">Présentation / Objectifs</label>
+                                <textarea name="bio" class="form-control auth-input-group p-3" rows="3" placeholder="Présentez brièvement votre parcours, vos objectifs ou ce que vous aimeriez apprendre...">{{ form.bio.value|default:'' }}</textarea>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Bouton Inscription -->
+                    <!-- Bouton Création de compte -->
                     <button type="submit" class="btn btn-fn-primary w-100 py-3 fw-bold rounded-pill mb-3">
-                        <i class="bi bi-check-circle-fill me-2"></i>Créer mon compte et commencer
+                        <i class="bi bi-check-circle-fill me-2"></i>Créer mon profil et commencer
                     </button>
                 </form>
 
@@ -143,10 +165,43 @@
 </div>
 
 <script>
+    // Style du select niveau
     document.addEventListener("DOMContentLoaded", function() {
-        document.querySelectorAll("select").forEach(function(el) {
-            el.classList.add("form-select", "border-0", "bg-transparent");
-        });
+        const selectEl = document.querySelector("select");
+        if (selectEl) {
+            selectEl.classList.add("form-select", "border-0", "bg-transparent");
+        }
     });
+
+    // Gestion du sélecteur interactif de rôle
+    function handleRoleChange(radio) {
+        document.querySelectorAll('.role-select-card').forEach(card => card.classList.remove('active'));
+        radio.closest('.role-select-card').classList.add('active');
+    }
+
+    // Vérification visuelle instantanée des mots de passe
+    const pass1 = document.getElementById('pass1');
+    const pass2 = document.getElementById('pass2');
+    const feedback = document.getElementById('matchFeedback');
+
+    function checkPassMatch() {
+        if (!pass2.value) {
+            feedback.style.display = 'none';
+            return;
+        }
+        feedback.style.display = 'block';
+        if (pass1.value === pass2.value) {
+            feedback.className = 'small mt-1 text-success';
+            feedback.innerHTML = '<i class="bi bi-check-circle me-1"></i>Les mots de passe correspondent';
+        } else {
+            feedback.className = 'small mt-1 text-danger';
+            feedback.innerHTML = '<i class="bi bi-exclamation-circle me-1"></i>Les mots de passe ne correspondent pas';
+        }
+    }
+
+    if (pass1 && pass2) {
+        pass1.addEventListener('input', checkPassMatch);
+        pass2.addEventListener('input', checkPassMatch);
+    }
 </script>
 {% endblock %}
