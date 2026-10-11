@@ -38,469 +38,389 @@
     </div>
 </section>
 
-<!-- ================== DESIGN SYSTEM CNIB ================== -->
-
-<!-- 1. STATS BAR (Exactement comme CNIB, pleine largeur sous le hero) -->
-<div class="cnib-stats-bar">
-    <div class="cnib-stats-inner">
-        <div class="cnib-stat-item">
-            <div class="cnib-stat-ico"><i class="bi bi-people-fill"></i></div>
-            <div class="cnib-stat-val">{{ total_mentors|default:25 }}+</div>
-            <div class="cnib-stat-lbl">Mentors Actifs</div>
+<!-- 1. BANDEAU DE POINTS FORTS (Inspiré de CNIB, juste sous le hero) -->
+<div class="container home-feature-strip">
+    <div class="row g-3">
+        <div class="col-6 col-lg-3">
+            <div class="feature-pill-card">
+                <div class="feature-icon-box feature-icon-blue">
+                    <i class="bi bi-mortarboard-fill"></i>
+                </div>
+                <div>
+                    <h6 class="feature-pill-title">Mentors Qualifiés</h6>
+                    <p class="feature-pill-desc">Profils certifiés et sélectionnés</p>
+                </div>
+            </div>
         </div>
-        <div class="cnib-stat-item">
-            <div class="cnib-stat-ico"><i class="bi bi-journal-code"></i></div>
-            <div class="cnib-stat-val">{{ total_matieres|default:12 }}+</div>
-            <div class="cnib-stat-lbl">Domaines Clés</div>
+        <div class="col-6 col-lg-3">
+            <div class="feature-pill-card">
+                <div class="feature-icon-box feature-icon-green">
+                    <i class="bi bi-calendar2-check-fill"></i>
+                </div>
+                <div>
+                    <h6 class="feature-pill-title">100% Flexible</h6>
+                    <p class="feature-pill-desc">Horaires adaptés à vos études</p>
+                </div>
+            </div>
         </div>
-        <div class="cnib-stat-item">
-            <div class="cnib-stat-ico"><i class="bi bi-mortarboard-fill"></i></div>
-            <div class="cnib-stat-val">{{ total_demandes|default:87 }}+</div>
-            <div class="cnib-stat-lbl">Sessions Réalisées</div>
+        <div class="col-6 col-lg-3">
+            <div class="feature-pill-card">
+                <div class="feature-icon-box feature-icon-purple">
+                    <i class="bi bi-lightning-charge-fill"></i>
+                </div>
+                <div>
+                    <h6 class="feature-pill-title">En Moins de 3 Clics</h6>
+                    <p class="feature-pill-desc">Contact simple et direct</p>
+                </div>
+            </div>
         </div>
-        <div class="cnib-stat-item">
-            <div class="cnib-stat-ico"><i class="bi bi-star-fill"></i></div>
-            <div class="cnib-stat-val">4.9/5</div>
-            <div class="cnib-stat-lbl">Note de Satisfaction</div>
-        </div>
-        <div class="cnib-stat-item">
-            <div class="cnib-stat-ico"><i class="bi bi-heart-pulse-fill"></i></div>
-            <div class="cnib-stat-val">100%</div>
-            <div class="cnib-stat-lbl">Gratuit & Solidaire</div>
+        <div class="col-6 col-lg-3">
+            <div class="feature-pill-card">
+                <div class="feature-icon-box feature-icon-amber">
+                    <i class="bi bi-people-fill"></i>
+                </div>
+                <div>
+                    <h6 class="feature-pill-title">Entraide & Partage</h6>
+                    <p class="feature-pill-desc">Communauté collaborative</p>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
-<!-- 2. DOMAINES D'INTERVENTION (Design CNIB .section-alt) -->
-<div class="cnib-section-alt" id="domaines">
-    <div class="cnib-wrap">
-        <div class="cnib-section-head">
-            <div class="cnib-eyebrow">Nos domaines d'intervention</div>
-            <h2 class="cnib-section-title">Ce que nous <span>proposons</span></h2>
-            <p class="cnib-section-desc">
-                Du développement web à l'algorithmique et aux sciences, Force-Mentor couvre tous les besoins en accompagnement universitaire et technique.
+<div class="container py-4">
+    <!-- 2. SECTION : COMMENT ÇA MARCHE -->
+    <section class="mb-5 pb-4">
+        <div class="text-center mb-5">
+            <span class="badge rounded-pill bg-primary-subtle text-primary fw-bold px-3 py-2 mb-2" style="font-size: 0.8rem; letter-spacing: 0.5px;">
+                PROCESSUS SIMPLE & RAPIDE
+            </span>
+            <h2 class="fw-bold text-dark fs-2 mb-2" style="letter-spacing: -0.5px;">Comment ça marche ?</h2>
+            <p class="text-muted mx-auto" style="max-width: 580px; font-size: 0.95rem;">
+                Trois étapes transparentes pour trouver le bon accompagnement et accélérer votre progression académique.
             </p>
         </div>
 
-        <div class="cnib-domains-grid">
-            <!-- Carte 1 -->
-            <a href="{% url 'mentor_list' %}" class="cnib-domain-card">
-                <div class="cnib-dc-top cnib-dc-top-blue"></div>
-                <div class="cnib-dc-body">
-                    <div class="cnib-dc-icon cnib-dc-icon-blue">
-                        <i class="bi bi-code-slash"></i>
-                    </div>
-                    <div class="d-flex align-items-center gap-2 mb-2">
-                        <h5 class="cnib-dc-name mb-0">Développement Web & Mobile</h5>
-                        <span class="cnib-label-tag mb-0">Populaire</span>
-                    </div>
-                    <p class="cnib-dc-desc">
-                        Python, Django, JavaScript, React et frameworks modernes pour réussir vos projets pratiques et valider vos modules.
+        <div class="row g-4 justify-content-center">
+            <!-- Étape 01 -->
+            <div class="col-md-4">
+                <div class="step-card-pro">
+                    <div class="step-badge-gradient">01</div>
+                    <i class="bi bi-person-badge step-icon-subtle"></i>
+                    <h5 class="fw-bold text-dark mb-2">Créez votre profil</h5>
+                    <p class="text-muted small mb-0" style="line-height: 1.6;">
+                        Inscrivez-vous en moins de 2 minutes et précisez votre filière, votre niveau d'études ainsi que vos objectifs d'apprentissage.
                     </p>
-                    <div class="cnib-dc-tag">Explorer la filière &rarr;</div>
-                </div>
-            </a>
-
-            <!-- Carte 2 -->
-            <a href="{% url 'mentor_list' %}" class="cnib-domain-card">
-                <div class="cnib-dc-top cnib-dc-top-purple"></div>
-                <div class="cnib-dc-body">
-                    <div class="cnib-dc-icon cnib-dc-icon-purple">
-                        <i class="bi bi-cpu"></i>
-                    </div>
-                    <div class="d-flex align-items-center gap-2 mb-2">
-                        <h5 class="cnib-dc-name mb-0">Algorithmique & Systèmes</h5>
-                        <span class="cnib-label-tag mb-0">Essentiel</span>
-                    </div>
-                    <p class="cnib-dc-desc">
-                        Structures de données, bases de données relationnelles, complexité algorithmique et architecture logicielle expliquées pas à pas.
-                    </p>
-                    <div class="cnib-dc-tag">Explorer la filière &rarr;</div>
-                </div>
-            </a>
-
-            <!-- Carte 3 -->
-            <a href="{% url 'mentor_list' %}" class="cnib-domain-card">
-                <div class="cnib-dc-top cnib-dc-top-green"></div>
-                <div class="cnib-dc-body">
-                    <div class="cnib-dc-icon cnib-dc-icon-green">
-                        <i class="bi bi-graph-up-arrow"></i>
-                    </div>
-                    <div class="d-flex align-items-center gap-2 mb-2">
-                        <h5 class="cnib-dc-name mb-0">Mathématiques & Data</h5>
-                        <span class="cnib-label-tag mb-0">Recommandé</span>
-                    </div>
-                    <p class="cnib-dc-desc">
-                        Analyse, algèbre linéaire, probabilités, statistiques et bases de données SQL pour consolider vos compétences scientifiques.
-                    </p>
-                    <div class="cnib-dc-tag">Explorer la filière &rarr;</div>
-                </div>
-            </a>
-        </div>
-
-        {% if matieres %}
-        <div class="cnib-matieres-subrow mt-4 pt-3 text-center">
-            <span class="text-muted small me-2 fw-semibold">Matières actives :</span>
-            {% for mat in matieres %}
-            <a href="{% url 'mentor_list' %}?matiere={{ mat.id }}" class="cnib-matiere-chip">
-                <i class="bi bi-journal-bookmark me-1 text-primary"></i>{{ mat.nom }}
-            </a>
-            {% endfor %}
-        </div>
-        {% endif %}
-
-        <div class="text-center mt-4">
-            <span class="cnib-open-note">
-                <span class="cnib-dot"></span>
-                Mentors connectés et disponibles 7j/7 pour vous épauler
-            </span>
-        </div>
-    </div>
-</div>
-
-<!-- 3. À PROPOS DE FORCE-MENTOR (Design CNIB .section avec Image Stack + Badge) -->
-<div class="cnib-section" id="about">
-    <div class="cnib-wrap">
-        <div class="cnib-about-grid">
-            <!-- Colonne Gauche : Image Stack CNIB avec Badge Flottant -->
-            <div class="cnib-about-img-stack">
-                <img src="{% static 'img/cnib/bb.jpg' %}" alt="Étudiants Force-Mentor" class="cnib-img-main">
-                <div class="cnib-img-badge">
-                    <div>
-                        <div class="cnib-badge-num">100%</div>
-                        <div class="cnib-badge-lbl">Gratuit & Solidaire</div>
-                    </div>
-                    <div class="cnib-badge-sep"></div>
-                    <div>
-                        <div class="cnib-badge-num">{{ total_mentors|default:25 }}+</div>
-                        <div class="cnib-badge-lbl">Mentors Actifs</div>
-                    </div>
                 </div>
             </div>
 
-            <!-- Colonne Droite : Textes et Grille d'Avantages CNIB -->
-            <div class="cnib-about-text-content">
-                <div class="cnib-label-tag">À propos de Force-Mentor</div>
-                <h2 class="cnib-section-title text-start mb-3">
-                    L'entraide universitaire <span>au service de votre avenir</span>
-                </h2>
-                <p class="cnib-about-desc">
-                    <strong>Force-Mentor</strong> est une communauté collaborative conçue pour favoriser la réussite académique et professionnelle des étudiants.
-                </p>
-                <p class="cnib-about-desc mb-3">
-                    Notre mission est de briser l'isolement face aux difficultés d'apprentissage en connectant chaque apprenant avec des mentors expérimentés et bienveillants.
-                </p>
-
-                <div class="cnib-about-highlight">
-                    <span class="cnib-hl-num">100%</span>
-                    <span class="cnib-hl-txt">de bienveillance et d'entraide pour une égalité des chances réelle</span>
+            <!-- Étape 02 -->
+            <div class="col-md-4">
+                <div class="step-card-pro">
+                    <div class="step-badge-gradient">02</div>
+                    <i class="bi bi-search-heart step-icon-subtle"></i>
+                    <h5 class="fw-bold text-dark mb-2">Choisissez votre mentor</h5>
+                    <p class="text-muted small mb-0" style="line-height: 1.6;">
+                        Parcourez l'annuaire filtrable par matière et spécialité. Consultez les compétences, disponibilités et avis des mentors.
+                    </p>
                 </div>
+            </div>
 
-                <div class="cnib-about-feats-grid">
-                    <div class="cnib-afeat">
-                        <div class="cnib-afeat-ico cnib-fi-a"><i class="bi bi-mortarboard-fill"></i></div>
-                        <div>
-                            <div class="cnib-afeat-title">Mentors expérimentés</div>
-                            <div class="cnib-afeat-desc">Étudiants avancés partageant leurs astuces et méthodes.</div>
-                        </div>
-                    </div>
-                    <div class="cnib-afeat">
-                        <div class="cnib-afeat-ico cnib-fi-b"><i class="bi bi-lightning-charge-fill"></i></div>
-                        <div>
-                            <div class="cnib-afeat-title">Pratique intensive</div>
-                            <div class="cnib-afeat-desc">Résolution guidée des blocages sur vos devoirs et projets.</div>
-                        </div>
-                    </div>
-                    <div class="cnib-afeat">
-                        <div class="cnib-afeat-ico cnib-fi-c"><i class="bi bi-person-heart"></i></div>
-                        <div>
-                            <div class="cnib-afeat-title">Accompagnement perso.</div>
-                            <div class="cnib-afeat-desc">Un suivi sur mesure adapté à vos besoins et à votre rythme.</div>
-                        </div>
-                    </div>
-                    <div class="cnib-afeat">
-                        <div class="cnib-afeat-ico cnib-fi-d"><i class="bi bi-shield-check"></i></div>
-                        <div>
-                            <div class="cnib-afeat-title">Réseau d'excellence</div>
-                            <div class="cnib-afeat-desc">Opportunités d'échanges, de stages et d'insertion professionnelle.</div>
-                        </div>
-                    </div>
+            <!-- Étape 03 -->
+            <div class="col-md-4">
+                <div class="step-card-pro">
+                    <div class="step-badge-gradient">03</div>
+                    <i class="bi bi-rocket-takeoff step-icon-subtle"></i>
+                    <h5 class="fw-bold text-dark mb-2">Progressez ensemble</h5>
+                    <p class="text-muted small mb-0" style="line-height: 1.6;">
+                        Envoyez votre demande d'accompagnement, échangez directement et planifiez vos sessions de travail en toute sérénité.
+                    </p>
                 </div>
+            </div>
+        </div>
+    </section>
 
-                <a href="{% url 'mentor_list' %}" class="cnib-btn-outline">
-                    Trouver mon mentor dès maintenant &rarr;
+    <!-- 3. SECTION : DOMAINES & MATIÈRES CLÉS -->
+    {% if matieres %}
+    <section class="mb-5 pb-4">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4">
+            <div>
+                <span class="badge rounded-pill bg-primary-subtle text-primary fw-bold px-3 py-2 mb-2" style="font-size: 0.8rem;">
+                    COMPÉTENCES RECHERCHÉES
+                </span>
+                <h2 class="fw-bold text-dark fs-2 mb-1" style="letter-spacing: -0.5px;">Domaines Populaires</h2>
+                <p class="text-muted small mb-0">Découvrez les matières et filières les plus actives sur la plateforme.</p>
+            </div>
+            <a href="{% url 'mentor_list' %}" class="btn btn-sm btn-outline-primary rounded-pill px-3 py-2 fw-bold mt-3 mt-md-0 align-self-start align-self-md-auto">
+                Voir toutes les matières <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+        </div>
+
+        <div class="row g-3">
+            {% for mat in matieres %}
+            <div class="col-6 col-md-4 col-lg-2">
+                <a href="{% url 'mentor_list' %}?matiere={{ mat.id }}" class="matiere-card-home text-center">
+                    <div class="matiere-icon-circle mx-auto">
+                        <i class="bi bi-journal-code"></i>
+                    </div>
+                    <h6 class="fw-bold mb-1" style="font-size: 0.92rem;">{{ mat.nom }}</h6>
+                    <small class="text-muted" style="font-size: 0.75rem;">Voir les mentors &rarr;</small>
                 </a>
             </div>
+            {% endfor %}
         </div>
-    </div>
-</div>
+    </section>
+    {% endif %}
 
-<!-- 4. NOS MENTORS RÉFÉRENTS (Design CNIB .fcard2 avec Banner Image) -->
-<div class="cnib-section-alt" id="mentors">
-    <div class="cnib-wrap">
-        <div class="cnib-section-head">
-            <div class="cnib-eyebrow">Nos mentors référents</div>
-            <h2 class="cnib-section-title">Des accompagnateurs dévoués à votre <span>progression</span></h2>
-            <p class="cnib-section-desc">
-                Découvrez les mentors disponibles prêts à partager leur expertise pour vous faire progresser rapidement.
+    <!-- 4. SECTION : LES MENTORS À LA UNE -->
+    <section class="mb-5 pb-4">
+        <div class="text-center mb-5">
+            <span class="badge rounded-pill bg-primary-subtle text-primary fw-bold px-3 py-2 mb-2" style="font-size: 0.8rem;">
+                ACCOMPAGNEMENT D'EXCELLENCE
+            </span>
+            <h2 class="fw-bold text-dark fs-2 mb-2" style="letter-spacing: -0.5px;">Mentors à la Une</h2>
+            <p class="text-muted mx-auto" style="max-width: 620px; font-size: 0.95rem;">
+                Des étudiants avancés et des professionnels prêts à partager leur expertise pour vous faire progresser.
             </p>
         </div>
 
-        <div class="cnib-form-grid">
-            <!-- Carte Mentor 1 -->
-            <div class="cnib-fcard">
-                <div class="cnib-fcard-img">
-                    <img src="{% static 'img/cnib/cours1.jpg' %}" alt="Développement Web">
-                    <div class="cnib-fcard-overlay"></div>
-                    <div class="cnib-fcard-info">
-                        <span class="cnib-fcard-dur">Informatique</span>
-                        <span class="cnib-fcard-lvl">Python · Django · React</span>
-                    </div>
-                </div>
-                <div class="cnib-fcard-body">
-                    <div class="d-flex align-items-center gap-2 mb-2">
-                        <img src="{% static 'img/avatar_aminata.png' %}" class="cnib-fcard-av" alt="Aminata Diallo">
-                        <div>
-                            <h5 class="cnib-fcard-title mb-0">Aminata Diallo</h5>
-                            <small class="text-muted">Master Génie Logiciel</small>
+        <div class="row g-4">
+            {% if mentors_recents %}
+                {% for mentor in mentors_recents %}
+                <div class="col-md-6 col-lg-3">
+                    <div class="mentor-card-clean d-flex flex-column h-100 p-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="me-3">
+                                {% if mentor.photo %}
+                                    <img src="{{ mentor.photo.url }}" alt="{{ mentor.user.get_full_name }}" class="avatar-round-mockup">
+                                {% else %}
+                                    <div class="rounded-circle d-flex align-items-center justify-content-center text-white fw-bold" style="width: 54px; height: 54px; background: linear-gradient(135deg, var(--fn-blue-hero), var(--fn-blue-primary)); font-size: 1.15rem;">
+                                        {{ mentor.user.first_name|slice:":1" }}{{ mentor.user.last_name|slice:":1" }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-0 text-dark">{{ mentor.user.get_full_name|default:mentor.user.username }}</h6>
+                                <small class="text-primary fw-semibold">{{ mentor.filiere|default:"Mentor Référent" }}</small>
+                            </div>
                         </div>
-                    </div>
-                    <p class="cnib-fcard-desc">
-                        Accompagnement ciblé en programmation web full-stack, architectures logicielles et préparation des examens pratiques.
-                    </p>
-                    <div class="cnib-fcard-foot">
-                        <span class="text-muted small"><i class="bi bi-star-fill text-warning me-1"></i>4.9 (32 avis)</span>
-                        <a href="{% url 'mentor_list' %}?q=Aminata" class="cnib-btn-link">Consulter le profil &rarr;</a>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Carte Mentor 2 -->
-            <div class="cnib-fcard">
-                <div class="cnib-fcard-img">
-                    <img src="{% static 'img/cnib/cours2.jpg' %}" alt="Data Science">
-                    <div class="cnib-fcard-overlay"></div>
-                    <div class="cnib-fcard-info">
-                        <span class="cnib-fcard-dur">Data Science</span>
-                        <span class="cnib-fcard-lvl">Algo · SQL · Machine Learning</span>
-                    </div>
-                </div>
-                <div class="cnib-fcard-body">
-                    <div class="d-flex align-items-center gap-2 mb-2">
-                        <img src="{% static 'img/avatar_koffi.png' %}" class="cnib-fcard-av" alt="Moussa Diop">
-                        <div>
-                            <h5 class="cnib-fcard-title mb-0">Moussa Diop</h5>
-                            <small class="text-muted">Ingénieur Data & IA</small>
+                        <div class="d-flex align-items-center mb-2">
+                            <span class="rating-stars-clean">★★★★★</span>
+                            <span class="rating-score-clean">4.9</span>
+                            <span class="badge bg-success-subtle text-success ms-auto rounded-pill" style="font-size: 0.72rem;">Disponible</span>
                         </div>
-                    </div>
-                    <p class="cnib-fcard-desc">
-                        Pédagogie active sur les structures de données, optimisation d'algorithmes et modélisation de bases de données.
-                    </p>
-                    <div class="cnib-fcard-foot">
-                        <span class="text-muted small"><i class="bi bi-star-fill text-warning me-1"></i>5.0 (45 avis)</span>
-                        <a href="{% url 'mentor_list' %}?q=Moussa" class="cnib-btn-link">Consulter le profil &rarr;</a>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Carte Mentor 3 -->
-            <div class="cnib-fcard">
-                <div class="cnib-fcard-img">
-                    <img src="{% static 'img/cnib/cours3.jpg' %}" alt="Systèmes & Réseaux">
-                    <div class="cnib-fcard-overlay"></div>
-                    <div class="cnib-fcard-info">
-                        <span class="cnib-fcard-dur">Réseaux & Web</span>
-                        <span class="cnib-fcard-lvl">Linux · Sécurité · Systèmes</span>
-                    </div>
-                </div>
-                <div class="cnib-fcard-body">
-                    <div class="d-flex align-items-center gap-2 mb-2">
-                        <img src="{% static 'img/avatar_sophie.png' %}" class="cnib-fcard-av" alt="Awa Sow">
-                        <div>
-                            <h5 class="cnib-fcard-title mb-0">Awa Sow</h5>
-                            <small class="text-muted">Systèmes & Réseaux</small>
+                        <p class="text-muted small flex-grow-1 mb-3" style="line-height: 1.5; font-size: 0.84rem;">
+                            {{ mentor.bio|truncatechars:95|default:"Passionné par le partage de connaissances, je vous accompagne dans vos devoirs et projets." }}
+                        </p>
+
+                        <div class="pt-3 border-top mt-auto">
+                            <a href="{% url 'mentor_list' %}?q={{ mentor.user.first_name }}" class="btn btn-sm btn-outline-primary rounded-pill w-100 fw-bold py-2">
+                                <i class="bi bi-person-check me-1"></i>Voir le profil
+                            </a>
                         </div>
                     </div>
-                    <p class="cnib-fcard-desc">
-                        Aide aux travaux pratiques de réseaux, scripting bash, déploiement sur serveurs Linux et préparation des évaluations.
-                    </p>
-                    <div class="cnib-fcard-foot">
-                        <span class="text-muted small"><i class="bi bi-star-fill text-warning me-1"></i>4.8 (28 avis)</span>
-                        <a href="{% url 'mentor_list' %}?q=Awa" class="cnib-btn-link">Consulter le profil &rarr;</a>
+                </div>
+                {% endfor %}
+            {% else %}
+                <!-- Fallback gracieux si la base n'est pas encore alimentée -->
+                <div class="col-md-4">
+                    <div class="mentor-card-clean d-flex flex-column h-100 p-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <img src="{% static 'img/avatar_aminata.png' %}" alt="Aminata Diallo" class="avatar-round-mockup me-3">
+                            <div>
+                                <h6 class="fw-bold mb-0 text-dark">Aminata Diallo</h6>
+                                <small class="text-primary fw-semibold">Marketing & Data</small>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center mb-2">
+                            <span class="rating-stars-clean">★★★★★</span>
+                            <span class="rating-score-clean">4.9 (32 avis)</span>
+                            <span class="badge bg-success-subtle text-success ms-auto rounded-pill" style="font-size: 0.72rem;">Disponible</span>
+                        </div>
+                        <p class="text-muted small flex-grow-1 mb-3">
+                            Spécialiste en marketing digital et analyse de données, j'aide les étudiants à réussir leurs projets de fin d'études.
+                        </p>
+                        <div class="pt-3 border-top mt-auto">
+                            <a href="{% url 'mentor_list' %}?q=Aminata" class="btn btn-sm btn-outline-primary rounded-pill w-100 fw-bold py-2">
+                                Consulter le profil
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
+                <div class="col-md-4">
+                    <div class="mentor-card-clean d-flex flex-column h-100 p-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <img src="{% static 'img/avatar_koffi.png' %}" alt="Koffi Mensah" class="avatar-round-mockup me-3">
+                            <div>
+                                <h6 class="fw-bold mb-0 text-dark">Koffi Mensah</h6>
+                                <small class="text-primary fw-semibold">Génie Logiciel</small>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center mb-2">
+                            <span class="rating-stars-clean">★★★★★</span>
+                            <span class="rating-score-clean">5.0 (45 avis)</span>
+                            <span class="badge bg-success-subtle text-success ms-auto rounded-pill" style="font-size: 0.72rem;">Disponible</span>
+                        </div>
+                        <p class="text-muted small flex-grow-1 mb-3">
+                            Développeur web et mobile full-stack, je vous accompagne dans vos revues de code et l'apprentissage des frameworks.
+                        </p>
+                        <div class="pt-3 border-top mt-auto">
+                            <a href="{% url 'mentor_list' %}?q=Koffi" class="btn btn-sm btn-outline-primary rounded-pill w-100 fw-bold py-2">
+                                Consulter le profil
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mentor-card-clean d-flex flex-column h-100 p-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <img src="{% static 'img/avatar_sophie.png' %}" alt="Sophie Laurent" class="avatar-round-mockup me-3">
+                            <div>
+                                <h6 class="fw-bold mb-0 text-dark">Sophie Laurent</h6>
+                                <small class="text-primary fw-semibold">Réseaux & Sécurité</small>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center mb-2">
+                            <span class="rating-stars-clean">★★★★★</span>
+                            <span class="rating-score-clean">4.8 (28 avis)</span>
+                            <span class="badge bg-success-subtle text-success ms-auto rounded-pill" style="font-size: 0.72rem;">Disponible</span>
+                        </div>
+                        <p class="text-muted small flex-grow-1 mb-3">
+                            Étudiante en Master Sécurité Informatique, disponible pour vous épauler dans la configuration réseau et les TPs.
+                        </p>
+                        <div class="pt-3 border-top mt-auto">
+                            <a href="{% url 'mentor_list' %}?q=Sophie" class="btn btn-sm btn-outline-primary rounded-pill w-100 fw-bold py-2">
+                                Consulter le profil
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
         </div>
 
-        <div class="text-center mt-4 pt-2">
-            <a href="{% url 'mentor_list' %}" class="cnib-btn-outline">
-                Voir tous les mentors disponibles &rarr;
+        <div class="text-center mt-5">
+            <a href="{% url 'mentor_list' %}" class="btn btn-primary rounded-pill px-4 py-2 fw-bold shadow-sm" style="background-color: var(--fn-blue-primary); border: none;">
+                <i class="bi bi-grid-fill me-2"></i>Explorer tous les mentors
             </a>
         </div>
-    </div>
-</div>
+    </section>
 
-<!-- 5. TÉMOIGNAGES (Design CNIB .testi-grid2 avec Cartes Quotes & Badges Vérifiés) -->
-<div class="cnib-section" id="temoignages">
-    <div class="cnib-wrap">
-        <div class="cnib-section-head">
-            <div class="cnib-eyebrow">Témoignages</div>
-            <h2 class="cnib-section-title">Ils ont choisi <span>Force-Mentor</span></h2>
-            <p class="cnib-section-desc">
-                Découvrez les retours d'expérience de nos étudiants et mentors accompagnés au quotidien.
-            </p>
-        </div>
-
-        <div class="cnib-testi-grid">
-            <div class="cnib-tcard">
-                <div class="cnib-stars">★★★★★</div>
-                <div class="cnib-tcard-quote">
-                    J'étais en grande difficulté sur mes TPs d'algorithmique et de programmation Python. Deux sessions avec mon mentor ont tout débloqué. J'ai validé mon semestre avec brio !
-                </div>
-                <div class="cnib-tcard-sep"></div>
-                <div class="cnib-tcard-author">
-                    <div class="cnib-av">AS</div>
-                    <div>
-                        <div class="cnib-tcard-name">Awa Sow</div>
-                        <div class="cnib-tcard-role">Étudiante en L2 Informatique</div>
-                        <div class="cnib-verified">✓ Étudiante accompagnée</div>
+    <!-- 5. SECTION : POURQUOI CHOISIR NOTRE PLATEFORME (PROPOSITION DE VALEUR) -->
+    <section class="mb-5 pb-4">
+        <div class="value-box-home">
+            <div class="row align-items-center g-4">
+                <div class="col-lg-5">
+                    <span class="badge rounded-pill bg-white text-primary border fw-bold px-3 py-2 mb-2" style="font-size: 0.78rem;">
+                        POURQUOI NOUS CHOISIR ?
+                    </span>
+                    <h3 class="fw-bold text-dark fs-2 mb-3" style="letter-spacing: -0.5px;">Un tremplin pour votre réussite universitaire</h3>
+                    <p class="text-muted small mb-4" style="line-height: 1.65;">
+                        Le mentorat entre pairs est le moyen le plus efficace de surmonter les blocages scolaires, de préparer ses examens et de construire son réseau professionnel.
+                    </p>
+                    <div class="p-3 bg-white rounded-3 border d-flex align-items-center gap-3 shadow-sm">
+                        <i class="bi bi-award-fill fs-2 text-warning"></i>
+                        <div>
+                            <div class="fw-bold text-dark small">Taux de réussite de 98%</div>
+                            <small class="text-muted">Chez les étudiants suivant au moins 3 sessions</small>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="cnib-tcard">
-                <div class="cnib-stars">★★★★★</div>
-                <div class="cnib-tcard-quote">
-                    Devenir mentor sur Force-Mentor m'a permis de consolider mes compétences et de valoriser mon profil auprès des recruteurs. L'interface est intuitive et très utile.
-                </div>
-                <div class="cnib-tcard-sep"></div>
-                <div class="cnib-tcard-author">
-                    <div class="cnib-av">MD</div>
-                    <div>
-                        <div class="cnib-tcard-name">Moussa Diop</div>
-                        <div class="cnib-tcard-role">Mentor Référent · Master Data</div>
-                        <div class="cnib-verified">✓ Mentor certifié</div>
+                <div class="col-lg-7">
+                    <div class="value-item-card">
+                        <div class="value-icon-box">
+                            <i class="bi bi-stopwatch"></i>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold text-dark mb-1">Prise de contact en moins de 3 clics</h6>
+                            <p class="text-muted small mb-0">Recherchez par matière, sélectionnez un profil vérifié et envoyez votre demande instantanément.</p>
+                        </div>
                     </div>
-                </div>
-            </div>
 
-            <div class="cnib-tcard">
-                <div class="cnib-stars">★★★★★</div>
-                <div class="cnib-tcard-quote">
-                    La recherche d'un mentor par matière se fait en moins d'une minute. La bienveillance et l'écoute de la communauté m'ont redonné confiance dans mes études.
-                </div>
-                <div class="cnib-tcard-sep"></div>
-                <div class="cnib-tcard-author">
-                    <div class="cnib-av">IN</div>
-                    <div>
-                        <div class="cnib-tcard-name">Ibrahima Ndiaye</div>
-                        <div class="cnib-tcard-role">Étudiant en L3 Réseaux & Télécoms</div>
-                        <div class="cnib-verified">✓ Étudiant accompagné</div>
+                    <div class="value-item-card">
+                        <div class="value-icon-box">
+                            <i class="bi bi-mortarboard"></i>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold text-dark mb-1">Pédagogie bienveillante et adaptée</h6>
+                            <p class="text-muted small mb-0">Des mentors passés par les mêmes cours, comprenant vos défis et expliquant avec clarté.</p>
+                        </div>
+                    </div>
+
+                    <div class="value-item-card mb-0">
+                        <div class="value-icon-box">
+                            <i class="bi bi-shield-check"></i>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold text-dark mb-1">Plateforme 100% gratuite et sécurisée</h6>
+                            <p class="text-muted small mb-0">Une initiative solidaire pour l'égalité des chances et la réussite de tous les étudiants.</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
+    </section>
 
-<!-- 6. POURQUOI FORCE-MENTOR (Design CNIB .why-grid2 avec Visual Card Gradient) -->
-<div class="cnib-section-alt" id="pourquoi">
-    <div class="cnib-wrap">
-        <div class="cnib-why-grid">
-            <div>
-                <div class="cnib-label-tag">Pourquoi Force-Mentor ?</div>
-                <h2 class="cnib-section-title text-start mb-2">
-                    Un accompagnement de qualité pour une <span>réussite durable</span>
+    <!-- 6. SECTION : CHIFFRES CLÉS & IMPACT -->
+    <section class="mb-5 pb-2">
+        <div class="stats-banner-home">
+            <div class="row g-4 text-center justify-content-center">
+                <div class="col-6 col-md-3">
+                    <div class="stat-item-home">
+                        <div class="stat-num-home">{{ total_mentors|default:25 }}+</div>
+                        <div class="stat-label-home">Mentors Actifs</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-item-home">
+                        <div class="stat-num-home">{{ total_matieres|default:12 }}+</div>
+                        <div class="stat-label-home">Domaines Clés</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-item-home">
+                        <div class="stat-num-home">{{ total_demandes|default:87 }}+</div>
+                        <div class="stat-label-home">Sessions Réalisées</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-item-home">
+                        <div class="stat-num-home">98%</div>
+                        <div class="stat-label-home">Satisfaction</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. SECTION : BANNIÈRE CALL TO ACTION (CTA) -->
+    <section class="mb-4">
+        <div class="cta-banner-home text-center">
+            <div class="cta-banner-glow cta-banner-glow-1"></div>
+            <div class="cta-banner-glow cta-banner-glow-2"></div>
+            
+            <div class="position-relative" style="z-index: 2;">
+                <span class="badge rounded-pill bg-white text-primary fw-bold px-3 py-2 mb-3" style="font-size: 0.8rem;">
+                    REJOIGNEZ LA COMMUNAUTÉ
+                </span>
+                <h2 class="fw-bold text-white fs-1 mb-3" style="letter-spacing: -0.5px;">
+                    Prêt à faire décoller vos compétences ?
                 </h2>
-                <p class="cnib-about-desc mb-4">
-                    Nous croyons que chaque étudiant mérite d'avoir accès au savoir et aux conseils indispensables pour progresser sereinement.
+                <p class="text-white-50 mx-auto mb-4" style="max-width: 620px; font-size: 1.05rem; line-height: 1.6;">
+                    Trouvez un mentor pour vous accompagner dans vos projets ou partagez votre savoir avec des étudiants motivés.
                 </p>
-
-                <div class="cnib-why-items">
-                    <div class="cnib-witem">
-                        <div class="cnib-wico cnib-wico-a"><i class="bi bi-patch-check-fill"></i></div>
-                        <div>
-                            <div class="cnib-wh">Mentors qualifiés & vérifiés</div>
-                            <div class="cnib-wd">Des étudiants avancés et des professionnels sélectionnés rigoureusement pour leur pédagogie.</div>
-                        </div>
-                    </div>
-                    <div class="cnib-witem">
-                        <div class="cnib-wico cnib-wico-b"><i class="bi bi-clock-history"></i></div>
-                        <div>
-                            <div class="cnib-wh">Flexibilité totale d'apprentissage</div>
-                            <div class="cnib-wd">Organisez vos séances selon votre rythme universitaire, en ligne ou directement sur votre campus.</div>
-                        </div>
-                    </div>
-                    <div class="cnib-witem">
-                        <div class="cnib-wico cnib-wico-c"><i class="bi bi-shield-heart-fill"></i></div>
-                        <div>
-                            <div class="cnib-wh">100% Gratuit & solidaire</div>
-                            <div class="cnib-wd">Aucun frais caché ni abonnement. Une plateforme libre pour l'égalité des chances académiques.</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Bloc Visuel Sombre CNIB avec Note & Stats -->
-            <div class="cnib-why-visual">
-                <div class="cnib-rating-big">4.9</div>
-                <div class="cnib-rating-stars">★★★★★</div>
-                <div class="cnib-rating-sub">Note de satisfaction · Communauté étudiante active</div>
-                <div class="cnib-visual-sep"></div>
-                <p class="cnib-visual-desc">
-                    Une dynamique d'entraide concrète où l'apprentissage par les pairs transforme les doutes en véritables réussites académiques.
-                </p>
-                <div class="cnib-why-stats">
-                    <div class="cnib-stat-card">
-                        <div class="cnib-wsc-val">{{ total_mentors|default:25 }}+</div>
-                        <div class="cnib-wsc-lbl">Mentors Actifs</div>
-                    </div>
-                    <div class="cnib-stat-card">
-                        <div class="cnib-wsc-val">{{ total_matieres|default:12 }}+</div>
-                        <div class="cnib-wsc-lbl">Matières Enseignées</div>
-                    </div>
-                    <div class="cnib-stat-card">
-                        <div class="cnib-wsc-val">{{ total_demandes|default:87 }}+</div>
-                        <div class="cnib-wsc-lbl">Sessions Réalisées</div>
-                    </div>
-                    <div class="cnib-stat-card">
-                        <div class="cnib-wsc-val">98%</div>
-                        <div class="cnib-wsc-lbl">Taux de Satisfaction</div>
-                    </div>
+                <div class="d-flex flex-column flex-sm-row justify-content-center gap-3">
+                    <a href="{% url 'mentor_list' %}" class="btn-cta-white">
+                        <i class="bi bi-search me-2"></i>Trouver un mentor
+                    </a>
+                    <a href="{% url 'register' %}" class="btn-cta-ghost">
+                        <i class="bi bi-person-plus me-2"></i>Créer mon profil
+                    </a>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 </div>
-
-<!-- 7. CTA BANNER (Design CNIB .cta-banner) -->
-<div class="cnib-wrap my-5">
-    <div class="cnib-cta-banner">
-        <h2 class="cnib-cta-title">Prêt à accélérer votre parcours académique ?</h2>
-        <p class="cnib-cta-desc">
-            Rejoignez des centaines d'étudiants qui ont choisi Force-Mentor pour trouver un accompagnateur dévoué ou partager leur savoir.
-        </p>
-        <div class="cnib-cta-btns">
-            <a href="{% url 'mentor_list' %}" class="cnib-cta-btn-primary">
-                <i class="bi bi-search me-1"></i>Trouver un mentor &rarr;
-            </a>
-            <a href="{% url 'register' %}" class="cnib-cta-btn-outline">
-                <i class="bi bi-person-plus me-1"></i>Créer mon profil
-            </a>
-        </div>
-    </div>
-</div>
-
-<!-- 8. NEWSLETTER (Design CNIB .nl-section) -->
-<div class="cnib-nl-section">
-    <div class="cnib-wrap">
-        <h3 class="cnib-nl-title">Restez informé des prochains ateliers</h3>
-        <p class="cnib-nl-desc">Recevez les annonces de sessions collectives, nouvelles matières et opportunités de mentorat.</p>
-        <form class="cnib-nl-row" onsubmit="event.preventDefault(); alert('Merci pour votre inscription à la newsletter !');">
-            <input class="cnib-nl-inp" type="email" placeholder="Votre adresse email universitaire" required>
-            <button class="cnib-nl-btn" type="submit">S'abonner</button>
-        </form>
-    </div>
-</div>
-
 {% endblock %}
