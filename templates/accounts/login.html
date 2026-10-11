@@ -1,44 +1,109 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %}Connexion — Force Mentor{% endblock %}
+{% block title %}Connexion — Apprendre{% endblock %}
 
 {% block content %}
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-md-5">
-            <div class="card shadow-sm p-4 bg-white border">
-                <div class="text-center mb-4">
-                    <div class="rounded-circle d-inline-flex p-3 mb-2" style="background-color: var(--fn-blue-subtle); color: var(--fn-blue-primary);">
-                        <i class="bi bi-person-lock fs-2"></i>
-                    </div>
-                    <h3 class="fw-bold mt-2 text-dark">Connexion</h3>
-                    <p class="text-muted small">Accédez à votre espace Force Mentor</p>
-                </div>
-
-                <form method="post">
-                    {% csrf_token %}
-                    <div class="mb-3">
-                        <label for="id_username" class="form-label fw-semibold">Nom d'utilisateur</label>
-                        <input type="text" name="username" class="form-control" id="id_username" required autofocus>
+<div class="auth-wrapper py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5 col-xl-4">
+                <div class="auth-card">
+                    <!-- En-tête avec Emblème seul -->
+                    <div class="text-center mb-4">
+                        <img src="{% static 'img/logo_emblem.png' %}" alt="Logo Apprendre" height="48" class="mb-3">
+                        <h3 class="fw-bold text-dark mb-1" style="letter-spacing: -0.5px;">Bon retour parmi nous</h3>
+                        <p class="text-muted small">Connectez-vous pour accéder à vos sessions de mentorat</p>
                     </div>
 
-                    <div class="mb-4">
-                        <label for="id_password" class="form-label fw-semibold">Mot de passe</label>
-                        <input type="password" name="password" class="form-control" id="id_password" required>
+                    <!-- Raccourcis Comptes Démo (idéal pour la présentation) -->
+                    <div class="quick-fill-box">
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                            <span class="small fw-bold text-secondary">
+                                <i class="bi bi-lightning-charge-fill text-warning me-1"></i>Accès rapide (Démo) :
+                            </span>
+                        </div>
+                        <div class="d-flex flex-wrap gap-1">
+                            <button type="button" class="quick-demo-btn" onclick="fillCredentials('moussa_diop', 'passer123')">
+                                <i class="bi bi-person-check me-1"></i>Mentor (Moussa)
+                            </button>
+                            <button type="button" class="quick-demo-btn" onclick="fillCredentials('fatou_ndiaye', 'passer123')">
+                                <i class="bi bi-mortarboard me-1"></i>Mentorée (Fatou)
+                            </button>
+                            <button type="button" class="quick-demo-btn" onclick="fillCredentials('admin', 'admin123')">
+                                <i class="bi bi-shield-lock me-1"></i>Admin
+                            </button>
+                        </div>
                     </div>
 
-                    <button type="submit" class="btn btn-fn-primary w-100 py-2 fw-semibold rounded-pill">
-                        <i class="bi bi-box-arrow-in-right me-2"></i>Se connecter
-                    </button>
-                </form>
+                    <!-- Formulaire de Connexion -->
+                    <form method="post" action="{% url 'login' %}">
+                        {% csrf_token %}
 
-                <div class="text-center mt-4 border-top pt-3">
-                    <p class="small text-muted mb-0">Pas encore de compte ? 
-                        <a href="{% url 'register' %}" class="fw-bold text-decoration-none" style="color: var(--fn-blue-primary);">Créer un compte</a>
-                    </p>
+                        <!-- Champ Identifiant -->
+                        <div class="mb-3">
+                            <label for="id_username" class="form-label small fw-bold text-dark mb-1">Nom d'utilisateur</label>
+                            <div class="input-group auth-input-group">
+                                <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                <input type="text" name="username" class="form-control" id="id_username" placeholder="Votre nom d'utilisateur" required autofocus>
+                            </div>
+                        </div>
+
+                        <!-- Champ Mot de passe avec toggle visibilité -->
+                        <div class="mb-4">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <label for="id_password" class="form-label small fw-bold text-dark mb-0">Mot de passe</label>
+                            </div>
+                            <div class="input-group auth-input-group">
+                                <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                                <input type="password" name="password" class="form-control" id="id_password" placeholder="Votre mot de passe" required>
+                                <button type="button" class="btn btn-link text-muted text-decoration-none pe-3" onclick="togglePasswordVisibility()" title="Afficher/Masquer">
+                                    <i class="bi bi-eye" id="toggleIcon"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Bouton Connexion -->
+                        <button type="submit" class="btn btn-fn-primary w-100 py-2 fw-semibold rounded-pill mb-3">
+                            <i class="bi bi-box-arrow-in-right me-2"></i>Se connecter
+                        </button>
+                    </form>
+
+                    <!-- Lien d'inscription -->
+                    <div class="text-center pt-3 border-top">
+                        <p class="small text-muted mb-0">
+                            Pas encore de compte ? 
+                            <a href="{% url 'register' %}" class="fw-bold text-decoration-none" style="color: var(--fn-blue-primary);">
+                                Créer un profil gratuitement
+                            </a>
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    // Autofill démo
+    function fillCredentials(username, password) {
+        document.getElementById('id_username').value = username;
+        document.getElementById('id_password').value = password;
+    }
+
+    // Toggle mot de passe
+    function togglePasswordVisibility() {
+        const input = document.getElementById('id_password');
+        const icon = document.getElementById('toggleIcon');
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.classList.remove('bi-eye');
+            icon.classList.add('bi-eye-slash');
+        } else {
+            input.type = 'password';
+            icon.classList.remove('bi-eye-slash');
+            icon.classList.add('bi-eye');
+        }
+    }
+</script>
 {% endblock %}

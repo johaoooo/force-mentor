@@ -1,94 +1,140 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %}Inscription — Force Mentor{% endblock %}
+{% block title %}Inscription — Apprendre{% endblock %}
 
 {% block content %}
-<div class="container py-4">
+<div class="container py-5">
     <div class="row justify-content-center">
-        <div class="col-md-7">
-            <div class="card shadow-sm p-4 bg-white border">
+        <div class="col-md-9 col-lg-8 col-xl-7">
+            <div class="auth-card">
+                <!-- En-tête avec Emblème seul -->
                 <div class="text-center mb-4">
-                    <div class="rounded-circle d-inline-flex p-3 mb-2" style="background-color: var(--fn-blue-subtle); color: var(--fn-blue-primary);">
-                        <i class="bi bi-person-plus-fill fs-2"></i>
-                    </div>
-                    <h3 class="fw-bold mt-2 text-dark">Rejoindre Force Mentor</h3>
-                    <p class="text-muted small">Créez votre profil d'étudiant mentoré ou accompagnateur</p>
+                    <img src="{% static 'img/logo_emblem.png' %}" alt="Logo Apprendre" height="48" class="mb-3">
+                    <h3 class="fw-bold text-dark mb-1" style="letter-spacing: -0.5px;">Rejoindre Apprendre</h3>
+                    <p class="text-muted small">Créez votre profil pour progresser ou accompagner d'autres étudiants</p>
                 </div>
 
-                <form method="post">
+                <form method="post" action="{% url 'register' %}">
                     {% csrf_token %}
 
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label fw-semibold">Prénom *</label>
-                            {{ form.first_name }}
-                            {% if form.first_name.errors %}<div class="text-danger small">{{ form.first_name.errors }}</div>{% endif %}
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label fw-semibold">Nom *</label>
-                            {{ form.last_name }}
-                            {% if form.last_name.errors %}<div class="text-danger small">{{ form.last_name.errors }}</div>{% endif %}
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label fw-semibold">Nom d'utilisateur *</label>
-                            {{ form.username }}
-                            {% if form.username.errors %}<div class="text-danger small">{{ form.username.errors }}</div>{% endif %}
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label fw-semibold">Adresse Email *</label>
-                            {{ form.email }}
-                            {% if form.email.errors %}<div class="text-danger small">{{ form.email.errors }}</div>{% endif %}
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label fw-semibold">Mot de passe *</label>
-                            {{ form.password1 }}
-                            {% if form.password1.errors %}<div class="text-danger small">{{ form.password1.errors }}</div>{% endif %}
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label fw-semibold">Confirmation mot de passe *</label>
-                            {{ form.password2 }}
-                            {% if form.password2.errors %}<div class="text-danger small">{{ form.password2.errors }}</div>{% endif %}
-                        </div>
-                    </div>
-
-                    <hr class="my-3">
-                    <h5 class="fw-bold mb-3 text-dark"><i class="bi bi-mortarboard text-primary me-2"></i>Informations d'Étudiant</h5>
-
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label fw-semibold">Votre rôle principal *</label>
-                            {{ form.role }}
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label fw-semibold">Niveau d'études *</label>
-                            {{ form.niveau }}
-                        </div>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">Filière / Spécialité</label>
-                        {{ form.filiere }}
-                    </div>
-
+                    <!-- SECTION 1 : Identifiants & Connexion -->
                     <div class="mb-4">
-                        <label class="form-label fw-semibold">Présentation / Objectifs</label>
-                        {{ form.bio }}
+                        <div class="d-flex align-items-center gap-2 mb-3">
+                            <span class="badge bg-primary rounded-circle" style="width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.75rem;">1</span>
+                            <h6 class="fw-bold text-dark mb-0">Identifiants personnels</h6>
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-dark mb-1">Prénom *</label>
+                                <div class="input-group auth-input-group">
+                                    <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                    <input type="text" name="first_name" value="{{ form.first_name.value|default:'' }}" class="form-control" placeholder="Ex: Fatou" required>
+                                </div>
+                                {% if form.first_name.errors %}<div class="text-danger small mt-1">{{ form.first_name.errors }}</div>{% endif %}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-dark mb-1">Nom *</label>
+                                <div class="input-group auth-input-group">
+                                    <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                    <input type="text" name="last_name" value="{{ form.last_name.value|default:'' }}" class="form-control" placeholder="Ex: Ndiaye" required>
+                                </div>
+                                {% if form.last_name.errors %}<div class="text-danger small mt-1">{{ form.last_name.errors }}</div>{% endif %}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-dark mb-1">Nom d'utilisateur *</label>
+                                <div class="input-group auth-input-group">
+                                    <span class="input-group-text"><i class="bi bi-at"></i></span>
+                                    <input type="text" name="username" value="{{ form.username.value|default:'' }}" class="form-control" placeholder="identifiant_unique" required>
+                                </div>
+                                {% if form.username.errors %}<div class="text-danger small mt-1">{{ form.username.errors }}</div>{% endif %}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-dark mb-1">Adresse Email *</label>
+                                <div class="input-group auth-input-group">
+                                    <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                    <input type="email" name="email" value="{{ form.email.value|default:'' }}" class="form-control" placeholder="etudiant@domaine.sn" required>
+                                </div>
+                                {% if form.email.errors %}<div class="text-danger small mt-1">{{ form.email.errors }}</div>{% endif %}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-dark mb-1">Mot de passe *</label>
+                                <div class="input-group auth-input-group">
+                                    <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                                    <input type="password" name="password1" class="form-control" placeholder="••••••••" required>
+                                </div>
+                                {% if form.password1.errors %}<div class="text-danger small mt-1">{{ form.password1.errors }}</div>{% endif %}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-dark mb-1">Confirmation mot de passe *</label>
+                                <div class="input-group auth-input-group">
+                                    <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                                    <input type="password" name="password2" class="form-control" placeholder="••••••••" required>
+                                </div>
+                                {% if form.password2.errors %}<div class="text-danger small mt-1">{{ form.password2.errors }}</div>{% endif %}
+                            </div>
+                        </div>
                     </div>
 
-                    <button type="submit" class="btn btn-fn-primary w-100 py-2 fw-bold rounded-pill">
-                        <i class="bi bi-check-circle me-2"></i>Créer mon compte
+                    <hr class="my-4 text-muted opacity-25">
+
+                    <!-- SECTION 2 : Profil Étudiant & Rôle -->
+                    <div class="mb-4">
+                        <div class="d-flex align-items-center gap-2 mb-3">
+                            <span class="badge bg-primary rounded-circle" style="width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.75rem;">2</span>
+                            <h6 class="fw-bold text-dark mb-0">Rôle & Parcours d'études</h6>
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-dark mb-1">Votre rôle principal *</label>
+                                <div class="auth-input-group p-1">
+                                    {{ form.role }}
+                                </div>
+                                <small class="text-muted" style="font-size: 0.78rem;">Vous pourrez modifier votre rôle à tout moment.</small>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-dark mb-1">Niveau d'études *</label>
+                                <div class="auth-input-group p-1">
+                                    {{ form.niveau }}
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label small fw-bold text-dark mb-1">Filière / Spécialité</label>
+                                <div class="input-group auth-input-group">
+                                    <span class="input-group-text"><i class="bi bi-mortarboard"></i></span>
+                                    <input type="text" name="filiere" value="{{ form.filiere.value|default:'' }}" class="form-control" placeholder="Ex: Développement Logiciel, Réseaux, Web, Tronc commun...">
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label small fw-bold text-dark mb-1">Petite présentation / Objectifs</label>
+                                <textarea name="bio" class="form-control auth-input-group p-3" rows="3" placeholder="Présentez brièvement vos attentes ou vos points forts...">{{ form.bio.value|default:'' }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bouton Inscription -->
+                    <button type="submit" class="btn btn-fn-primary w-100 py-3 fw-bold rounded-pill mb-3">
+                        <i class="bi bi-check-circle-fill me-2"></i>Créer mon compte et commencer
                     </button>
                 </form>
 
-                <div class="text-center mt-3 border-top pt-3">
-                    <p class="small text-muted mb-0">Déjà inscrit ? 
-                        <a href="{% url 'login' %}" class="fw-bold text-decoration-none" style="color: var(--fn-blue-primary);">Se connecter</a>
+                <!-- Lien de connexion -->
+                <div class="text-center pt-3 border-top">
+                    <p class="small text-muted mb-0">
+                        Déjà inscrit ? 
+                        <a href="{% url 'login' %}" class="fw-bold text-decoration-none" style="color: var(--fn-blue-primary);">
+                            Se connecter à mon compte
+                        </a>
                     </p>
                 </div>
             </div>
@@ -98,8 +144,8 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        document.querySelectorAll("form input, form select, form textarea").forEach(function(el) {
-            el.classList.add("form-control");
+        document.querySelectorAll("select").forEach(function(el) {
+            el.classList.add("form-select", "border-0", "bg-transparent");
         });
     });
 </script>
