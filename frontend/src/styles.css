@@ -80,23 +80,45 @@ a {
 
 .navbar__links {
   display: flex;
-  gap: 28px;
-  font-size: 15.5px;
-  font-weight: 600;
+  gap: 8px;
+  font-size: 14.5px;
+  font-weight: 500;
   flex: 1;
   align-items: center;
 }
 
 .navbar__links a {
   color: var(--muted);
-  transition: color 0.15s ease;
-  padding: 6px 0;
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
 }
 
-.navbar__links a:hover,
+.navbar__links a:hover {
+  color: var(--blue);
+  background: rgba(43, 114, 187, 0.05);
+}
+
 .navbar__links a.active {
   color: var(--blue);
-  border-bottom: 2px solid var(--blue);
+  background: #eff6ff;
+  box-shadow: inset 0 0 0 1px rgba(43, 114, 187, 0.16);
+  font-weight: 600;
+}
+
+.navbar__links a.active::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--blue);
+  margin-right: 8px;
+  box-shadow: 0 0 6px rgba(43, 114, 187, 0.35);
 }
 
 .navbar__actions {
