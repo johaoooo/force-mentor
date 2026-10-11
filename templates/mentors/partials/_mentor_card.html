@@ -15,4 +15,13 @@
     <span>{{ mentor.note }} ({{ mentor.nb_avis }} avis)</span>
   </div>
   <p>{{ mentor.bio }}</p>
+  <div class="mentor__actions" style="margin-top: 14px; display: flex; gap: 8px;">
+    {% if mentor.profile %}
+      <a href="{% url 'mentor_detail' mentor.profile.id %}" class="btn btn--outline" style="flex: 1; justify-content: center; font-size: 12px; padding: 7px 10px;">Détails</a>
+      <a href="{% url 'create_request' mentor.profile.id %}" class="btn btn--green" style="flex: 1; justify-content: center; font-size: 12px; padding: 7px 10px;">Solliciter</a>
+    {% else %}
+      <a href="{% url 'mentors:list' %}?q={{ mentor.nom }}" class="btn btn--outline" style="width: 100%; justify-content: center; font-size: 12px;">En savoir plus</a>
+    {% endif %}
+  </div>
 </article>
+

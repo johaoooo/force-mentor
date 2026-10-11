@@ -23,9 +23,21 @@ def home(request):
 
 def mentor_list(request):
     q = request.GET.get("q", "").strip()
+    domaine_filter = request.GET.get("domaine", "").strip()
     mentors = Mentor.objects.filter(actif=True)
     if q:
         mentors = mentors.filter(
             Q(nom__icontains=q) | Q(domaine__icontains=q) | Q(bio__icontains=q)
         )
-    return render(request, "mentors/list.html", {"mentors": mentors, "q": q})
+    if domaine_filter:
+        mentors = mentors.filter(domaine__iexact=domaine_filter)
+
+    domaines = Mentor.objects.filter(actif=True).values_list("domaine", flat=True).distinct()
+    return render(request, "mentors/list.html", {
+        "mentors": mentors,
+        "q": q,
+        "domaine_filter": domaine_filter,
+        "domaines": domaines,
+        "total_count": mentors.count(),
+    })
+

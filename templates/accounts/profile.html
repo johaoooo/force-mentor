@@ -3,91 +3,113 @@
 {% block title %}Mon Profil — Force Mentor{% endblock %}
 
 {% block content %}
-<div class="container py-4">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow-sm p-4">
-                <div class="d-flex align-items-center mb-4 pb-3 border-bottom">
-                    <div class="bg-primary text-white rounded-circle p-3 me-3">
-                        <i class="bi bi-person-badge fs-2"></i>
-                    </div>
-                    <div>
-                        <h3 class="fw-bold mb-0">{{ user.get_full_name|default:user.username }}</h3>
-                        <span class="badge bg-secondary">{{ profile.get_role_display }}</span>
-                        <span class="badge bg-info text-dark">{{ profile.get_niveau_display }}</span>
-                    </div>
+<div class="container py-4" style="max-width: 760px; margin: 30px auto;">
+    <div class="card" style="background:#fff; border: 1px solid var(--line); border-radius: 12px; padding: 32px; box-shadow: 0 4px 12px rgba(15,27,61,0.04);">
+        <!-- En-tête profil -->
+        <div style="display: flex; align-items: center; gap: 18px; padding-bottom: 22px; border-bottom: 1px solid var(--line); margin-bottom: 24px;">
+            <div class="avatar avatar--initials" style="width: 64px; height: 64px; font-size: 22px; border-radius: 50%;">
+                {{ user.first_name|slice:":1"|upper|default:"U" }}{{ user.last_name|slice:":1"|upper|default:"" }}
+            </div>
+            <div>
+                <h1 style="font-size: 22px; font-weight: 800; color: var(--ink); margin: 0 0 4px;">{{ user.get_full_name|default:user.username }}</h1>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <span style="font-size: 11.5px; font-weight: 700; color: var(--blue); background: #eaf1ff; padding: 3px 10px; border-radius: 20px;">
+                        {{ profile.get_role_display }}
+                    </span>
+                    <span style="font-size: 11.5px; font-weight: 600; color: var(--muted); background: var(--bg); border: 1px solid var(--line); padding: 3px 10px; border-radius: 20px;">
+                        {{ profile.get_niveau_display }}
+                    </span>
                 </div>
-
-                <form method="post">
-                    {% csrf_token %}
-
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label fw-semibold">Prénom</label>
-                            {{ form.first_name }}
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label fw-semibold">Nom</label>
-                            {{ form.last_name }}
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label fw-semibold">Adresse Email</label>
-                            {{ form.email }}
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label fw-semibold">Téléphone / WhatsApp</label>
-                            {{ form.telephone }}
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label fw-semibold">Rôle sur la plateforme</label>
-                            {{ form.role }}
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label fw-semibold">Niveau d'études</label>
-                            {{ form.niveau }}
-                        </div>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">Filière / Spécialité</label>
-                        {{ form.filiere }}
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">Biographie / Présentation</label>
-                        {{ form.bio }}
-                    </div>
-
-                    <div class="form-check form-switch mb-4">
-                        {{ form.est_disponible }}
-                        <label class="form-check-label fw-semibold" for="{{ form.est_disponible.id_for_label }}">
-                            Je suis disponible pour être sollicité(e) en tant que mentor
-                        </label>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary fw-semibold px-4 btn-rounded">
-                        <i class="bi bi-floppy me-2"></i>Enregistrer les modifications
-                    </button>
-                </form>
             </div>
         </div>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 18px;">
+                <div>
+                    <label style="display: block; font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 6px;">Prénom</label>
+                    {{ form.first_name }}
+                </div>
+                <div>
+                    <label style="display: block; font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 6px;">Nom</label>
+                    {{ form.last_name }}
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 18px;">
+                <div>
+                    <label style="display: block; font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 6px;">Adresse Email</label>
+                    {{ form.email }}
+                </div>
+                <div>
+                    <label style="display: block; font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 6px;">Téléphone / WhatsApp</label>
+                    {{ form.telephone }}
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 18px;">
+                <div>
+                    <label style="display: block; font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 6px;">Rôle</label>
+                    {{ form.role }}
+                </div>
+                <div>
+                    <label style="display: block; font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 6px;">Niveau d'études</label>
+                    {{ form.niveau }}
+                </div>
+            </div>
+
+            <div style="margin-bottom: 18px;">
+                <label style="display: block; font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 6px;">Filière / Spécialité</label>
+                {{ form.filiere }}
+            </div>
+
+            <div style="margin-bottom: 22px;">
+                <label style="display: block; font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 6px;">Biographie / Présentation</label>
+                {{ form.bio }}
+            </div>
+
+            <div style="background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; margin-bottom: 24px; display: flex; align-items: center; gap: 12px;">
+                {{ form.est_disponible }}
+                <label for="{{ form.est_disponible.id_for_label }}" style="font-size: 13.5px; font-weight: 600; color: var(--ink); cursor: pointer; margin: 0;">
+                    Je suis disponible pour être sollicité(e) en tant que mentor
+                </label>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 20px; border-top: 1px solid var(--line);">
+                <a href="{% url 'dashboard' %}" class="btn btn--outline">Retour au tableau de bord</a>
+                <button type="submit" class="btn btn--primary" style="padding: 10px 24px;">
+                    <i class="bi bi-floppy" style="margin-right: 6px;"></i> Enregistrer les modifications
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         document.querySelectorAll("form input[type=text], form input[type=email], form select, form textarea").forEach(function(el) {
-            el.classList.add("form-control");
+            el.style.width = "100%";
+            el.style.padding = "9px 12px";
+            el.style.borderRadius = "8px";
+            el.style.border = "1.5px solid var(--line)";
+            el.style.fontFamily = "inherit";
+            el.style.fontSize = "13.5px";
+            el.style.color = "var(--ink)";
+            el.style.boxSizing = "border-box";
+            el.style.outline = "none";
+            el.addEventListener("focus", function() {
+                el.style.borderColor = "var(--blue)";
+            });
+            el.addEventListener("blur", function() {
+                el.style.borderColor = "var(--line)";
+            });
         });
-        const switchEl = document.querySelector("input[type=checkbox]");
-        if (switchEl) {
-            switchEl.classList.add("form-check-input");
+        const chk = document.querySelector("input[type=checkbox]");
+        if (chk) {
+            chk.style.width = "18px";
+            chk.style.height = "18px";
+            chk.style.cursor = "pointer";
         }
     });
 </script>

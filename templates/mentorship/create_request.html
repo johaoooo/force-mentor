@@ -3,49 +3,79 @@
 {% block title %}Demande de mentorat — Force Mentor{% endblock %}
 
 {% block content %}
-<div class="container py-4">
-    <div class="row justify-content-center">
-        <div class="col-md-7">
-            <div class="card shadow-sm p-4 bg-white border">
-                <div class="text-center mb-4">
-                    <div class="rounded-circle d-inline-flex p-3 mb-2" style="background-color: var(--fn-blue-subtle); color: var(--fn-blue-primary);">
-                        <i class="bi bi-send-check-fill fs-2"></i>
-                    </div>
-                    <h3 class="fw-bold mt-2 text-dark">Solliciter un mentor</h3>
-                    <p class="text-muted small">Vous envoyez une demande à <strong>{{ mentor.user.get_full_name|default:mentor.user.username }}</strong></p>
-                </div>
-
-                <div class="alert alert-light border d-flex align-items-center mb-4">
-                    <i class="bi bi-info-circle-fill text-primary fs-4 me-3"></i>
-                    <div class="small text-secondary">
-                        Expliquez précisément votre besoin pour permettre au mentor d'adapter au mieux son accompagnement.
-                    </div>
-                </div>
-
-                <form method="post">
-                    {% csrf_token %}
-
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">Matière / Domaine concerné *</label>
-                        {{ form.matiere }}
-                        {% if form.matiere.errors %}<div class="text-danger small">{{ form.matiere.errors }}</div>{% endif %}
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="form-label fw-semibold">Votre message au mentor *</label>
-                        {{ form.message }}
-                        {% if form.message.errors %}<div class="text-danger small">{{ form.message.errors }}</div>{% endif %}
-                    </div>
-
-                    <div class="d-flex justify-content-between align-items-center pt-2 border-top">
-                        <a href="{% url 'mentor_detail' mentor.id %}" class="btn btn-outline-secondary rounded-pill">Annuler</a>
-                        <button type="submit" class="btn btn-fn-primary px-4 rounded-pill">
-                            <i class="bi bi-send me-2"></i>Envoyer ma demande
-                        </button>
-                    </div>
-                </form>
+<div class="container py-4" style="max-width: 680px; margin: 30px auto;">
+    <div class="card" style="background:#fff; border: 1px solid var(--line); border-radius: 12px; padding: 32px; box-shadow: 0 4px 12px rgba(15,27,61,0.04);">
+        <div style="text-align: center; margin-bottom: 24px;">
+            <div style="width: 58px; height: 58px; background: #eaf1ff; color: var(--blue); border-radius: 50%; display: inline-grid; place-items: center; font-size: 24px; margin-bottom: 12px;">
+                <i class="bi bi-send-check-fill"></i>
             </div>
+            <h2 style="font-size: 22px; font-weight: 800; color: var(--ink); margin: 0 0 6px;">Solliciter un mentor</h2>
+            <p style="color: var(--muted); font-size: 14px; margin: 0;">
+                Vous sollicitez un accompagnement auprès de <strong>{{ mentor.user.get_full_name|default:mentor.user.username }}</strong>
+            </p>
         </div>
+
+        <div style="background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; margin-bottom: 24px; display: flex; align-items: center; gap: 12px;">
+            <i class="bi bi-info-circle-fill" style="color: var(--blue); font-size: 20px; flex: none;"></i>
+            <span style="color: var(--muted); font-size: 13.5px; line-height: 1.5;">
+                Précisez la matière et vos objectifs pour que le mentor puisse vous répondre efficacement.
+            </span>
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; font-size: 13.5px; font-weight: 600; color: var(--ink); margin-bottom: 8px;">
+                    Matière / Domaine concerné *
+                </label>
+                {{ form.matiere }}
+                {% if form.matiere.errors %}
+                    <div style="color: #dc2626; font-size: 12px; margin-top: 4px;">{{ form.matiere.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div style="margin-bottom: 24px;">
+                <label style="display: block; font-size: 13.5px; font-weight: 600; color: var(--ink); margin-bottom: 8px;">
+                    Votre message au mentor *
+                </label>
+                {{ form.message }}
+                {% if form.message.errors %}
+                    <div style="color: #dc2626; font-size: 12px; margin-top: 4px;">{{ form.message.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 20px; border-top: 1px solid var(--line);">
+                <a href="{% url 'mentor_detail' mentor.id %}" class="btn btn--outline">
+                    Annuler
+                </a>
+                <button type="submit" class="btn btn--green" style="padding: 10px 24px;">
+                    <i class="bi bi-send" style="margin-right: 6px;"></i> Envoyer ma demande
+                </button>
+            </div>
+        </form>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll("form select, form textarea").forEach(function(el) {
+            el.style.width = "100%";
+            el.style.padding = "10px 14px";
+            el.style.borderRadius = "8px";
+            el.style.border = "1.5px solid var(--line)";
+            el.style.fontFamily = "inherit";
+            el.style.fontSize = "14px";
+            el.style.color = "var(--ink)";
+            el.style.boxSizing = "border-box";
+            el.style.outline = "none";
+            el.addEventListener("focus", function() {
+                el.style.borderColor = "var(--blue)";
+            });
+            el.addEventListener("blur", function() {
+                el.style.borderColor = "var(--line)";
+            });
+        });
+    });
+</script>
 {% endblock %}

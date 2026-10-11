@@ -1,6 +1,70 @@
 {% extends "base.html" %}
-{% block title %}Mentors – Force Mentor{% endblock %}
+{% block title %}Annuaire des Mentors — Force Mentor{% endblock %}
+
 {% block content %}
-  {% include "mentors/partials/_hero.html" %}
-  {% include "mentors/partials/_mentors.html" %}
+<div class="list-hero">
+  <div class="container text-center">
+    <h1 class="list-hero__title">Annuaire des Mentors</h1>
+    <p class="list-hero__sub">Recherchez et contactez des professionnels qualifiés pour vous accompagner dans votre parcours académique.</p>
+
+    <form class="search list-search" method="get" action="{% url 'mentors:list' %}">
+      <svg class="search__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input type="text" name="q" placeholder="Rechercher par nom, matière, compétence..." value="{{ q|default:'' }}">
+      {% if domaine_filter %}<input type="hidden" name="domaine" value="{{ domaine_filter }}">{% endif %}
+      <button type="submit" class="btn btn--green">Rechercher</button>
+    </form>
+
+    <!-- Filtres rapides par domaine (Moins de 3 clics) -->
+    <div class="domain-filters">
+      <a href="{% url 'mentors:list' %}" class="filter-chip {% if not domaine_filter %}filter-chip--active{% endif %}">
+        Tous les domaines
+      </a>
+      {% for dom in domaines %}
+        <a href="{% url 'mentors:list' %}?domaine={{ dom|urlencode }}{% if q %}&q={{ q|urlencode }}{% endif %}" class="filter-chip {% if domaine_filter == dom %}filter-chip--active{% endif %}">
+          {{ dom }}
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="list-meta">
+      <h2 class="section__title" style="text-align: left; margin: 0; font-size: 18px;">
+        {% if q or domaine_filter %}
+          Résultats de recherche
+        {% else %}
+          Tous les mentors disponibles
+        {% endif %}
+      </h2>
+      <span class="list-meta__count">{{ total_count }} mentor{{ total_count|pluralize }} actif{{ total_count|pluralize }}</span>
+    </div>
+
+    {% if q or domaine_filter %}
+      <div class="active-filters">
+        <span>Filtres actifs :</span>
+        {% if q %}
+          <span class="active-tag">Recherche : « {{ q }} » <a href="{% url 'mentors:list' %}{% if domaine_filter %}?domaine={{ domaine_filter|urlencode }}{% endif %}">&times;</a></span>
+        {% endif %}
+        {% if domaine_filter %}
+          <span class="active-tag">Domaine : « {{ domaine_filter }} » <a href="{% url 'mentors:list' %}{% if q %}?q={{ q|urlencode }}{% endif %}">&times;</a></span>
+        {% endif %}
+        <a href="{% url 'mentors:list' %}" class="clear-all-link">Réinitialiser tout</a>
+      </div>
+    {% endif %}
+
+    <div class="mentors">
+      {% for mentor in mentors %}
+        {% include "mentors/partials/_mentor_card.html" %}
+      {% empty %}
+        <div class="empty-state">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="color: var(--muted); margin-bottom: 12px;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+          <p>Aucun mentor ne correspond à vos critères actuels.</p>
+          <a href="{% url 'mentors:list' %}" class="btn btn--outline" style="margin-top: 12px;">Voir tous les mentors</a>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
 {% endblock %}
