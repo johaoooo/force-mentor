@@ -22,26 +22,28 @@
         <div class="row justify-content-center">
             <div class="col-12 col-lg-11 col-xl-10">
                 <div class="cnib-split-container">
-                    <div class="row g-0">
-                        <!-- Colonne Overlay Dégradé Bleu Royal CNIB (Gauche sur grand écran) -->
-                        <div class="col-lg-4 cnib-overlay-panel d-none d-lg-flex">
-                            <div class="p-3 rounded-circle mb-3" style="background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(8px);">
-                                <img src="{% static 'img/logo_emblem.png' %}" alt="Logo" height="52" style="filter: brightness(0) invert(1);">
+                    <div class="row g-0 align-items-stretch">
+                        <!-- Colonne Overlay Dégradé Bleu Royal CNIB (Gauche sur grand écran, pleine hauteur) -->
+                        <div class="col-lg-4 d-none d-lg-flex flex-column align-self-stretch">
+                            <div class="cnib-overlay-panel flex-grow-1 w-100">
+                                <div class="p-3 rounded-circle mb-3" style="background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(8px);">
+                                    <img src="{% static 'img/logo_emblem.png' %}" alt="Logo" height="52" style="filter: brightness(0) invert(1);">
+                                </div>
+                                <h3 class="cnib-overlay-title">Bon retour !</h3>
+                                <p class="cnib-overlay-text">
+                                    Vous possédez déjà un compte sur la plateforme ? Connectez-vous pour retrouver vos échanges et vos sessions.
+                                </p>
+                                <a href="{% url 'login' %}" class="cnib-ghost-btn">
+                                    Se connecter
+                                </a>
                             </div>
-                            <h3 class="cnib-overlay-title">Bon retour !</h3>
-                            <p class="cnib-overlay-text">
-                                Vous possédez déjà un compte sur la plateforme ? Connectez-vous pour retrouver vos échanges et vos sessions.
-                            </p>
-                            <a href="{% url 'login' %}" class="cnib-ghost-btn">
-                                Se connecter
-                            </a>
                         </div>
 
                         <!-- Colonne Formulaire Inscription (Droite) -->
-                        <div class="col-12 col-lg-8 cnib-form-panel">
-                            <div class="d-flex align-items-center gap-2 mb-3">
-                                <img src="{% static 'img/logo_emblem.png' %}" alt="Logo" height="38">
-                                <span class="fw-bold fs-5" style="color: var(--cnib-dark); letter-spacing: -0.3px;">Apprendre</span>
+                        <div class="col-12 col-lg-8 cnib-form-panel d-flex flex-column justify-content-center">
+                            <!-- Logo seul (sans le mot Apprendre) -->
+                            <div class="mb-3 text-start">
+                                <img src="{% static 'img/logo_emblem.png' %}" alt="Logo" height="46">
                             </div>
 
                             <h2 class="cnib-form-title">Créer un compte</h2>

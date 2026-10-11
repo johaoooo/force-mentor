@@ -845,6 +845,10 @@ body {
     z-index: 10;
 }
 
+.cnib-split-container > .row {
+    align-items: stretch;
+}
+
 /* Panneau latéral dégradé CNIB (linear-gradient 135deg: Bleu Nuit -> Bleu Hero -> Bleu Royal) */
 .cnib-overlay-panel {
     background: linear-gradient(135deg, #061539 0%, #064fc0 50%, #0056ee 100%);
@@ -856,7 +860,10 @@ body {
     justify-content: center;
     text-align: center;
     position: relative;
+    width: 100%;
     height: 100%;
+    min-height: 100%;
+    box-sizing: border-box;
 }
 
 .cnib-overlay-title {
