@@ -749,3 +749,213 @@ body {
 .role-select-card.active .fw-bold {
     color: var(--fn-blue-primary) !important;
 }
+
+/* ================== DESIGN SYSTEM CNIB (Teal / Turquoise Moderne) ================== */
+:root {
+    --cnib-teal: #10b6b6;
+    --cnib-teal-hover: #0d9696;
+    --cnib-teal-light: #e6f8f8;
+    --cnib-teal-subtle: #f2fbfb;
+    --cnib-dark: #0f172a;
+    --cnib-muted: #64748b;
+    --cnib-border: #e0eeee;
+}
+
+/* Fond avec vagues douces inspiré de CNIB */
+.cnib-bg-wrapper {
+    min-height: calc(90vh - 70px);
+    background-color: #ffffff;
+    background-image: radial-gradient(circle at 10% 15%, #e6f8f8 0%, #ffffff 55%),
+                      radial-gradient(circle at 90% 85%, #edf9f9 0%, #ffffff 50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 15px;
+}
+
+/* Carte d'authentification CNIB */
+.cnib-card {
+    background: #ffffff;
+    border: 1.5px solid var(--cnib-border);
+    border-radius: 24px;
+    padding: 42px 36px;
+    box-shadow: 0 16px 40px rgba(16, 182, 182, 0.08);
+    position: relative;
+    overflow: hidden;
+}
+
+.cnib-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, var(--cnib-teal) 0%, #38bdf8 100%);
+}
+
+/* Badge capsule comme dans le titre CNIB ("Plateforme") */
+.cnib-title-pill {
+    background-color: var(--cnib-teal);
+    color: #ffffff;
+    padding: 3px 14px;
+    border-radius: 30px;
+    display: inline-block;
+    font-weight: 800;
+}
+
+/* Boutons Pill CNIB */
+.btn-cnib-primary {
+    background-color: var(--cnib-teal);
+    border: none;
+    color: #ffffff !important;
+    font-weight: 700;
+    font-size: 0.95rem;
+    padding: 12px 28px;
+    border-radius: 50px;
+    box-shadow: 0 4px 14px rgba(16, 182, 182, 0.35);
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.btn-cnib-primary:hover {
+    background-color: var(--cnib-teal-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(16, 182, 182, 0.45);
+}
+
+.btn-cnib-outline {
+    background-color: #ffffff;
+    border: 2px solid var(--cnib-teal);
+    color: var(--cnib-teal) !important;
+    font-weight: 700;
+    font-size: 0.95rem;
+    padding: 10px 26px;
+    border-radius: 50px;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-cnib-outline:hover {
+    background-color: var(--cnib-teal-light);
+    color: var(--cnib-teal-hover) !important;
+    transform: translateY(-2px);
+}
+
+/* Inputs arrondis style CNIB */
+.cnib-input-group {
+    background: #ffffff;
+    border: 1.5px solid #d7e8e8;
+    border-radius: 50px;
+    padding: 2px 8px;
+    transition: all 0.2s ease;
+}
+
+.cnib-input-group:focus-within {
+    border-color: var(--cnib-teal);
+    box-shadow: 0 0 0 4px rgba(16, 182, 182, 0.15);
+}
+
+.cnib-input-group .input-group-text {
+    background: transparent;
+    border: none;
+    color: var(--cnib-teal);
+    padding-left: 14px;
+}
+
+.cnib-input-group .form-control,
+.cnib-input-group .form-select,
+.cnib-input-group select {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    font-size: 0.92rem;
+    padding: 10px 14px 10px 6px;
+    color: var(--cnib-dark);
+}
+
+.cnib-input-group .form-select:focus,
+.cnib-input-group select:focus {
+    box-shadow: none;
+    outline: none;
+}
+
+.cnib-textarea-group {
+    background: #ffffff;
+    border: 1.5px solid #d7e8e8;
+    border-radius: 16px;
+    padding: 10px;
+    transition: all 0.2s ease;
+}
+
+.cnib-textarea-group:focus-within {
+    border-color: var(--cnib-teal);
+    box-shadow: 0 0 0 4px rgba(16, 182, 182, 0.15);
+}
+
+/* Rôle en cartes CNIB */
+.cnib-role-card {
+    display: block;
+    cursor: pointer;
+    border: 2px solid #e2eeee;
+    border-radius: 18px;
+    padding: 16px 12px;
+    text-align: center;
+    background: #ffffff;
+    transition: all 0.2s ease;
+    height: 100%;
+    position: relative;
+}
+
+.cnib-role-card input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.cnib-role-card:hover {
+    border-color: var(--cnib-teal);
+    background: var(--cnib-teal-subtle);
+    transform: translateY(-3px);
+}
+
+.cnib-role-card.active {
+    border-color: var(--cnib-teal);
+    background: var(--cnib-teal-light);
+    box-shadow: 0 6px 18px rgba(16, 182, 182, 0.18);
+}
+
+.cnib-role-card.active .fw-bold {
+    color: var(--cnib-teal) !important;
+}
+
+.cnib-role-icon {
+    font-size: 1.8rem;
+    color: var(--cnib-teal);
+    margin-bottom: 6px;
+    display: inline-block;
+}
+
+/* Raccourcis Démo style CNIB */
+.cnib-quick-btn {
+    font-size: 0.8rem;
+    font-weight: 600;
+    border-radius: 50px;
+    padding: 5px 12px;
+    border: 1.5px solid var(--cnib-teal);
+    background: var(--cnib-teal-light);
+    color: var(--cnib-teal);
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.cnib-quick-btn:hover {
+    background: var(--cnib-teal);
+    color: #ffffff;
+}
