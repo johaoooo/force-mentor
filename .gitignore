@@ -12,3 +12,8 @@ __pycache__/
 .idea/
 .DS_Store
 *.swp
+
+# Node / Angular
+node_modules/
+dist/
+.angular/

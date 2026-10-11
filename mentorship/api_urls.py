@@ -1,0 +1,21 @@
+from django.urls import path
+from . import api_views
+
+urlpatterns = [
+    # Matières & Mentors
+    path('matieres/', api_views.MatiereListAPIView.as_view(), name='api_matieres'),
+    path('mentors/', api_views.MentorListAPIView.as_view(), name='api_mentors'),
+    path('mentors/<int:pk>/', api_views.MentorDetailAPIView.as_view(), name='api_mentor_detail'),
+    path('stats/', api_views.StatsAPIView.as_view(), name='api_stats'),
+
+    # Authentification & Profil
+    path('auth/login/', api_views.AuthLoginAPIView.as_view(), name='api_login'),
+    path('auth/register/', api_views.AuthRegisterAPIView.as_view(), name='api_register'),
+    path('auth/logout/', api_views.AuthLogoutAPIView.as_view(), name='api_logout'),
+    path('auth/me/', api_views.AuthMeAPIView.as_view(), name='api_me'),
+    path('auth/profile/', api_views.ProfileUpdateAPIView.as_view(), name='api_profile_update'),
+
+    # Demandes de Mentorat
+    path('demandes/', api_views.DemandesAPIView.as_view(), name='api_demandes'),
+    path('demandes/<int:pk>/action/', api_views.DemandeActionAPIView.as_view(), name='api_demande_action'),
+]

@@ -16,6 +16,8 @@ urlpatterns = [
     path('demande/<int:request_id>/<str:action>/', mentorship_views.update_request_status, name='update_request_status'),
     path('auth/', include('accounts.urls')),
     path('mentorship/', include('mentorship.urls')),
+    # API REST pour l'application Angular
+    path('api/', include('mentorship.api_urls')),
 ]
 
 if settings.DEBUG:
