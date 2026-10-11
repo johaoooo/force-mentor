@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     # Applications du projet Force Mentor
     'accounts.apps.AccountsConfig',
     'mentorship.apps.MentorshipConfig',
+    'mentors',
 ]
 
 MIDDLEWARE = [
@@ -153,6 +154,10 @@ LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'dashboard'
 LOGOUT_REDIRECT_URL = 'home'
 
+
+# Media files
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Email
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration

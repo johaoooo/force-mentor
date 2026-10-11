@@ -1,0 +1,21 @@
+from django.db import models
+
+
+class Mentor(models.Model):
+    nom = models.CharField(max_length=120)
+    domaine = models.CharField(max_length=120)
+    bio = models.TextField()
+    photo = models.ImageField(upload_to="mentors/", blank=True)
+    note = models.DecimalField(max_digits=2, decimal_places=1, default=5.0)
+    nb_avis = models.PositiveIntegerField(default=0)
+    actif = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ["-note", "nom"]
+
+    def __str__(self):
+        return self.nom
+
+    @property
+    def initiales(self):
+        return "".join(p[0] for p in self.nom.split()[:2]).upper()

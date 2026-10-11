@@ -1,0 +1,18 @@
+<article class="mentor">
+  <div class="mentor__head">
+    {% if mentor.photo %}
+      <img class="avatar" src="{{ mentor.photo.url }}" alt="{{ mentor.nom }}">
+    {% else %}
+      <span class="avatar avatar--initials">{{ mentor.initiales }}</span>
+    {% endif %}
+    <div>
+      <strong>{{ mentor.nom }}</strong>
+      <small>{{ mentor.domaine }}</small>
+    </div>
+  </div>
+  <div class="rating">
+    <span class="stars" style="--rating: {{ mentor.note|stringformat:'.1f' }}" aria-label="Note {{ mentor.note }} sur 5"></span>
+    <span>{{ mentor.note }} ({{ mentor.nb_avis }} avis)</span>
+  </div>
+  <p>{{ mentor.bio }}</p>
+</article>
