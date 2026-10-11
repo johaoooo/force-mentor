@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block title %}Mon Profil — Force Mentor{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm p-4">
+                <div class="d-flex align-items-center mb-4 pb-3 border-bottom">
+                    <div class="bg-primary text-white rounded-circle p-3 me-3">
+                        <i class="bi bi-person-badge fs-2"></i>
+                    </div>
+                    <div>
+                        <h3 class="fw-bold mb-0">{{ user.get_full_name|default:user.username }}</h3>
+                        <span class="badge bg-secondary">{{ profile.get_role_display }}</span>
+                        <span class="badge bg-info text-dark">{{ profile.get_niveau_display }}</span>
+                    </div>
+                </div>
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold">Prénom</label>
+                            {{ form.first_name }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold">Nom</label>
+                            {{ form.last_name }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold">Adresse Email</label>
+                            {{ form.email }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold">Téléphone / WhatsApp</label>
+                            {{ form.telephone }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold">Rôle sur la plateforme</label>
+                            {{ form.role }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold">Niveau d'études</label>
+                            {{ form.niveau }}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Filière / Spécialité</label>
+                        {{ form.filiere }}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Biographie / Présentation</label>
+                        {{ form.bio }}
+                    </div>
+
+                    <div class="form-check form-switch mb-4">
+                        {{ form.est_disponible }}
+                        <label class="form-check-label fw-semibold" for="{{ form.est_disponible.id_for_label }}">
+                            Je suis disponible pour être sollicité(e) en tant que mentor
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary fw-semibold px-4 btn-rounded">
+                        <i class="bi bi-floppy me-2"></i>Enregistrer les modifications
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll("form input[type=text], form input[type=email], form select, form textarea").forEach(function(el) {
+            el.classList.add("form-control");
+        });
+        const switchEl = document.querySelector("input[type=checkbox]");
+        if (switchEl) {
+            switchEl.classList.add("form-check-input");
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block title %}Trouver un Mentor — Force Mentor{% endblock %}
+
+{% block content %}
+<div class="container py-3">
+    <!-- En-tête et recherche -->
+    <div class="row align-items-center mb-4">
+        <div class="col-md-7">
+            <h2 class="fw-bold mb-1"><i class="bi bi-people-fill text-primary me-2"></i>Annuaire des Mentors</h2>
+            <p class="text-muted mb-0">Trouvez un mentor disponible par compétence ou matière</p>
+        </div>
+        <div class="col-md-5 mt-3 mt-md-0">
+            <form method="get" class="d-flex gap-2">
+                {% if selected_matiere %}
+                    <input type="hidden" name="matiere" value="{{ selected_matiere }}">
+                {% endif %}
+                <div class="input-group">
+                    <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
+                    <input type="text" name="q" value="{{ search_query }}" class="form-control border-start-0" placeholder="Rechercher par nom, filière, mot-clé...">
+                </div>
+                <button type="submit" class="btn btn-primary btn-rounded">Filtrer</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Filtres par matière (Pills cliquables) -->
+    <div class="card p-3 mb-4 bg-white border-0 shadow-sm">
+        <div class="d-flex align-items-center flex-wrap gap-2">
+            <span class="fw-semibold text-secondary me-2"><i class="bi bi-funnel me-1"></i>Matière :</span>
+            <a href="{% url 'mentor_list' %}{% if search_query %}?q={{ search_query }}{% endif %}" 
+               class="btn btn-sm btn-rounded {% if not selected_matiere %}btn-dark{% else %}btn-outline-secondary{% endif %}">
+                Toutes les matières
+            </a>
+            {% for mat in matieres %}
+                <a href="{% url 'mentor_list' %}?matiere={{ mat.id }}{% if search_query %}&q={{ search_query }}{% endif %}" 
+                   class="btn btn-sm btn-rounded {% if selected_matiere == mat.id %}btn-primary{% else %}btn-outline-primary{% endif %}">
+                    {{ mat.nom }}
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Liste des mentors -->
+    <div class="row g-4">
+        {% for mentor in mentors %}
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 p-4 d-flex flex-column bg-white">
+                <div class="d-flex align-items-start mb-3">
+                    <div class="bg-primary text-white rounded-circle p-3 me-3 d-flex align-items-center justify-content-center" style="width: 55px; height: 55px;">
+                        <i class="bi bi-person-fill fs-3"></i>
+                    </div>
+                    <div>
+                        <h5 class="fw-bold mb-1">{{ mentor.user.get_full_name|default:mentor.user.username }}</h5>
+                        <p class="text-muted small mb-0">{{ mentor.filiere|default:"Filière non spécifiée" }}</p>
+                        <span class="badge bg-light text-secondary border">{{ mentor.get_niveau_display }}</span>
+                    </div>
+                </div>
+
+                <p class="text-secondary small mb-3 flex-grow-1">
+                    {{ mentor.bio|truncatewords:25|default:"Aucune description renseignée." }}
+                </p>
+
+                <!-- Matières enseignées -->
+                <div class="mb-3">
+                    <small class="text-muted d-block mb-1 fw-semibold">Compétences :</small>
+                    <div class="d-flex flex-wrap gap-1">
+                        {% for comp in mentor.competences.all %}
+                            <span class="badge badge-subject">
+                                {{ comp.matiere.nom }} ({{ comp.get_niveau_expertise_display }})
+                            </span>
+                        {% empty %}
+                            <span class="text-muted small">Aucune matière déclarée</span>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="d-flex gap-2 pt-2 border-top">
+                    <a href="{% url 'mentor_detail' mentor.id %}" class="btn btn-outline-secondary btn-sm flex-fill btn-rounded">
+                        Fiche détails
+                    </a>
+                    <a href="{% url 'create_request' mentor.id %}" class="btn btn-warning btn-sm flex-fill fw-semibold btn-rounded">
+                        <i class="bi bi-send me-1"></i>Demander
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="text-center py-5 bg-white rounded-4 shadow-sm p-4">
+                <i class="bi bi-person-x fs-1 text-muted mb-3 d-block"></i>
+                <h4 class="fw-bold">Aucun mentor trouvé</h4>
+                <p class="text-muted">Essayez de réinitialiser vos filtres ou de chercher avec un autre mot-clé.</p>
+                <a href="{% url 'mentor_list' %}" class="btn btn-primary btn-sm btn-rounded mt-2">Réinitialiser les filtres</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

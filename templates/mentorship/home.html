@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+
+{% block title %}Accueil — Force Mentor{% endblock %}
+
+{% block content %}
+<!-- Section Hero -->
+<div class="bg-dark text-white py-5 rounded-4 mx-3 mb-5 shadow">
+    <div class="container py-4 text-center">
+        <span class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-bold mb-3">
+            <i class="bi bi-stars me-1"></i>Programme Force-N
+        </span>
+        <h1 class="display-4 fw-bold mb-3">Plateforme d'Entraide & Mentorat Étudiant</h1>
+        <p class="lead text-light col-md-8 mx-auto mb-4">
+            Connectez-vous avec des étudiants mentors avancés pour surmonter vos blocages techniques, réussir vos projets et progresser en toute confiance.
+        </p>
+        <div class="d-flex justify-content-center gap-3">
+            <a href="{% url 'mentor_list' %}" class="btn btn-warning btn-lg px-4 fw-bold btn-rounded">
+                <i class="bi bi-search me-2"></i>Trouver un mentor
+            </a>
+            {% if not user.is_authenticated %}
+            <a href="{% url 'register' %}" class="btn btn-outline-light btn-lg px-4 btn-rounded">
+                <i class="bi bi-person-plus me-2"></i>Devenir mentor
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <!-- Métriques / Statistiques clés -->
+    <div class="row g-4 mb-5 text-center">
+        <div class="col-md-4">
+            <div class="card p-4 h-100 border-0 bg-white shadow-sm">
+                <div class="text-primary mb-2"><i class="bi bi-people-fill fs-1"></i></div>
+                <h3 class="fw-bold mb-1">{{ total_mentors }}</h3>
+                <p class="text-muted mb-0">Mentors disponibles</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card p-4 h-100 border-0 bg-white shadow-sm">
+                <div class="text-success mb-2"><i class="bi bi-journal-bookmark-fill fs-1"></i></div>
+                <h3 class="fw-bold mb-1">{{ total_matieres }}</h3>
+                <p class="text-muted mb-0">Matières & Modules couverts</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card p-4 h-100 border-0 bg-white shadow-sm">
+                <div class="text-warning mb-2"><i class="bi bi-chat-heart-fill fs-1"></i></div>
+                <h3 class="fw-bold mb-1">{{ total_demandes }}</h3>
+                <p class="text-muted mb-0">Demandes de mise en relation</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Matières Disponibles -->
+    <div class="mb-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h3 class="fw-bold mb-1">Matières & Domaines</h3>
+                <p class="text-muted mb-0">Choisissez une matière pour trouver le bon mentor en moins de 3 clics</p>
+            </div>
+            <a href="{% url 'mentor_list' %}" class="btn btn-outline-primary btn-sm btn-rounded">Voir tout</a>
+        </div>
+
+        <div class="row g-3">
+            {% for matiere in matieres %}
+            <div class="col-md-4 col-sm-6">
+                <a href="{% url 'mentor_list' %}?matiere={{ matiere.id }}" class="text-decoration-none">
+                    <div class="card p-3 h-100 d-flex flex-row align-items-center">
+                        <div class="bg-primary-subtle text-primary p-3 rounded-3 me-3">
+                            <i class="bi {{ matiere.icone|default:'bi-book' }} fs-3"></i>
+                        </div>
+                        <div>
+                            <h5 class="fw-bold text-dark mb-1">{{ matiere.nom }}</h5>
+                            <small class="text-muted">{{ matiere.mentors_associes.count }} mentor(s) disponible(s)</small>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% empty %}
+            <div class="col-12 text-muted text-center py-4">Aucune matière enregistrée pour l'instant.</div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Mentors Récents -->
+    {% if mentors_recents %}
+    <div class="mb-5">
+        <h3 class="fw-bold mb-4">Quelques mentors de la communauté</h3>
+        <div class="row g-4">
+            {% for mentor in mentors_recents %}
+            <div class="col-md-3 col-sm-6">
+                <div class="card h-100 text-center p-3">
+                    <div class="mx-auto mb-3 bg-secondary-subtle rounded-circle d-flex align-items-center justify-content-center" style="width: 70px; height: 70px;">
+                        <i class="bi bi-person-fill fs-1 text-secondary"></i>
+                    </div>
+                    <h5 class="fw-bold mb-1">{{ mentor.user.get_full_name|default:mentor.user.username }}</h5>
+                    <p class="small text-muted mb-2">{{ mentor.filiere|default:"Étudiant Force-N" }} &bull; {{ mentor.get_niveau_display }}</p>
+                    <div class="mb-3">
+                        {% for comp in mentor.competences.all|slice:":2" %}
+                            <span class="badge bg-light text-primary border me-1">{{ comp.matiere.nom }}</span>
+                        {% endfor %}
+                    </div>
+                    <a href="{% url 'mentor_detail' mentor.id %}" class="btn btn-outline-primary btn-sm btn-rounded mt-auto">
+                        Voir le profil
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Comment ça marche -->
+    <div class="card bg-white p-4 p-md-5 mb-5 border-0 shadow-sm">
+        <h3 class="fw-bold text-center mb-4">Comment fonctionne Force Mentor ?</h3>
+        <div class="row g-4 text-center">
+            <div class="col-md-4">
+                <div class="badge bg-primary text-white rounded-circle p-3 fs-4 mb-3">1</div>
+                <h5 class="fw-bold">1. Recherchez</h5>
+                <p class="text-muted small">Filtrez les profils d'étudiants mentors par matière ou technologie.</p>
+            </div>
+            <div class="col-md-4">
+                <div class="badge bg-warning text-dark rounded-circle p-3 fs-4 mb-3">2</div>
+                <h5 class="fw-bold">2. Envoyez une demande</h5>
+                <p class="text-muted small">Expliquez votre besoin ou votre blocage via le formulaire dédié.</p>
+            </div>
+            <div class="col-md-4">
+                <div class="badge bg-success text-white rounded-circle p-3 fs-4 mb-3">3</div>
+                <h5 class="fw-bold">3. Échangez & Progressez</h5>
+                <p class="text-muted small">Dès l'acceptation, organisez votre session de mentorat et avancez sereinement.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

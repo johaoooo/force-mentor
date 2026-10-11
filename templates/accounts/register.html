@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block title %}Inscription — Force Mentor{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <div class="card shadow-sm p-4">
+                <div class="text-center mb-4">
+                    <i class="bi bi-person-plus-fill fs-1 text-warning"></i>
+                    <h3 class="fw-bold mt-2">Rejoindre Force Mentor</h3>
+                    <p class="text-muted small">Créez votre profil pour partager vos connaissances ou progresser</p>
+                </div>
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold">Prénom *</label>
+                            {{ form.first_name }}
+                            {% if form.first_name.errors %}<div class="text-danger small">{{ form.first_name.errors }}</div>{% endif %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold">Nom *</label>
+                            {{ form.last_name }}
+                            {% if form.last_name.errors %}<div class="text-danger small">{{ form.last_name.errors }}</div>{% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold">Nom d'utilisateur *</label>
+                            {{ form.username }}
+                            {% if form.username.errors %}<div class="text-danger small">{{ form.username.errors }}</div>{% endif %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold">Adresse Email *</label>
+                            {{ form.email }}
+                            {% if form.email.errors %}<div class="text-danger small">{{ form.email.errors }}</div>{% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold">Mot de passe *</label>
+                            {{ form.password1 }}
+                            {% if form.password1.errors %}<div class="text-danger small">{{ form.password1.errors }}</div>{% endif %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold">Confirmation mot de passe *</label>
+                            {{ form.password2 }}
+                            {% if form.password2.errors %}<div class="text-danger small">{{ form.password2.errors }}</div>{% endif %}
+                        </div>
+                    </div>
+
+                    <hr class="my-3">
+                    <h5 class="fw-bold mb-3 text-secondary"><i class="bi bi-mortarboard me-2"></i>Informations d'Étudiant</h5>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold">Votre rôle principal *</label>
+                            {{ form.role }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold">Niveau d'études *</label>
+                            {{ form.niveau }}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Filière / Spécialité</label>
+                        {{ form.filiere }}
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">Petite présentation / Objectifs</label>
+                        {{ form.bio }}
+                    </div>
+
+                    <button type="submit" class="btn btn-warning w-100 py-2 fw-bold btn-rounded">
+                        <i class="bi bi-check-circle me-2"></i>Créer mon compte
+                    </button>
+                </form>
+
+                <div class="text-center mt-3 border-top pt-3">
+                    <p class="small text-muted mb-0">Déjà inscrit ? 
+                        <a href="{% url 'login' %}" class="fw-bold text-decoration-none">Se connecter</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Ajoute la classe bootstrap form-control à tous les inputs du formulaire
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll("form input, form select, form textarea").forEach(function(el) {
+            el.classList.add("form-control");
+        });
+    });
+</script>
+{% endblock %}
