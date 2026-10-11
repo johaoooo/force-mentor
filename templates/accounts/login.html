@@ -8,11 +8,11 @@
 
 {% block content %}
 <div class="cnib-bg-wrapper">
-    <!-- Halos lumineux d'arrière-plan CNIB -->
+    <!-- Halos lumineux d'arrière-plan en Bleu Royal -->
     <div class="cnib-bg-glow-1"></div>
     <div class="cnib-bg-glow-2"></div>
 
-    <!-- Bouton Retour à l'accueil flottant style CNIB (styles.homeBtn) -->
+    <!-- Bouton Retour à l'accueil flottant style CNIB -->
     <a href="{% url 'home' %}" class="cnib-home-btn" title="Retour à l'accueil">
         <i class="bi bi-arrow-left"></i>
         <span>Accueil</span>
@@ -23,7 +23,7 @@
             <div class="col-12 col-md-10 col-lg-10 col-xl-9">
                 <div class="cnib-split-container">
                     <div class="row g-0">
-                        <!-- Colonne Formulaire (Gauche) -->
+                        <!-- Colonne Formulaire Connexion (Gauche) -->
                         <div class="col-12 col-lg-7 cnib-form-panel">
                             <div class="d-flex align-items-center gap-2 mb-3">
                                 <img src="{% static 'img/logo_emblem.png' %}" alt="Logo" height="38">
@@ -34,9 +34,9 @@
                             <p class="cnib-form-subtitle">Bon retour sur votre plateforme de mentorat.</p>
 
                             <!-- Accès rapide Démo avec comptes fictifs standards -->
-                            <div class="p-2 mb-4 rounded-3" style="background-color: var(--cnib-teal-rgba-10); border: 1px dashed var(--cnib-teal);">
+                            <div class="p-2 mb-4 rounded-3" style="background-color: var(--cnib-blue-rgba-10); border: 1px dashed var(--cnib-blue-primary);">
                                 <div class="d-flex align-items-center justify-content-between mb-2">
-                                    <span class="small fw-bold" style="color: var(--cnib-dark-teal); font-size: 0.78rem;">
+                                    <span class="small fw-bold" style="color: var(--cnib-blue-dark); font-size: 0.78rem;">
                                         <i class="bi bi-lightning-charge-fill me-1"></i>Accès rapide (Démo standard) :
                                     </span>
                                 </div>
@@ -61,13 +61,18 @@
                                     <label for="id_username" class="cnib-label">Nom d'utilisateur ou Email *</label>
                                     <div class="cnib-input-wrap">
                                         <i class="bi bi-person cnib-input-icon"></i>
-                                        <input type="text" name="username" class="cnib-input-field" id="id_username" placeholder="Votre identifiant" required autofocus>
+                                        <input type="text" name="username" class="cnib-input-field" id="id_username" placeholder="Votre nom d'utilisateur ou email" required autofocus>
                                     </div>
                                 </div>
 
                                 <!-- Champ Mot de passe -->
                                 <div class="mb-3">
-                                    <label for="id_password" class="cnib-label">Mot de passe *</label>
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <label for="id_password" class="cnib-label mb-0">Mot de passe *</label>
+                                        <a href="#" class="cnib-link" style="font-size: 11.5px;" onclick="alert('Pour réinitialiser votre mot de passe, veuillez contacter le support ou utiliser un compte démo.'); return false;">
+                                            Mot de passe oublié ?
+                                        </a>
+                                    </div>
                                     <div class="cnib-input-wrap">
                                         <i class="bi bi-lock cnib-input-icon"></i>
                                         <input type="password" name="password" class="cnib-input-field" id="id_password" placeholder="••••••••" required>
@@ -79,14 +84,14 @@
 
                                 <div class="d-flex justify-content-between align-items-center mb-4">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="rememberMe" checked style="accent-color: var(--cnib-teal);">
+                                        <input class="form-check-input" type="checkbox" id="rememberMe" checked style="accent-color: var(--cnib-blue-primary);">
                                         <label class="form-check-label small text-muted" for="rememberMe">
                                             Se souvenir de moi
                                         </label>
                                     </div>
                                 </div>
 
-                                <!-- Bouton Connexion -->
+                                <!-- Bouton Connexion Bleu Royal Gradient -->
                                 <button type="submit" class="cnib-submit-btn mb-3">
                                     <i class="bi bi-box-arrow-in-right me-2"></i>Se connecter
                                 </button>
@@ -98,9 +103,11 @@
                             </form>
                         </div>
 
-                        <!-- Colonne Overlay Dégradé CNIB (Droite) -->
+                        <!-- Colonne Overlay Dégradé Bleu Royal CNIB (Droite) -->
                         <div class="col-lg-5 cnib-overlay-panel d-none d-lg-flex">
-                            <img src="{% static 'img/logo_emblem.png' %}" alt="Logo" height="60" class="mb-3" style="filter: brightness(0) invert(1);">
+                            <div class="p-3 rounded-circle mb-3" style="background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(8px);">
+                                <img src="{% static 'img/logo_emblem.png' %}" alt="Logo" height="52" style="filter: brightness(0) invert(1);">
+                            </div>
                             <h3 class="cnib-overlay-title">Ravi de vous revoir !</h3>
                             <p class="cnib-overlay-text">
                                 Rejoignez la communauté de mentorat pour partager vos compétences ou bénéficier de l'accompagnement personnalisé d'un aîné.
