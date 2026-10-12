@@ -110,17 +110,6 @@ a {
   font-weight: 600;
 }
 
-.navbar__links a.active::before {
-  content: "";
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background-color: var(--blue);
-  margin-right: 8px;
-  box-shadow: 0 0 6px rgba(43, 114, 187, 0.35);
-}
-
 .navbar__actions {
   display: flex;
   gap: 12px;
