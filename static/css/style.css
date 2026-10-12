@@ -81,21 +81,21 @@ a{color:inherit;text-decoration:none}
   .search{flex-wrap:wrap}.search .btn{width:100%;justify-content:center}
 }
 
-/* ================== DESIGN SYSTEM CNIB (Adapté en Bleu Royal #0056ee / #064fc0) ================== */
+/* ================== DESIGN SYSTEM CNIB (Adapté en Bleu Force Mentor #2b72bb / #1f5a98) ================== */
 :root {
-    --cnib-blue-navy: #061539;
-    --cnib-blue-dark: #064fc0;
-    --cnib-blue-primary: #0056ee;
-    --cnib-blue-rgba-30: rgba(0, 86, 238, 0.3);
-    --cnib-blue-rgba-20: rgba(0, 86, 238, 0.2);
-    --cnib-blue-rgba-15: rgba(0, 86, 238, 0.15);
-    --cnib-blue-rgba-10: rgba(0, 86, 238, 0.08);
-    --cnib-blue-subtle: rgba(0, 86, 238, 0.04);
+    --cnib-blue-navy: #0f1b3d;
+    --cnib-blue-dark: #1f5a98;
+    --cnib-blue-primary: #2b72bb;
+    --cnib-blue-rgba-30: rgba(43, 114, 187, 0.3);
+    --cnib-blue-rgba-20: rgba(43, 114, 187, 0.2);
+    --cnib-blue-rgba-15: rgba(43, 114, 187, 0.15);
+    --cnib-blue-rgba-10: rgba(43, 114, 187, 0.08);
+    --cnib-blue-subtle: rgba(43, 114, 187, 0.04);
     --cnib-dark: #0f172a;
     --cnib-muted: #64748b;
-    --cnib-border: rgba(0, 86, 238, 0.2);
-    --cnib-gradient-overlay: linear-gradient(135deg, #061539 0%, #064fc0 50%, #0056ee 100%);
-    --cnib-gradient-btn: linear-gradient(135deg, #064fc0 0%, #0056ee 100%);
+    --cnib-border: rgba(43, 114, 187, 0.2);
+    --cnib-gradient-overlay: linear-gradient(135deg, #1f5a98 0%, #2b72bb 100%);
+    --cnib-gradient-btn: linear-gradient(135deg, #1f5a98 0%, #2b72bb 100%);
 }
 
 /* Page d'authentification complète CNIB */
@@ -120,7 +120,7 @@ a{color:inherit;text-decoration:none}
     width: 600px;
     height: 600px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(0, 86, 238, 0.13) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(43, 114, 187, 0.13) 0%, transparent 70%);
     pointer-events: none;
     z-index: 0;
 }
@@ -132,7 +132,7 @@ a{color:inherit;text-decoration:none}
     width: 600px;
     height: 600px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(6, 79, 192, 0.10) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(31, 90, 152, 0.10) 0%, transparent 70%);
     pointer-events: none;
     z-index: 0;
 }
@@ -149,7 +149,7 @@ a{color:inherit;text-decoration:none}
     padding: 10px 22px;
     border-radius: 9999px;
     background: #ffffff;
-    border: 1.5px solid rgba(0, 86, 238, 0.25);
+    border: 1.5px solid rgba(43, 114, 187, 0.25);
     color: #0f172a;
     font-size: 13.5px;
     font-weight: 600;
@@ -159,18 +159,18 @@ a{color:inherit;text-decoration:none}
 }
 
 .cnib-home-btn:hover {
-    border-color: #0056ee;
-    color: #0056ee;
+    border-color: #2b72bb;
+    color: #2b72bb;
     transform: translateX(-3px);
-    box-shadow: 0 8px 24px rgba(0, 86, 238, 0.22);
+    box-shadow: 0 8px 24px rgba(43, 114, 187, 0.22);
 }
 
 /* Carte Split CNIB (Formulaire + Overlay Gradient) */
 .cnib-split-container {
     background: #ffffff;
-    border: 1px solid rgba(0, 86, 238, 0.2);
+    border: 1px solid rgba(43, 114, 187, 0.2);
     border-radius: 20px;
-    box-shadow: 0 16px 45px rgba(6, 21, 57, 0.09), 0 4px 18px rgba(0, 86, 238, 0.08);
+    box-shadow: 0 16px 45px rgba(6, 21, 57, 0.09), 0 4px 18px rgba(43, 114, 187, 0.08);
     overflow: hidden;
     position: relative;
     z-index: 10;
@@ -182,7 +182,7 @@ a{color:inherit;text-decoration:none}
 
 /* Panneau latéral dégradé CNIB (linear-gradient 135deg: Bleu Nuit -> Bleu Hero -> Bleu Royal) */
 .cnib-overlay-panel {
-    background: linear-gradient(135deg, #061539 0%, #064fc0 50%, #0056ee 100%);
+    background: linear-gradient(135deg, #0f1b3d 0%, #1f5a98 50%, #2b72bb 100%);
     color: #ffffff;
     padding: 48px 36px;
     display: flex;
@@ -303,7 +303,7 @@ a{color:inherit;text-decoration:none}
     font-size: 0.75rem;
     font-weight: 700;
     color: #ffffff;
-    border: 2px solid #064fc0;
+    border: 2px solid #1f5a98;
     margin-left: -8px;
 }
 
@@ -315,7 +315,7 @@ a{color:inherit;text-decoration:none}
 .cnib-step-badge {
     width: 26px;
     height: 26px;
-    background: linear-gradient(135deg, #064fc0, #0056ee);
+    background: linear-gradient(135deg, #1f5a98, #2b72bb);
     color: #ffffff;
     border-radius: 50%;
     display: inline-flex;
@@ -323,7 +323,7 @@ a{color:inherit;text-decoration:none}
     justify-content: center;
     font-size: 0.78rem;
     font-weight: 700;
-    box-shadow: 0 2px 6px rgba(0, 86, 238, 0.25);
+    box-shadow: 0 2px 6px rgba(43, 114, 187, 0.25);
 }
 
 /* Badge coche sur sélection rôle */
@@ -333,7 +333,7 @@ a{color:inherit;text-decoration:none}
     right: 8px;
     width: 18px;
     height: 18px;
-    background: #0056ee;
+    background: #2b72bb;
     color: #ffffff;
     border-radius: 50%;
     display: flex;
@@ -417,7 +417,7 @@ a{color:inherit;text-decoration:none}
 .cnib-input-field {
     width: 100%;
     background: #ffffff;
-    border: 1.5px solid rgba(0, 86, 238, 0.25);
+    border: 1.5px solid rgba(43, 114, 187, 0.25);
     border-radius: 9px;
     padding: 10px 14px;
     font-size: 13.5px;
@@ -428,8 +428,8 @@ a{color:inherit;text-decoration:none}
 }
 
 .cnib-input-field:focus {
-    border-color: #0056ee;
-    box-shadow: 0 0 0 3px rgba(0, 86, 238, 0.15);
+    border-color: #2b72bb;
+    box-shadow: 0 0 0 3px rgba(43, 114, 187, 0.15);
 }
 
 /* Input group avec icône ou bouton œil */
@@ -447,7 +447,7 @@ a{color:inherit;text-decoration:none}
     left: 12px;
     top: 50%;
     transform: translateY(-50%);
-    color: #0056ee;
+    color: #2b72bb;
     font-size: 15px;
     pointer-events: none;
 }
@@ -468,14 +468,14 @@ a{color:inherit;text-decoration:none}
 }
 
 .cnib-input-wrap .cnib-eye-btn:hover {
-    color: #0056ee;
+    color: #2b72bb;
 }
 
 /* Select CNIB */
 .cnib-select-field {
     width: 100%;
     background: #ffffff;
-    border: 1.5px solid rgba(0, 86, 238, 0.25);
+    border: 1.5px solid rgba(43, 114, 187, 0.25);
     border-radius: 9px;
     padding: 10px 14px;
     font-size: 13.5px;
@@ -486,15 +486,15 @@ a{color:inherit;text-decoration:none}
 }
 
 .cnib-select-field:focus {
-    border-color: #0056ee;
-    box-shadow: 0 0 0 3px rgba(0, 86, 238, 0.15);
+    border-color: #2b72bb;
+    box-shadow: 0 0 0 3px rgba(43, 114, 187, 0.15);
 }
 
 /* Textarea CNIB */
 .cnib-textarea-field {
     width: 100%;
     background: #ffffff;
-    border: 1.5px solid rgba(0, 86, 238, 0.25);
+    border: 1.5px solid rgba(43, 114, 187, 0.25);
     border-radius: 9px;
     padding: 10px 14px;
     font-size: 13.5px;
@@ -505,8 +505,8 @@ a{color:inherit;text-decoration:none}
 }
 
 .cnib-textarea-field:focus {
-    border-color: #0056ee;
-    box-shadow: 0 0 0 3px rgba(0, 86, 238, 0.15);
+    border-color: #2b72bb;
+    box-shadow: 0 0 0 3px rgba(43, 114, 187, 0.15);
 }
 
 /* Jauge de force mot de passe (Password Strength Meter) */
@@ -528,7 +528,7 @@ a{color:inherit;text-decoration:none}
     height: 4px;
     flex: 1;
     border-radius: 2px;
-    background: rgba(0, 86, 238, 0.12);
+    background: rgba(43, 114, 187, 0.12);
     transition: background 0.3s ease;
 }
 
@@ -537,19 +537,19 @@ a{color:inherit;text-decoration:none}
     font-weight: 700;
 }
 
-/* Bouton principal CNIB (gradient Bleu Hero #064fc0 -> Bleu Royal #0056ee) */
+/* Bouton principal CNIB (gradient Bleu Hero #1f5a98 -> Bleu Royal #2b72bb) */
 .cnib-submit-btn {
     width: 100%;
     border-radius: 9999px;
     border: none;
-    background: linear-gradient(135deg, #064fc0 0%, #0056ee 100%);
+    background: linear-gradient(135deg, #1f5a98 0%, #2b72bb 100%);
     color: #ffffff !important;
     font-size: 14px;
     font-weight: 700;
     letter-spacing: 0.5px;
     padding: 12.5px 24px;
     cursor: pointer;
-    box-shadow: 0 6px 20px rgba(0, 86, 238, 0.35);
+    box-shadow: 0 6px 20px rgba(43, 114, 187, 0.35);
     transition: opacity 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
     display: inline-flex;
     align-items: center;
@@ -560,12 +560,12 @@ a{color:inherit;text-decoration:none}
 .cnib-submit-btn:hover {
     opacity: 0.95;
     transform: translateY(-1px);
-    box-shadow: 0 8px 24px rgba(0, 86, 238, 0.45);
+    box-shadow: 0 8px 24px rgba(43, 114, 187, 0.45);
 }
 
-/* Lien CNIB (color #0056ee) */
+/* Lien CNIB (color #2b72bb) */
 .cnib-link {
-    color: #0056ee;
+    color: #2b72bb;
     font-size: 12.5px;
     font-weight: 600;
     text-decoration: none;
@@ -573,7 +573,7 @@ a{color:inherit;text-decoration:none}
 }
 
 .cnib-link:hover {
-    color: #064fc0;
+    color: #1f5a98;
     text-decoration: underline;
 }
 
@@ -581,7 +581,7 @@ a{color:inherit;text-decoration:none}
 .cnib-role-card {
     display: block;
     cursor: pointer;
-    border: 1.5px solid rgba(0, 86, 238, 0.2);
+    border: 1.5px solid rgba(43, 114, 187, 0.2);
     border-radius: 12px;
     padding: 14px 10px;
     text-align: center;
@@ -598,24 +598,24 @@ a{color:inherit;text-decoration:none}
 }
 
 .cnib-role-card:hover {
-    border-color: #0056ee;
-    background: rgba(0, 86, 238, 0.04);
+    border-color: #2b72bb;
+    background: rgba(43, 114, 187, 0.04);
     transform: translateY(-2px);
 }
 
 .cnib-role-card.active {
-    border-color: #0056ee;
-    background: rgba(0, 86, 238, 0.08);
-    box-shadow: 0 4px 14px rgba(0, 86, 238, 0.18);
+    border-color: #2b72bb;
+    background: rgba(43, 114, 187, 0.08);
+    box-shadow: 0 4px 14px rgba(43, 114, 187, 0.18);
 }
 
 .cnib-role-card.active .fw-bold {
-    color: #0056ee !important;
+    color: #2b72bb !important;
 }
 
 .cnib-role-icon {
     font-size: 1.7rem;
-    color: #0056ee;
+    color: #2b72bb;
     margin-bottom: 6px;
     display: inline-block;
 }
@@ -626,17 +626,17 @@ a{color:inherit;text-decoration:none}
     font-weight: 600;
     border-radius: 50px;
     padding: 5px 12px;
-    border: 1.5px solid rgba(0, 86, 238, 0.35);
-    background: rgba(0, 86, 238, 0.08);
-    color: #064fc0;
+    border: 1.5px solid rgba(43, 114, 187, 0.35);
+    background: rgba(43, 114, 187, 0.08);
+    color: #1f5a98;
     cursor: pointer;
     transition: all 0.15s ease;
 }
 
 .cnib-quick-btn:hover {
-    background: #0056ee;
+    background: #2b72bb;
     color: #ffffff;
-    border-color: #0056ee;
+    border-color: #2b72bb;
 }
 
 /* Alertes & Messages CNIB */

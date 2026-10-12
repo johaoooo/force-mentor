@@ -56,7 +56,7 @@ import { AuthService } from '../../services/auth.service';
                       <span class="small fw-bold" style="color: var(--blue-dark); font-size: 0.78rem;">
                         <i class="bi bi-lightning-charge-fill text-warning me-1"></i>Accès rapide Démo (1 clic) :
                       </span>
-                      <span class="badge bg-white text-primary border rounded-1 px-2 py-1" style="font-size: 0.75rem;">Prêt à tester</span>
+                      <span class="badge bg-white border rounded-1 px-2 py-1" style="color: var(--blue); font-size: 0.75rem;">Prêt à tester</span>
                     </div>
                     <div class="d-flex flex-wrap gap-2">
                       <button type="button" class="cnib-quick-btn flex-fill" (click)="fillDemo('moussa_diop', 'passer123', 'Moussa Diop (Mentor)')">
@@ -101,12 +101,12 @@ import { AuthService } from '../../services/auth.service';
 
                     <div class="text-center d-block d-lg-none pt-2">
                       <span class="small text-muted">Pas encore de compte ?</span>
-                      <a routerLink="/inscription" class="small fw-bold text-primary ms-1">Créer un compte</a>
+                      <a routerLink="/inscription" class="small fw-bold ms-1" style="color: var(--blue);">Créer un compte</a>
                     </div>
                   </form>
                 </div>
 
-                <!-- Colonne Overlay Dégradé Bleu Royal CNIB -->
+                <!-- Colonne Overlay Dégradé Bleu Force Mentor -->
                 <div class="col-lg-5 d-none d-lg-flex flex-column align-self-stretch">
                   <div class="cnib-overlay-panel flex-grow-1 w-100">
                     <div class="p-2 px-3 rounded-3 mb-4" style="background: rgba(255, 255, 255, 0.95); display: inline-block;">

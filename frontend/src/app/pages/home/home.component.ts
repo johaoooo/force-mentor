@@ -14,7 +14,7 @@ import { Profile, Stats } from '../../models/models';
     <section class="hero">
       <div class="container hero__inner">
         <div class="hero__text">
-          <h1>Trouvez le mentor idéal<br>pour progresser</h1>
+          <h1>Trouvez le mentor idéal<br class="d-none d-sm-inline"> pour progresser</h1>
           <p>
             Bénéficiez de l'accompagnement de professionnels expérimentés qui vous guideront dans votre parcours, vous aideront à développer vos compétences et à atteindre vos objectifs.
           </p>

@@ -155,7 +155,7 @@ import { AuthService } from '../../services/auth.service';
 
                     <div class="text-center d-block d-lg-none pt-2">
                       <span class="small text-muted">Déjà un compte ?</span>
-                      <a routerLink="/connexion" class="small fw-bold text-primary ms-1">Se connecter</a>
+                      <a routerLink="/connexion" class="small fw-bold ms-1" style="color: var(--blue);">Se connecter</a>
                     </div>
                   </form>
                 </div>
