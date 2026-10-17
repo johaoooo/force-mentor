@@ -1,7 +1,10 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from accounts.models import Profile
-from .models import Matiere, CompetenceMentor, DemandeMentorat, DisponibiliteMentor, Notification
+from .models import (
+    Matiere, CompetenceMentor, DemandeMentorat, DisponibiliteMentor,
+    Notification, Conversation, Message
+)
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -85,3 +88,59 @@ class NotificationSerializer(serializers.ModelSerializer):
             'id', 'titre', 'message', 'lien', 'type_notif', 
             'type_display', 'est_lu', 'date_creation'
         ]
+
+
+class MessageSerializer(serializers.ModelSerializer):
+    expediteur = ProfileSerializer(read_only=True)
+    expediteur_id = serializers.IntegerField(source='expediteur.id', read_only=True)
+
+    class Meta:
+        model = Message
+        fields = [
+            'id', 'conversation_id', 'expediteur', 'expediteur_id',
+            'contenu', 'est_lu', 'date_envoi'
+        ]
+
+
+class ConversationSerializer(serializers.ModelSerializer):
+    autre_participant = serializers.SerializerMethodField()
+    dernier_message = serializers.SerializerMethodField()
+    nb_non_lus = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Conversation
+        fields = [
+            'id', 'autre_participant', 'dernier_message', 
+            'nb_non_lus', 'date_mise_a_jour', 'date_creation'
+        ]
+
+    def get_autre_participant(self, obj):
+        request = self.context.get('request')
+        current_profile = request.user.profile if request and request.user.is_authenticated else None
+        if current_profile:
+            autre = obj.participants.exclude(id=current_profile.id).first()
+        else:
+            autre = obj.participants.first()
+        if autre:
+            return ProfileSerializer(autre, context=self.context).data
+        return None
+
+    def get_dernier_message(self, obj):
+        msg = obj.messages.order_by('-date_envoi').first()
+        if msg:
+            return {
+                'id': msg.id,
+                'contenu': msg.contenu,
+                'expediteur_id': msg.expediteur_id,
+                'est_lu': msg.est_lu,
+                'date_envoi': msg.date_envoi
+            }
+        return None
+
+    def get_nb_non_lus(self, obj):
+        request = self.context.get('request')
+        current_profile = request.user.profile if request and request.user.is_authenticated else None
+        if current_profile:
+            return obj.messages.filter(est_lu=False).exclude(expediteur=current_profile).count()
+        return 0
+

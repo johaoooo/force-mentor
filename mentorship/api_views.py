@@ -13,10 +13,14 @@ import base64
 import json
 import uuid
 from accounts.models import Profile
-from .models import Matiere, CompetenceMentor, DemandeMentorat, DisponibiliteMentor, Notification
+from .models import (
+    Matiere, CompetenceMentor, DemandeMentorat, DisponibiliteMentor,
+    Notification, Conversation, Message
+)
 from .api_serializers import (
     MatiereSerializer, ProfileSerializer, DemandeMentoratSerializer,
-    DisponibiliteMentorSerializer, NotificationSerializer
+    DisponibiliteMentorSerializer, NotificationSerializer,
+    ConversationSerializer, MessageSerializer
 )
 
 from .authentication import CsrfExemptSessionAuthentication
@@ -506,3 +510,115 @@ class NotificationActionAPIView(APIView):
         else:
             Notification.objects.filter(destinataire=profile, est_lu=False).update(est_lu=True)
         return Response({'message': 'Notifications mises à jour'})
+
+
+class ConversationsAPIView(APIView):
+    """GET /api/conversations/"""
+    def get(self, request):
+        if not request.user.is_authenticated:
+            return Response({'error': 'Non authentifié'}, status=status.HTTP_401_UNAUTHORIZED)
+        profile = request.user.profile
+        convs = Conversation.objects.filter(participants=profile).prefetch_related('participants', 'messages').order_by('-date_mise_a_jour')
+        serializer = ConversationSerializer(convs, many=True, context={'request': request})
+        return Response(serializer.data)
+
+
+class ConversationDemarrerAPIView(APIView):
+    """POST /api/conversations/demarrer/"""
+    def post(self, request):
+        if not request.user.is_authenticated:
+            return Response({'error': 'Non authentifié'}, status=status.HTTP_401_UNAUTHORIZED)
+        profile = request.user.profile
+        destinataire_id = request.data.get('destinataire_id')
+        message_initial = request.data.get('message_initial', '').strip()
+
+        if not destinataire_id:
+            return Response({'error': 'Destinataire requis'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            destinataire = Profile.objects.get(id=destinataire_id)
+        except Profile.DoesNotExist:
+            return Response({'error': 'Destinataire introuvable'}, status=status.HTTP_404_NOT_FOUND)
+
+        if destinataire == profile:
+            return Response({'error': 'Impossible de démarrer une discussion avec vous-même'}, status=status.HTTP_400_BAD_REQUEST)
+
+        conv = Conversation.objects.filter(participants=profile).filter(participants=destinataire).first()
+        if not conv:
+            conv = Conversation.objects.create()
+            conv.participants.add(profile, destinataire)
+
+        if message_initial:
+            msg = Message.objects.create(
+                conversation=conv,
+                expediteur=profile,
+                contenu=message_initial
+            )
+            conv.save()
+            # Notification destinataire
+            exp_name = profile.user.get_full_name() or profile.user.username
+            Notification.objects.create(
+                destinataire=destinataire,
+                titre=f"Nouveau message de {exp_name}",
+                message=message_initial[:90],
+                lien="/messages",
+                type_notif="MESSAGE"
+            )
+
+        serializer = ConversationSerializer(conv, context={'request': request})
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class ConversationMessagesAPIView(APIView):
+    """GET & POST /api/conversations/<int:pk>/messages/"""
+    def get(self, request, pk):
+        if not request.user.is_authenticated:
+            return Response({'error': 'Non authentifié'}, status=status.HTTP_401_UNAUTHORIZED)
+        profile = request.user.profile
+        try:
+            conv = Conversation.objects.get(id=pk, participants=profile)
+        except Conversation.DoesNotExist:
+            return Response({'error': 'Conversation introuvable'}, status=status.HTTP_404_NOT_FOUND)
+
+        # Marquer comme lus les messages reçus
+        conv.messages.filter(est_lu=False).exclude(expediteur=profile).update(est_lu=True)
+
+        messages = conv.messages.select_related('expediteur__user').order_by('date_envoi')
+        serializer = MessageSerializer(messages, many=True, context={'request': request})
+        return Response(serializer.data)
+
+    def post(self, request, pk):
+        if not request.user.is_authenticated:
+            return Response({'error': 'Non authentifié'}, status=status.HTTP_401_UNAUTHORIZED)
+        profile = request.user.profile
+        try:
+            conv = Conversation.objects.get(id=pk, participants=profile)
+        except Conversation.DoesNotExist:
+            return Response({'error': 'Conversation introuvable'}, status=status.HTTP_404_NOT_FOUND)
+
+        contenu = request.data.get('contenu', '').strip()
+        if not contenu:
+            return Response({'error': 'Le message ne peut pas être vide'}, status=status.HTTP_400_BAD_REQUEST)
+
+        msg = Message.objects.create(
+            conversation=conv,
+            expediteur=profile,
+            contenu=contenu
+        )
+        conv.save() # actualise date_mise_a_jour
+
+        # Notification pour l'autre participant
+        destinataire = conv.participants.exclude(id=profile.id).first()
+        if destinataire:
+            exp_name = profile.user.get_full_name() or profile.user.username
+            Notification.objects.create(
+                destinataire=destinataire,
+                titre=f"Message de {exp_name}",
+                message=contenu[:90],
+                lien="/messages",
+                type_notif="MESSAGE"
+            )
+
+        serializer = MessageSerializer(msg, context={'request': request})
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+

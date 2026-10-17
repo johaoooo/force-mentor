@@ -107,6 +107,7 @@ class Notification(models.Model):
         ('CONFIRMATION', 'Séance confirmée'),
         ('RAPPEL', 'Rappel de séance'),
         ('ANNULATION', 'Séance annulée'),
+        ('MESSAGE', 'Nouveau message'),
         ('SYSTEME', 'Information système'),
     ]
 
@@ -125,3 +126,36 @@ class Notification(models.Model):
 
     def __str__(self):
         return f"Notif [{self.type_notif}] pour {self.destinataire.user.username} : {self.titre}"
+
+
+class Conversation(models.Model):
+    """Fil de discussion entre mentor et mentoré."""
+    participants = models.ManyToManyField(Profile, related_name='conversations')
+    demande = models.ForeignKey(DemandeMentorat, null=True, blank=True, on_delete=models.SET_NULL, related_name='conversations')
+    date_creation = models.DateTimeField(auto_now_add=True)
+    date_mise_a_jour = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Conversation"
+        verbose_name_plural = "Conversations"
+        ordering = ['-date_mise_a_jour']
+
+    def __str__(self):
+        return f"Conversation #{self.id}"
+
+
+class Message(models.Model):
+    """Message individuel au sein d'une conversation."""
+    conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE, related_name='messages')
+    expediteur = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='messages_envoyes')
+    contenu = models.TextField()
+    est_lu = models.BooleanField(default=False)
+    date_envoi = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Message"
+        verbose_name_plural = "Messages"
+        ordering = ['date_envoi']
+
+    def __str__(self):
+        return f"Message #{self.id} de {self.expediteur.user.username} : {self.contenu[:30]}"

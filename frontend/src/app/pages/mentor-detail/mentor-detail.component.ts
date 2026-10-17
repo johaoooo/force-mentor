@@ -49,10 +49,13 @@ import { Profile, Matiere } from '../../models/models';
                     <i class="bi bi-mortarboard me-1 text-primary"></i>
                     {{ mentor.filiere || 'Programme Informatique' }} &bull; {{ mentor.niveau_display }}
                   </p>
-                  <div>
+                  <div class="d-flex align-items-center gap-2 flex-wrap mt-2">
                     <span class="badge-status-accepted">
                       <i class="bi bi-circle-fill" style="font-size: 6px;"></i> Disponible pour mentorat
                     </span>
+                    <a [routerLink]="['/messages']" [queryParams]="{ destinataireId: mentor.id }" class="btn btn-sm btn-outline-primary rounded-pill px-3 py-1 fw-medium d-inline-flex align-items-center gap-1 shadow-sm">
+                      <i class="bi bi-chat-dots-fill"></i> Contacter / Messagerie
+                    </a>
                   </div>
                 </div>
               </div>

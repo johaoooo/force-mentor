@@ -69,9 +69,34 @@ export interface Notification {
   titre: string;
   message: string;
   lien: string;
-  type_notif: 'DEMANDE' | 'CONFIRMATION' | 'RAPPEL' | 'ANNULATION' | 'SYSTEME';
+  type_notif: 'DEMANDE' | 'CONFIRMATION' | 'RAPPEL' | 'ANNULATION' | 'MESSAGE' | 'SYSTEME';
   type_display: string;
   est_lu: boolean;
+  date_creation: string;
+}
+
+export interface ChatMessage {
+  id: number;
+  conversation_id: number;
+  expediteur: Profile;
+  expediteur_id: number;
+  contenu: string;
+  est_lu: boolean;
+  date_envoi: string;
+}
+
+export interface Conversation {
+  id: number;
+  autre_participant: Profile;
+  dernier_message?: {
+    id: number;
+    contenu: string;
+    expediteur_id: number;
+    est_lu: boolean;
+    date_envoi: string;
+  } | null;
+  nb_non_lus: number;
+  date_mise_a_jour: string;
   date_creation: string;
 }
 

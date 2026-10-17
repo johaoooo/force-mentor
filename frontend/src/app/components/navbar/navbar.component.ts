@@ -36,11 +36,15 @@ import { Notification } from '../../models/models';
           <a routerLink="/faq" routerLinkActive="active" (click)="isMenuOpen = false">FAQs</a>
           <ng-container *ngIf="authService.currentUser$ | async as user">
             <a routerLink="/tableau-de-bord" routerLinkActive="active" (click)="isMenuOpen = false">Tableau de bord</a>
+            <a routerLink="/messages" routerLinkActive="active" (click)="isMenuOpen = false">Messagerie</a>
           </ng-container>
 
           <!-- Actions Auth Mobile -->
           <div class="navbar__actions-mobile d-lg-none pt-3 mt-2 border-top">
             <ng-container *ngIf="authService.currentUser$ | async as user; else mobileGuestActions">
+              <a routerLink="/messages" (click)="isMenuOpen = false" class="btn btn--outline w-100 mb-2 justify-content-center">
+                <i class="bi bi-chat-dots me-2"></i>Messagerie
+              </a>
               <a routerLink="/profil" (click)="isMenuOpen = false" class="btn btn--outline w-100 mb-2 justify-content-center">
                 <img *ngIf="user.photo_url" [src]="user.photo_url" alt="Avatar" class="rounded-circle object-fit-cover me-2" style="width: 24px; height: 24px;">
                 <i *ngIf="!user.photo_url" class="bi bi-person-fill me-1"></i>
@@ -62,6 +66,11 @@ import { Notification } from '../../models/models';
         <div class="navbar__actions d-none d-lg-flex align-items-center gap-2">
           <ng-container *ngIf="authService.currentUser$ | async as user; else guestActions">
             
+            <!-- Raccourci Messagerie -->
+            <a routerLink="/messages" class="btn btn-light position-relative p-0 rounded-circle d-flex align-items-center justify-content-center border me-1" style="width: 38px; height: 38px;" title="Messagerie">
+              <i class="bi bi-chat-dots text-secondary fs-5"></i>
+            </a>
+
             <!-- Cloche Notifications -->
             <div class="position-relative me-1">
               <button 

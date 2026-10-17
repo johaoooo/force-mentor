@@ -28,4 +28,9 @@ urlpatterns = [
     path('notifications/', api_views.NotificationsAPIView.as_view(), name='api_notifications'),
     path('notifications/marquer-lues/', api_views.NotificationActionAPIView.as_view(), name='api_notifications_marquer_toutes_lues'),
     path('notifications/<int:pk>/lire/', api_views.NotificationActionAPIView.as_view(), name='api_notification_lire'),
+
+    # Messagerie intégrée (Chat direct)
+    path('conversations/', api_views.ConversationsAPIView.as_view(), name='api_conversations'),
+    path('conversations/demarrer/', api_views.ConversationDemarrerAPIView.as_view(), name='api_conversation_demarrer'),
+    path('conversations/<int:pk>/messages/', api_views.ConversationMessagesAPIView.as_view(), name='api_conversation_messages'),
 ]

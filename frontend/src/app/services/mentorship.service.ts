@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { DemandeMentorat, DisponibiliteMentor, Notification } from '../models/models';
+import { DemandeMentorat, DisponibiliteMentor, Notification, Conversation, ChatMessage } from '../models/models';
 
 @Injectable({
   providedIn: 'root'
@@ -95,6 +95,37 @@ export class MentorshipService {
     return this.http.post<{ message: string }>(
       `${this.apiUrl}/notifications/marquer-lues/`,
       {},
+      { withCredentials: true }
+    );
+  }
+
+  // --- Messagerie Intégrée (Chat Direct) ---
+  getConversations(): Observable<Conversation[]> {
+    return this.http.get<Conversation[]>(
+      `${this.apiUrl}/conversations/`,
+      { withCredentials: true }
+    );
+  }
+
+  startConversation(destinataireId: number, messageInitial?: string): Observable<Conversation> {
+    return this.http.post<Conversation>(
+      `${this.apiUrl}/conversations/demarrer/`,
+      { destinataire_id: destinataireId, message_initial: messageInitial },
+      { withCredentials: true }
+    );
+  }
+
+  getMessages(conversationId: number): Observable<ChatMessage[]> {
+    return this.http.get<ChatMessage[]>(
+      `${this.apiUrl}/conversations/${conversationId}/messages/`,
+      { withCredentials: true }
+    );
+  }
+
+  sendMessage(conversationId: number, contenu: string): Observable<ChatMessage> {
+    return this.http.post<ChatMessage>(
+      `${this.apiUrl}/conversations/${conversationId}/messages/`,
+      { contenu },
       { withCredentials: true }
     );
   }

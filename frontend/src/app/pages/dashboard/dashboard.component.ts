@@ -65,6 +65,10 @@ import { DemandeMentorat, Profile, DisponibiliteMentor, Notification } from '../
               {{ mesDispos.length }}
             </span>
           </a>
+          <a routerLink="/messages" class="sidebar-nav-link">
+            <i class="bi bi-chat-dots"></i>
+            <span>Messagerie</span>
+          </a>
           <a routerLink="/mentors" class="sidebar-nav-link">
             <i class="bi bi-search"></i>
             <span>Trouver un mentor</span>
@@ -107,6 +111,11 @@ import { DemandeMentorat, Profile, DisponibiliteMentor, Notification } from '../
           </div>
 
           <div class="d-flex align-items-center gap-2">
+            <!-- Raccourci Messagerie -->
+            <a routerLink="/messages" class="btn btn-light position-relative p-0 rounded-circle d-flex align-items-center justify-content-center border" style="width: 36px; height: 36px;" title="Messagerie">
+              <i class="bi bi-chat-dots text-secondary"></i>
+            </a>
+
             <!-- Cloche Notifications -->
             <div class="position-relative">
               <button 

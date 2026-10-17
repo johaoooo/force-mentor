@@ -9,6 +9,7 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { HowItWorksComponent } from './pages/how-it-works/how-it-works.component';
 import { FaqComponent } from './pages/faq/faq.component';
 import { TestimonialsComponent } from './pages/testimonials/testimonials.component';
+import { ChatComponent } from './pages/chat/chat.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent, title: 'Force Mentor - Accueil' },
@@ -21,5 +22,6 @@ export const routes: Routes = [
   { path: 'inscription', component: RegisterComponent, title: 'Inscription - Force Mentor' },
   { path: 'tableau-de-bord', component: DashboardComponent, title: 'Tableau de bord - Force Mentor' },
   { path: 'profil', component: ProfileComponent, title: 'Mon Profil - Force Mentor' },
+  { path: 'messages', component: ChatComponent, title: 'Messagerie - Force Mentor' },
   { path: '**', redirectTo: '' }
 ];
