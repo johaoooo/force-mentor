@@ -61,12 +61,12 @@ import { Profile, Matiere } from '../../models/models';
               <div class="mb-4">
                 <h2 class="fw-bold text-dark fs-6 mb-2">À propos du mentor</h2>
                 <p class="text-muted" style="font-size: 14.5px; line-height: 1.65; white-space: pre-line;">
-                  {{ mentor.bio || 'Ce mentor n\'a pas encore rédigé de biographie détaillée, mais est activement disponible pour accompagner les étudiants du programme Force-N.' }}
+                  {{ getBio() }}
                 </p>
               </div>
 
               <!-- Compétences & expertises -->
-              <div>
+              <div class="mb-4">
                 <h2 class="fw-bold text-dark fs-6 mb-3">Matières & Niveaux d'expertise</h2>
                 <div class="row g-2">
                   <div *ngFor="let comp of mentor.competences" class="col-12 col-sm-6">
@@ -85,26 +85,53 @@ import { Profile, Matiere } from '../../models/models';
                   </div>
                 </div>
               </div>
+
+              <!-- Créneaux de disponibilité hebdomadaire -->
+              <div>
+                <h2 class="fw-bold text-dark fs-6 mb-2">
+                  <i class="bi bi-calendar-week-fill text-primary me-2"></i>Horaires de disponibilité habituels
+                </h2>
+                <p class="text-muted small mb-3">Le mentor a défini ces plages horaires pour ses séances d'accompagnement :</p>
+
+                <div *ngIf="mentor.disponibilites && mentor.disponibilites.length > 0; else noDispos" class="d-flex flex-wrap gap-2">
+                  <div *ngFor="let dispo of mentor.disponibilites" class="badge-dispo-card p-2 px-3 rounded-3 border bg-white shadow-sm d-flex align-items-center gap-2">
+                    <span class="badge bg-primary-subtle text-primary fw-bold" style="font-size: 11.5px;">
+                      {{ dispo.jour_display }}
+                    </span>
+                    <span class="text-dark fw-bold" style="font-size: 13px;">
+                      {{ dispo.heure_debut }} - {{ dispo.heure_fin }}
+                    </span>
+                  </div>
+                </div>
+                <ng-template #noDispos>
+                  <div class="p-3 bg-light rounded-3 text-muted small border">
+                    <i class="bi bi-info-circle me-1"></i>Ce mentor n'a pas encore fixé d'horaires hebdomadaires stricts. Vous pouvez proposer l'horaire de votre choix ci-contre.
+                  </div>
+                </ng-template>
+              </div>
+
             </div>
           </div>
 
-          <!-- Colonne droite : Formulaire de demande de mentorat -->
+          <!-- Colonne droite : Formulaire de demande et réservation de créneau -->
           <div class="col-12 col-lg-5">
             <div class="card p-4 border-0 shadow-sm rounded-4 bg-white sticky-top" style="top: 90px;">
               <h2 class="fw-bold fs-5 text-dark mb-1">
-                <i class="bi bi-send-fill text-primary me-2"></i>Demander un mentorat
+                <i class="bi bi-calendar-check-fill text-primary me-2"></i>Réserver une séance
               </h2>
               <p class="text-muted small mb-3">
-                Envoyez un message pour solliciter une session d'accompagnement.
+                Sélectionnez un créneau ou proposez un moment pour votre session.
               </p>
 
               <!-- Succès -->
               <div *ngIf="requestSuccess" class="alert alert-success rounded-3 p-3 mb-3">
                 <i class="bi bi-check-circle-fill me-2 fs-5 text-success"></i>
-                <strong>Demande envoyée !</strong>
-                <p class="small mb-2 mt-1">Le mentor recevra votre message et pourra vous répondre.</p>
+                <strong>Demande & Réservation envoyées !</strong>
+                <p class="small mb-2 mt-1">
+                  Le mentor recevra votre proposition. Dès validation, le lien automatique de visioconférence (Jitsi Meet) sera disponible dans votre tableau de bord.
+                </p>
                 <a routerLink="/tableau-de-bord" class="btn btn-sm btn-outline-success">
-                  Voir mon tableau de bord <i class="bi bi-arrow-right ms-1"></i>
+                  Accéder à mon tableau de bord <i class="bi bi-arrow-right ms-1"></i>
                 </a>
               </div>
 
@@ -116,9 +143,9 @@ import { Profile, Matiere } from '../../models/models';
               <!-- Utilisateur non connecté -->
               <div *ngIf="!authService.currentUser" class="p-3 rounded-3 text-center" style="background: rgba(43, 114, 187, 0.08); border: 1px dashed var(--blue);">
                 <i class="bi bi-shield-lock text-primary fs-3 d-block mb-2"></i>
-                <p class="small text-muted mb-3">Vous devez être connecté avec votre compte étudiant pour solliciter ce mentor.</p>
+                <p class="small text-muted mb-3">Vous devez être connecté avec votre compte étudiant pour réserver une séance.</p>
                 <a routerLink="/connexion" class="btn-fm-primary w-100 justify-content-center py-2">
-                  Se connecter pour faire une demande
+                  Se connecter pour réserver
                 </a>
               </div>
 
@@ -128,8 +155,9 @@ import { Profile, Matiere } from '../../models/models';
                 <p class="small text-muted mb-0">Il s'agit de votre propre profil de mentor.</p>
               </div>
 
-              <!-- Formulaire d'envoi -->
+              <!-- Formulaire de réservation -->
               <form *ngIf="authService.currentUser && authService.currentUser.id !== mentor.id && !requestSuccess" (ngSubmit)="sendDemande()">
+                <!-- 1. Matière -->
                 <div class="mb-3">
                   <label class="small text-muted fw-bold mb-1 d-block">Matière concernée *</label>
                   <select [(ngModel)]="selectedMatiereId" name="matiere" class="form-select" style="font-size: 13.5px;" required>
@@ -140,23 +168,57 @@ import { Profile, Matiere } from '../../models/models';
                   </select>
                 </div>
 
+                <!-- 2. Choix du créneau -->
+                <div class="mb-3" *ngIf="mentor.disponibilites && mentor.disponibilites.length > 0">
+                  <label class="small text-muted fw-bold mb-1 d-block">Créneau du mentor recommandé</label>
+                  <select [(ngModel)]="selectedDispoId" (ngModelChange)="onDispoChange($event)" name="disponibilite" class="form-select" style="font-size: 13.5px;">
+                    <option [ngValue]="null">-- Choisir un créneau prédéfini --</option>
+                    <option *ngFor="let d of mentor.disponibilites" [ngValue]="d.id">
+                      {{ d.jour_display }} de {{ d.heure_debut }} à {{ d.heure_fin }}
+                    </option>
+                  </select>
+                </div>
+
+                <!-- 3. Date et Heure précises -->
+                <div class="row g-2 mb-3">
+                  <div class="col-7">
+                    <label class="small text-muted fw-bold mb-1 d-block">Date de séance souhaitée</label>
+                    <input type="date" [(ngModel)]="sessionDate" (ngModelChange)="updateFullDateTime()" name="sessionDate" class="form-control" style="font-size: 13.5px;" [min]="todayDate">
+                  </div>
+                  <div class="col-5">
+                    <label class="small text-muted fw-bold mb-1 d-block">Heure début</label>
+                    <input type="time" [(ngModel)]="sessionTime" (ngModelChange)="updateFullDateTime()" name="sessionTime" class="form-control" style="font-size: 13.5px;">
+                  </div>
+                </div>
+
+                <!-- 4. Durée -->
+                <div class="mb-3">
+                  <label class="small text-muted fw-bold mb-1 d-block">Durée estimée</label>
+                  <select [(ngModel)]="durationMinutes" name="duration" class="form-select" style="font-size: 13.5px;">
+                    <option [ngValue]="30">30 minutes</option>
+                    <option [ngValue]="45">45 minutes</option>
+                    <option [ngValue]="60">1 heure (recommandé)</option>
+                    <option [ngValue]="90">1 heure 30</option>
+                  </select>
+                </div>
+
+                <!-- 5. Message -->
                 <div class="mb-3">
                   <label class="small text-muted fw-bold mb-1 d-block">Votre message / Besoin précis *</label>
                   <textarea 
                     [(ngModel)]="requestMessage" 
                     name="message" 
-                    rows="4" 
+                    rows="3" 
                     class="form-control" 
-                    placeholder="Bonjour {{ mentor.user.first_name }}, je rencontre des difficultés sur les boucles et les fonctions en Python. Auriez-vous un créneau pour m'éclairer ?"
+                    placeholder="Bonjour {{ mentor.user.first_name }}, je bloque sur les exercices en séance pratique. Pouvons-nous revoir ce point ?"
                     style="font-size: 13.5px;"
                     required
                   ></textarea>
-                  <small class="text-muted" style="font-size: 11px;">Décrivez brièvement le problème pour aider le mentor à préparer la session.</small>
                 </div>
 
-                <button type="submit" [disabled]="submitting" class="btn-fm-green w-100 justify-content-center py-2">
+                <button type="submit" [disabled]="submitting" class="btn-fm-green w-100 justify-content-center py-2.5">
                   <span *ngIf="submitting" class="spinner-border spinner-border-sm me-2"></span>
-                  <i *ngIf="!submitting" class="bi bi-paperplane-fill me-2"></i>Envoyer la demande
+                  <i *ngIf="!submitting" class="bi bi-calendar-plus-fill me-2"></i>Confirmer la réservation
                 </button>
               </form>
             </div>
@@ -177,10 +239,20 @@ export class MentorDetailComponent implements OnInit {
   error = '';
 
   selectedMatiereId: number | null = null;
+  selectedDispoId: number | null = null;
+  sessionDate: string = '';
+  sessionTime: string = '18:00';
+  durationMinutes: number = 60;
+  todayDate: string = new Date().toISOString().split('T')[0];
+
   requestMessage = '';
   submitting = false;
   requestSuccess = false;
   requestError = '';
+
+  getBio(): string {
+    return this.mentor?.bio || "Ce mentor n'a pas encore rédigé de biographie détaillée, mais est activement disponible pour accompagner les étudiants du programme Force-N.";
+  }
 
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get('id');
@@ -200,6 +272,18 @@ export class MentorDetailComponent implements OnInit {
         if (data.competences && data.competences.length > 0) {
           this.selectedMatiereId = data.competences[0].matiere.id;
         }
+        // Pré-sélectionner le premier créneau s'il existe
+        if (data.disponibilites && data.disponibilites.length > 0) {
+          const first = data.disponibilites[0];
+          this.selectedDispoId = first.id;
+          this.sessionTime = first.heure_debut;
+          this.initSuggestedDateForSlot(first.jour_semaine);
+        } else {
+          // Date par défaut à demain
+          const tomorrow = new Date();
+          tomorrow.setDate(tomorrow.getDate() + 1);
+          this.sessionDate = tomorrow.toISOString().split('T')[0];
+        }
         this.loading = false;
       },
       error: (err) => {
@@ -207,6 +291,31 @@ export class MentorDetailComponent implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+  initSuggestedDateForSlot(dayOfWeek: number): void {
+    // dayOfWeek : 0 = Lundi, ..., 6 = Dimanche
+    // JavaScript : 0 = Dimanche, 1 = Lundi, ..., 6 = Samedi
+    const targetJsDay = (dayOfWeek + 1) % 7;
+    const now = new Date();
+    let daysUntil = (targetJsDay - now.getDay() + 7) % 7;
+    if (daysUntil === 0) daysUntil = 7; // Prochaine occurrence
+    const targetDate = new Date();
+    targetDate.setDate(now.getDate() + daysUntil);
+    this.sessionDate = targetDate.toISOString().split('T')[0];
+  }
+
+  onDispoChange(dispoId: number | null): void {
+    if (!dispoId || !this.mentor?.disponibilites) return;
+    const dispo = this.mentor.disponibilites.find(d => d.id === dispoId);
+    if (dispo) {
+      this.sessionTime = dispo.heure_debut;
+      this.initSuggestedDateForSlot(dispo.jour_semaine);
+    }
+  }
+
+  updateFullDateTime(): void {
+    // Valide et synchronise
   }
 
   sendDemande(): void {
@@ -218,7 +327,19 @@ export class MentorDetailComponent implements OnInit {
     this.submitting = true;
     this.requestError = '';
 
-    this.mentorshipService.createDemande(this.mentor.id, this.selectedMatiereId, this.requestMessage.trim()).subscribe({
+    let date_heure_souhaitee: string | undefined = undefined;
+    if (this.sessionDate && this.sessionTime) {
+      date_heure_souhaitee = `${this.sessionDate}T${this.sessionTime}:00`;
+    }
+
+    this.mentorshipService.createDemande({
+      mentor_id: this.mentor.id,
+      matiere_id: this.selectedMatiereId,
+      message: this.requestMessage.trim(),
+      date_heure_souhaitee: date_heure_souhaitee,
+      disponibilite_id: this.selectedDispoId,
+      duree_minutes: this.durationMinutes
+    }).subscribe({
       next: () => {
         this.submitting = false;
         this.requestSuccess = true;

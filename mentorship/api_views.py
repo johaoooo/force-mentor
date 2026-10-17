@@ -7,12 +7,16 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.db.models import Q
 from django.core.files.base import ContentFile
+from django.utils.dateparse import parse_datetime
+from django.utils import timezone
 import base64
 import json
+import uuid
 from accounts.models import Profile
-from .models import Matiere, CompetenceMentor, DemandeMentorat
+from .models import Matiere, CompetenceMentor, DemandeMentorat, DisponibiliteMentor, Notification
 from .api_serializers import (
-    MatiereSerializer, ProfileSerializer, DemandeMentoratSerializer
+    MatiereSerializer, ProfileSerializer, DemandeMentoratSerializer,
+    DisponibiliteMentorSerializer, NotificationSerializer
 )
 
 from .authentication import CsrfExemptSessionAuthentication
@@ -250,6 +254,76 @@ class ProfileUpdateAPIView(APIView):
         })
 
 
+class MentorDisponibilitesAPIView(APIView):
+    """GET /api/mentors/<int:mentor_id>/disponibilites/"""
+    def get(self, request, mentor_id):
+        try:
+            mentor = Profile.objects.get(id=mentor_id, role__in=['MENTOR', 'LES_DEUX'])
+        except Profile.DoesNotExist:
+            return Response({'error': 'Mentor introuvable'}, status=status.HTTP_404_NOT_FOUND)
+        dispos = DisponibiliteMentor.objects.filter(mentor=mentor, est_actif=True).order_by('jour_semaine', 'heure_debut')
+        serializer = DisponibiliteMentorSerializer(dispos, many=True)
+        return Response(serializer.data)
+
+
+class MesDisponibilitesAPIView(APIView):
+    """GET & POST /api/mes-disponibilites/ et DELETE /api/mes-disponibilites/<int:pk>/"""
+    def get(self, request):
+        if not request.user.is_authenticated:
+            return Response({'error': 'Non authentifié'}, status=status.HTTP_401_UNAUTHORIZED)
+        profile = request.user.profile
+        if not profile.est_mentor:
+            return Response({'error': 'Seuls les mentors peuvent gérer des disponibilités'}, status=status.HTTP_403_FORBIDDEN)
+        dispos = DisponibiliteMentor.objects.filter(mentor=profile).order_by('jour_semaine', 'heure_debut')
+        serializer = DisponibiliteMentorSerializer(dispos, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        if not request.user.is_authenticated:
+            return Response({'error': 'Non authentifié'}, status=status.HTTP_401_UNAUTHORIZED)
+        profile = request.user.profile
+        if not profile.est_mentor:
+            return Response({'error': 'Seuls les mentors peuvent gérer des disponibilités'}, status=status.HTTP_403_FORBIDDEN)
+        
+        data = request.data
+        jour_semaine = data.get('jour_semaine')
+        heure_debut = data.get('heure_debut')
+        heure_fin = data.get('heure_fin')
+
+        if jour_semaine is None or not heure_debut or not heure_fin:
+            return Response({'error': 'Jour de la semaine, heure de début et heure de fin requis.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            jour_semaine = int(jour_semaine)
+            if not (0 <= jour_semaine <= 6):
+                raise ValueError()
+        except ValueError:
+            return Response({'error': 'Jour de semaine invalide (0=Lundi, ..., 6=Dimanche).'}, status=status.HTTP_400_BAD_REQUEST)
+
+        dispo = DisponibiliteMentor.objects.create(
+            mentor=profile,
+            jour_semaine=jour_semaine,
+            heure_debut=heure_debut,
+            heure_fin=heure_fin,
+            est_actif=True
+        )
+        return Response({
+            'message': 'Créneau de disponibilité ajouté avec succès',
+            'disponibilite': DisponibiliteMentorSerializer(dispo).data
+        }, status=status.HTTP_201_CREATED)
+
+    def delete(self, request, pk=None):
+        if not request.user.is_authenticated:
+            return Response({'error': 'Non authentifié'}, status=status.HTTP_401_UNAUTHORIZED)
+        profile = request.user.profile
+        try:
+            dispo = DisponibiliteMentor.objects.get(id=pk, mentor=profile)
+            dispo.delete()
+            return Response({'message': 'Créneau supprimé avec succès'})
+        except DisponibiliteMentor.DoesNotExist:
+            return Response({'error': 'Créneau introuvable'}, status=status.HTTP_404_NOT_FOUND)
+
+
 class DemandesAPIView(APIView):
     """GET ou POST /api/demandes/"""
     def get(self, request):
@@ -270,6 +344,9 @@ class DemandesAPIView(APIView):
         mentor_id = request.data.get('mentor_id')
         matiere_id = request.data.get('matiere_id')
         message = request.data.get('message', '').strip()
+        date_heure_souhaitee_str = request.data.get('date_heure_souhaitee')
+        disponibilite_id = request.data.get('disponibilite_id')
+        duree_minutes = request.data.get('duree_minutes', 60)
 
         if not mentor_id or not matiere_id or not message:
             return Response({'error': 'Mentor, matière et message requis'}, status=status.HTTP_400_BAD_REQUEST)
@@ -287,21 +364,52 @@ class DemandesAPIView(APIView):
         except Matiere.DoesNotExist:
             return Response({'error': 'Matière introuvable'}, status=status.HTTP_404_NOT_FOUND)
 
+        disponibilite = None
+        if disponibilite_id:
+            try:
+                disponibilite = DisponibiliteMentor.objects.get(id=disponibilite_id, mentor=mentor)
+            except DisponibiliteMentor.DoesNotExist:
+                pass
+
+        date_heure_souhaitee = None
+        if date_heure_souhaitee_str:
+            try:
+                date_heure_souhaitee = parse_datetime(date_heure_souhaitee_str)
+            except Exception:
+                pass
+
         demande = DemandeMentorat.objects.create(
             mentore=mentore,
             mentor=mentor,
             matiere=matiere,
             message=message,
+            disponibilite=disponibilite,
+            date_heure_souhaitee=date_heure_souhaitee,
+            duree_minutes=int(duree_minutes) if str(duree_minutes).isdigit() else 60,
             statut='EN_ATTENTE'
         )
+
+        # Notification in-app pour le mentor
+        student_name = mentore.user.get_full_name() or mentore.user.username
+        notif_msg = f"{student_name} a sollicité une séance de mentorat en {matiere.nom}."
+        if date_heure_souhaitee:
+            notif_msg += f" Créneau proposé : {date_heure_souhaitee.strftime('%d/%m/%Y à %H:%M')}."
+        Notification.objects.create(
+            destinataire=mentor,
+            titre="Nouvelle réservation de séance",
+            message=notif_msg,
+            lien="/tableau-de-bord",
+            type_notif="DEMANDE"
+        )
+
         return Response({
-            'message': 'Demande envoyée avec succès',
+            'message': 'Demande et réservation envoyées avec succès',
             'demande': DemandeMentoratSerializer(demande).data
         }, status=status.HTTP_201_CREATED)
 
 
 class DemandeActionAPIView(APIView):
-    """POST /api/demandes/<int:pk>/action/ avec {action: 'accepter' | 'refuser' | 'terminer'}"""
+    """POST /api/demandes/<int:pk>/action/ avec {action: 'accepter' | 'refuser' | 'terminer' | 'annuler'}"""
     def post(self, request, pk):
         if not request.user.is_authenticated:
             return Response({'error': 'Non authentifié'}, status=status.HTTP_401_UNAUTHORIZED)
@@ -314,15 +422,55 @@ class DemandeActionAPIView(APIView):
         action = request.data.get('action')
         profile = request.user.profile
 
-        if demande.mentor != profile:
+        if profile != demande.mentor and profile != demande.mentore:
             return Response({'error': 'Action non autorisée sur cette demande'}, status=status.HTTP_403_FORBIDDEN)
 
         if action == 'accepter':
+            if profile != demande.mentor:
+                return Response({'error': 'Seul le mentor peut accepter cette demande'}, status=status.HTTP_403_FORBIDDEN)
             demande.statut = 'ACCEPTEE'
+            if not demande.lien_visio:
+                demande.lien_visio = f"https://meet.jit.si/ForceMentor-Seance-{demande.id}-{uuid.uuid4().hex[:8]}"
+            
+            mentor_name = profile.user.get_full_name() or profile.user.username
+            date_info = f" pour le {demande.date_heure_souhaitee.strftime('%d/%m/%Y à %H:%M')}" if demande.date_heure_souhaitee else ""
+            Notification.objects.create(
+                destinataire=demande.mentore,
+                titre="Séance confirmée !",
+                message=f"{mentor_name} a accepté votre séance en {demande.matiere.nom}{date_info}. Le lien de visio est prêt !",
+                lien="/tableau-de-bord",
+                type_notif="CONFIRMATION"
+            )
+
         elif action == 'refuser':
+            if profile != demande.mentor:
+                return Response({'error': 'Seul le mentor peut refuser cette demande'}, status=status.HTTP_403_FORBIDDEN)
             demande.statut = 'REFUSEE'
+            mentor_name = profile.user.get_full_name() or profile.user.username
+            Notification.objects.create(
+                destinataire=demande.mentore,
+                titre="Demande de séance déclinée",
+                message=f"{mentor_name} n'est malheureusement pas disponible pour cette séance en {demande.matiere.nom}.",
+                lien="/tableau-de-bord",
+                type_notif="ANNULATION"
+            )
+
+        elif action == 'annuler':
+            demande.statut = 'ANNULEE'
+            dest = demande.mentore if profile == demande.mentor else demande.mentor
+            actor_name = profile.user.get_full_name() or profile.user.username
+            Notification.objects.create(
+                destinataire=dest,
+                titre="Séance annulée",
+                message=f"La séance de mentorat en {demande.matiere.nom} a été annulée par {actor_name}.",
+                lien="/tableau-de-bord",
+                type_notif="ANNULATION"
+            )
+
         elif action == 'terminer':
             demande.statut = 'TERMINEE'
+            if 'commentaire_mentor' in request.data:
+                demande.commentaire_mentor = request.data['commentaire_mentor']
         else:
             return Response({'error': 'Action non reconnue'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -331,3 +479,30 @@ class DemandeActionAPIView(APIView):
             'message': f'Demande mise à jour ({demande.get_statut_display()})',
             'demande': DemandeMentoratSerializer(demande).data
         })
+
+
+class NotificationsAPIView(APIView):
+    """GET /api/notifications/"""
+    def get(self, request):
+        if not request.user.is_authenticated:
+            return Response({'error': 'Non authentifié'}, status=status.HTTP_401_UNAUTHORIZED)
+        profile = request.user.profile
+        notifs = Notification.objects.filter(destinataire=profile)[:30]
+        unread_count = Notification.objects.filter(destinataire=profile, est_lu=False).count()
+        return Response({
+            'unread_count': unread_count,
+            'notifications': NotificationSerializer(notifs, many=True).data
+        })
+
+
+class NotificationActionAPIView(APIView):
+    """POST /api/notifications/marquer-lues/ ou POST /api/notifications/<int:pk>/lire/"""
+    def post(self, request, pk=None):
+        if not request.user.is_authenticated:
+            return Response({'error': 'Non authentifié'}, status=status.HTTP_401_UNAUTHORIZED)
+        profile = request.user.profile
+        if pk:
+            Notification.objects.filter(id=pk, destinataire=profile).update(est_lu=True)
+        else:
+            Notification.objects.filter(destinataire=profile, est_lu=False).update(est_lu=True)
+        return Response({'message': 'Notifications mises à jour'})
