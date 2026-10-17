@@ -1,0 +1,242 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 950" width="1200" height="950">
+  <defs>
+    <style>
+      .bg { fill: #f8fafc; }
+      .lifeline { stroke: #94a3b8; stroke-width: 1.5; stroke-dasharray: 6,6; }
+      .box-actor { fill: #eff6ff; stroke: #2B72BB; stroke-width: 2; rx: 8; }
+      .box-server { fill: #f8fafc; stroke: #334155; stroke-width: 1.8; rx: 8; }
+      .box-redis { fill: #fef2f2; stroke: #dc2626; stroke-width: 1.8; rx: 8; }
+      .box-mysql { fill: #ecfdf5; stroke: #059669; stroke-width: 1.8; rx: 8; }
+      .title-text { font-family: 'Segoe UI', Arial, sans-serif; font-size: 13px; font-weight: bold; text-anchor: middle; }
+      .sub-text { font-family: 'Segoe UI', Arial, sans-serif; font-size: 10px; fill: #64748b; text-anchor: middle; }
+      .activation { fill: #bfdbfe; stroke: #2B72BB; stroke-width: 1.2; rx: 2; }
+      .activation-redis { fill: #fecaca; stroke: #dc2626; stroke-width: 1.2; rx: 2; }
+      .activation-mysql { fill: #a7f3d0; stroke: #059669; stroke-width: 1.2; rx: 2; }
+      .msg-line { stroke: #1e293b; stroke-width: 1.6; marker-end: url(#arrow-sync); }
+      .msg-ws { stroke: #2563eb; stroke-width: 1.8; marker-end: url(#arrow-ws); }
+      .msg-reply { stroke: #64748b; stroke-width: 1.4; stroke-dasharray: 5,4; marker-end: url(#arrow-reply); }
+      .msg-text { font-family: 'Segoe UI', Arial, sans-serif; font-size: 11px; font-weight: 600; fill: #0f172a; }
+      .msg-text-ws { font-family: 'Segoe UI', Arial, sans-serif; font-size: 11px; font-weight: bold; fill: #1d4ed8; }
+      .par-box { fill: #f1f5f9; stroke: #64748b; stroke-dasharray: 4,4; stroke-width: 1.5; rx: 6; }
+      .par-label { font-family: 'Segoe UI', Arial, sans-serif; font-size: 11px; font-weight: bold; fill: #334155; }
+    </style>
+    
+    <!-- Icône Étudiant / Mentoré -->
+    <g id="icon-student">
+      <path d="M12 2L1 7l11 5 9-4.09V14a1 1 0 002 0V7L12 2z" fill="#2B72BB"/>
+      <path d="M4 10.5v4c0 3 3.5 5.5 8 5.5s8-2.5 8-5.5v-4" fill="none" stroke="#2B72BB" stroke-width="2" stroke-linecap="round"/>
+    </g>
+
+    <!-- Icône Mentor / Accompagnateur -->
+    <g id="icon-mentor">
+      <circle cx="10" cy="7" r="4" fill="none" stroke="#45A846" stroke-width="2"/>
+      <path d="M2 20v-2a6 6 0 0112 0v2" fill="none" stroke="#45A846" stroke-width="2" stroke-linecap="round"/>
+      <polyline points="15 11 18 14 23 8" fill="none" stroke="#45A846" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+
+    <!-- Icône Administrateur -->
+    <g id="icon-admin">
+      <circle cx="12" cy="12" r="3" fill="none" stroke="#dc2626" stroke-width="2"/>
+      <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" fill="none" stroke="#dc2626" stroke-width="1.8"/>
+    </g>
+
+    <!-- Icône Serveur Courriel / SMTP -->
+    <g id="icon-mail">
+      <rect x="2" y="4" width="20" height="16" rx="2" fill="none" stroke="#CB732B" stroke-width="2"/>
+      <path d="M22 6l-10 7L2 6" fill="none" stroke="#CB732B" stroke-width="2" stroke-linecap="round"/>
+    </g>
+
+    <!-- Icône Chat / Messagerie Instantanée -->
+    <g id="icon-chat">
+      <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" fill="none" stroke="#15803d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <line x1="8" y1="9" x2="16" y2="9" stroke="#15803d" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="8" y1="13" x2="13" y2="13" stroke="#15803d" stroke-width="1.8" stroke-linecap="round"/>
+    </g>
+
+    <!-- Icône Navigateur Web -->
+    <g id="icon-browser">
+      <rect x="2" y="3" width="20" height="18" rx="3" fill="none" stroke="#2B72BB" stroke-width="2"/>
+      <line x1="2" y1="8" x2="22" y2="8" stroke="#2B72BB" stroke-width="1.8"/>
+      <circle cx="5" cy="5.5" r="1" fill="#2B72BB"/>
+      <circle cx="8" cy="5.5" r="1" fill="#2B72BB"/>
+      <circle cx="11" cy="5.5" r="1" fill="#2B72BB"/>
+    </g>
+
+    <!-- Icône Serveur Applicatif / WSGI-ASGI -->
+    <g id="icon-server">
+      <rect x="2" y="2" width="20" height="8" rx="2" fill="none" stroke="#334155" stroke-width="2"/>
+      <rect x="2" y="14" width="20" height="8" rx="2" fill="none" stroke="#334155" stroke-width="2"/>
+      <circle cx="6" cy="6" r="1" fill="#2B72BB"/>
+      <circle cx="6" cy="18" r="1" fill="#2B72BB"/>
+      <line x1="10" y1="6" x2="18" y2="6" stroke="#64748b" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="10" y1="18" x2="18" y2="18" stroke="#64748b" stroke-width="1.5" stroke-linecap="round"/>
+    </g>
+
+    <!-- Icône Base de Données Relationnelle -->
+    <g id="icon-database">
+      <ellipse cx="12" cy="5" rx="9" ry="3" fill="none" stroke="#047857" stroke-width="2"/>
+      <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" fill="none" stroke="#047857" stroke-width="2"/>
+      <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" fill="none" stroke="#047857" stroke-width="2"/>
+    </g>
+
+    <!-- Icône Cache / Redis -->
+    <g id="icon-redis">
+      <polygon points="12,2 22,7 12,12 2,7" fill="none" stroke="#b91c1c" stroke-width="2"/>
+      <path d="M2 12l10 5 10-5" fill="none" stroke="#b91c1c" stroke-width="2"/>
+      <path d="M2 17l10 5 10-5" fill="none" stroke="#b91c1c" stroke-width="2"/>
+    </g>
+
+    <!-- Icône Éclair / Temps Réel -->
+    <g id="icon-bolt">
+      <polygon points="13,2 3,14 12,14 11,22 21,10 12,10" fill="#f59e0b" stroke="#d97706" stroke-width="1.5"/>
+    </g>
+
+    <!-- Icône Stockage / Disque -->
+    <g id="icon-storage">
+      <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" fill="none" stroke="#475569" stroke-width="2"/>
+    </g>
+
+    <!-- Icône Bouclier Sécurité / Reverse Proxy -->
+    <g id="icon-shield">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="none" stroke="#2B72BB" stroke-width="2"/>
+    </g>
+
+    <marker id="arrow-sync" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#1e293b" />
+    </marker>
+    <marker id="arrow-ws" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#2563eb" />
+    </marker>
+    <marker id="arrow-reply" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 2 L 8 5 L 0 8 z" fill="#64748b" />
+    </marker>
+  </defs>
+
+  <rect width="100%" height="100%" class="bg" />
+
+  <text x="600" y="38" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="22" font-weight="bold" fill="#0f172a">
+    DIAGRAMME DE SÉQUENCE : MESSAGERIE INSTANTANÉE WEBSOCKET ET MYSQL
+  </text>
+  <text x="600" y="60" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="13" fill="#64748b">
+    Connexion persistante, diffusion asynchrone Redis et persistance dans MySQL 8.0
+  </text>
+
+  <!-- PARTICIPANTS & COLONNES AVEC ICÔNES PRO -->
+  <!-- Col 1 : Mentoré (100) -->
+  <g transform="translate(100, 85)">
+    <rect x="-65" y="0" width="130" height="55" class="box-actor" />
+    <g transform="translate(-8, 5)"><use href="#icon-student" width="16" height="16" /></g>
+    <text x="0" y="34" class="title-text" fill="#1e3a8a">Mentoré</text>
+    <text x="0" y="47" class="sub-text">Apprenant actif</text>
+    <line x1="0" y1="55" x2="0" y2="830" class="lifeline" />
+  </g>
+
+  <!-- Col 2 : Frontend Angular (280) -->
+  <g transform="translate(280, 85)">
+    <rect x="-65" y="0" width="130" height="55" class="box-server" />
+    <g transform="translate(-8, 5)"><use href="#icon-browser" width="16" height="16" /></g>
+    <text x="0" y="34" class="title-text" fill="#0f172a">Client Angular</text>
+    <text x="0" y="47" class="sub-text">RxJS WebSocket</text>
+    <line x1="0" y1="55" x2="0" y2="830" class="lifeline" />
+  </g>
+
+  <!-- Col 3 : Serveur ASGI Daphne (500) -->
+  <g transform="translate(500, 85)">
+    <rect x="-70" y="0" width="140" height="55" class="box-server" />
+    <g transform="translate(-8, 5)"><use href="#icon-bolt" width="16" height="16" /></g>
+    <text x="0" y="34" class="title-text" fill="#0f172a">Daphne / Channels</text>
+    <text x="0" y="47" class="sub-text">Async ChatConsumer</text>
+    <line x1="0" y1="55" x2="0" y2="830" class="lifeline" />
+  </g>
+
+  <!-- Col 4 : Redis Channel Layer (710) -->
+  <g transform="translate(710, 85)">
+    <rect x="-65" y="0" width="130" height="55" class="box-redis" />
+    <g transform="translate(-8, 5)"><use href="#icon-redis" width="16" height="16" /></g>
+    <text x="0" y="34" class="title-text" fill="#b91c1c">Redis Layer</text>
+    <text x="0" y="47" class="sub-text">Broker Pub/Sub</text>
+    <line x1="0" y1="55" x2="0" y2="830" class="lifeline" />
+  </g>
+
+  <!-- Col 5 : SGBD MySQL (900) -->
+  <g transform="translate(900, 85)">
+    <rect x="-65" y="0" width="130" height="55" class="box-mysql" />
+    <g transform="translate(-8, 5)"><use href="#icon-database" width="16" height="16" /></g>
+    <text x="0" y="34" class="title-text" fill="#047857">MySQL 8.0</text>
+    <text x="0" y="47" class="sub-text">Stockage InnoDB</text>
+    <line x1="0" y1="55" x2="0" y2="830" class="lifeline" />
+  </g>
+
+  <!-- Col 6 : Client Mentor (1100) -->
+  <g transform="translate(1100, 85)">
+    <rect x="-65" y="0" width="130" height="55" class="box-actor" />
+    <g transform="translate(-8, 5)"><use href="#icon-mentor" width="16" height="16" /></g>
+    <text x="0" y="34" class="title-text" fill="#1e3a8a">Mentor</text>
+    <text x="0" y="47" class="sub-text">Navigateur connecté</text>
+    <line x1="0" y1="55" x2="0" y2="830" class="lifeline" />
+  </g>
+
+  <!-- ÉTAPE 1 : HANDSHAKE WEBSOCKET -->
+  <rect x="493" y="170" width="14" height="110" class="activation" />
+
+  <line x1="100" y1="180" x2="280" y2="180" class="msg-line" />
+  <text x="190" y="172" text-anchor="middle" class="msg-text">1: Clique sur « Ouvrir le chat »</text>
+
+  <line x1="280" y1="210" x2="493" y2="210" class="msg-ws" />
+  <text x="385" y="202" text-anchor="middle" class="msg-text-ws">2: WSS Handshake /ws/chat/room_42/</text>
+
+  <line x1="507" y1="235" x2="703" y2="235" class="msg-line" />
+  <text x="605" y="227" text-anchor="middle" class="msg-text">3: group_add("room_42", channel_name)</text>
+
+  <line x1="703" y1="250" x2="507" y2="250" class="msg-reply" />
+  <text x="605" y="265" text-anchor="middle" class="sub-text">OK (Ajouté au groupe)</text>
+
+  <line x1="493" y1="275" x2="280" y2="275" class="msg-reply" />
+  <text x="385" y="290" text-anchor="middle" class="msg-text">4: 101 Switching Protocols (WS Ouvert)</text>
+
+  <!-- ÉTAPE 2 : ÉMISSION ET DIFFUSION DU MESSAGE -->
+  <rect x="273" y="340" width="14" height="400" class="activation" />
+  <rect x="493" y="360" width="14" height="380" class="activation" />
+  <rect x="703" y="480" width="14" height="120" class="activation-redis" />
+  <rect x="893" y="480" width="14" height="80" class="activation-mysql" />
+  <rect x="1093" y="620" width="14" height="100" class="activation" />
+
+  <line x1="100" y1="350" x2="273" y2="350" class="msg-line" />
+  <text x="185" y="342" text-anchor="middle" class="msg-text">5: Rédige le message et valide</text>
+
+  <line x1="287" y1="375" x2="493" y2="375" class="msg-ws" />
+  <text x="390" y="367" text-anchor="middle" class="msg-text-ws">6: Trame JSON : {"type": "chat.message", "text": "..."}</text>
+
+  <!-- BLOC PARALLÈLE -->
+  <rect x="430" y="420" width="530" height="190" class="par-box" />
+  <text x="445" y="440" class="par-label">par [Traitement Concomitant Asynchrone]</text>
+
+  <!-- Branche 1 : Sauvegarde MySQL -->
+  <line x1="507" y1="485" x2="893" y2="485" class="msg-line" stroke="#059669" />
+  <text x="700" y="475" text-anchor="middle" class="msg-text" fill="#047857">7a: INSERT INTO chat_message (InnoDB)</text>
+
+  <line x1="893" y1="540" x2="507" y2="540" class="msg-reply" stroke="#059669" />
+  <text x="700" y="555" text-anchor="middle" class="sub-text">Message persisté avec ID=108</text>
+
+  <!-- Branche 2 : Redis Pub/Sub -->
+  <line x1="507" y1="495" x2="703" y2="495" class="msg-line" stroke="#dc2626" />
+  <text x="605" y="485" text-anchor="middle" class="msg-text" fill="#dc2626">7b: group_send("room_42", payload)</text>
+
+  <line x1="703" y1="575" x2="507" y2="575" class="msg-line" stroke="#dc2626" />
+  <text x="605" y="590" text-anchor="middle" class="msg-text" fill="#dc2626">8: Broadcast vers Daphne Consumers</text>
+
+  <!-- ÉTAPE 3 : DIFFUSION VERS LE DESTINATAIRE -->
+  <line x1="507" y1="630" x2="1093" y2="630" class="msg-ws" />
+  <text x="800" y="622" text-anchor="middle" class="msg-text-ws">9: Diffusion WS vers Mentor : {"id": 108, "text": "..."}</text>
+
+  <text x="1100" y="665" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="11" font-weight="bold" fill="#059669">
+    Affichage immédiat (&lt; 50ms)
+  </text>
+
+  <!-- Accusé de réception expéditeur -->
+  <line x1="493" y1="680" x2="287" y2="680" class="msg-reply" />
+  <text x="390" y="672" text-anchor="middle" class="msg-text">10: ACK WS (Statut transmis / Lu)</text>
+
+  <line x1="273" y1="710" x2="100" y2="710" class="msg-reply" />
+  <text x="185" y="702" text-anchor="middle" class="msg-text">11: Coche de validation visuelle</text>
+</svg>

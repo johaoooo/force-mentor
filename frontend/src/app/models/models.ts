@@ -34,6 +34,7 @@ export interface Profile {
   est_mentor: boolean;
   est_mentore: boolean;
   competences: CompetenceMentor[];
+  photo_url?: string | null;
 }
 
 export interface DemandeMentorat {

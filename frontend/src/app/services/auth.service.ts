@@ -8,7 +8,7 @@ import { Profile } from '../models/models';
 })
 export class AuthService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://127.0.0.1:8080/api';
+  private apiUrl = 'http://127.0.0.1:8001/api';
 
   private currentUserSubject = new BehaviorSubject<Profile | null>(this.getStoredUser());
   public currentUser$ = this.currentUserSubject.asObservable();

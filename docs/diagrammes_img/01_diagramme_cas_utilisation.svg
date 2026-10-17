@@ -1,0 +1,278 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 880" width="1200" height="880">
+  <defs>
+    <style>
+      .bg { fill: #f8fafc; }
+      .system-box { fill: #ffffff; stroke: #2B72BB; stroke-width: 2.5; rx: 12; }
+      .actor-text { font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; font-weight: bold; fill: #1e293b; text-anchor: middle; }
+      .actor-sub { font-family: 'Segoe UI', Arial, sans-serif; font-size: 11px; fill: #64748b; text-anchor: middle; }
+      .uc-ellipse { fill: #eff6ff; stroke: #2B72BB; stroke-width: 2; rx: 95; ry: 24; }
+      .uc-ellipse-orange { fill: #fff7ed; stroke: #CB732B; stroke-width: 2; rx: 95; ry: 24; }
+      .uc-ellipse-green { fill: #f0fdf4; stroke: #45A846; stroke-width: 2; rx: 95; ry: 24; }
+      .uc-text { font-family: 'Segoe UI', Arial, sans-serif; font-size: 12px; font-weight: 600; fill: #1e293b; text-anchor: middle; }
+      .line { stroke: #334155; stroke-width: 1.5; }
+      .dashed-include { stroke: #2B72BB; stroke-width: 1.5; stroke-dasharray: 5,4; marker-end: url(#arrow-blue); }
+      .dashed-extend { stroke: #CB732B; stroke-width: 1.5; stroke-dasharray: 5,4; marker-end: url(#arrow-orange); }
+      .stereo-text { font-family: 'Segoe UI', Arial, sans-serif; font-size: 11px; font-weight: bold; }
+    </style>
+    
+    <!-- Icône Étudiant / Mentoré -->
+    <g id="icon-student">
+      <path d="M12 2L1 7l11 5 9-4.09V14a1 1 0 002 0V7L12 2z" fill="#2B72BB"/>
+      <path d="M4 10.5v4c0 3 3.5 5.5 8 5.5s8-2.5 8-5.5v-4" fill="none" stroke="#2B72BB" stroke-width="2" stroke-linecap="round"/>
+    </g>
+
+    <!-- Icône Mentor / Accompagnateur -->
+    <g id="icon-mentor">
+      <circle cx="10" cy="7" r="4" fill="none" stroke="#45A846" stroke-width="2"/>
+      <path d="M2 20v-2a6 6 0 0112 0v2" fill="none" stroke="#45A846" stroke-width="2" stroke-linecap="round"/>
+      <polyline points="15 11 18 14 23 8" fill="none" stroke="#45A846" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+
+    <!-- Icône Administrateur -->
+    <g id="icon-admin">
+      <circle cx="12" cy="12" r="3" fill="none" stroke="#dc2626" stroke-width="2"/>
+      <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" fill="none" stroke="#dc2626" stroke-width="1.8"/>
+    </g>
+
+    <!-- Icône Serveur Courriel / SMTP -->
+    <g id="icon-mail">
+      <rect x="2" y="4" width="20" height="16" rx="2" fill="none" stroke="#CB732B" stroke-width="2"/>
+      <path d="M22 6l-10 7L2 6" fill="none" stroke="#CB732B" stroke-width="2" stroke-linecap="round"/>
+    </g>
+
+    <!-- Icône Chat / Messagerie Instantanée -->
+    <g id="icon-chat">
+      <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" fill="none" stroke="#15803d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <line x1="8" y1="9" x2="16" y2="9" stroke="#15803d" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="8" y1="13" x2="13" y2="13" stroke="#15803d" stroke-width="1.8" stroke-linecap="round"/>
+    </g>
+
+    <!-- Icône Navigateur Web -->
+    <g id="icon-browser">
+      <rect x="2" y="3" width="20" height="18" rx="3" fill="none" stroke="#2B72BB" stroke-width="2"/>
+      <line x1="2" y1="8" x2="22" y2="8" stroke="#2B72BB" stroke-width="1.8"/>
+      <circle cx="5" cy="5.5" r="1" fill="#2B72BB"/>
+      <circle cx="8" cy="5.5" r="1" fill="#2B72BB"/>
+      <circle cx="11" cy="5.5" r="1" fill="#2B72BB"/>
+    </g>
+
+    <!-- Icône Serveur Applicatif / WSGI-ASGI -->
+    <g id="icon-server">
+      <rect x="2" y="2" width="20" height="8" rx="2" fill="none" stroke="#334155" stroke-width="2"/>
+      <rect x="2" y="14" width="20" height="8" rx="2" fill="none" stroke="#334155" stroke-width="2"/>
+      <circle cx="6" cy="6" r="1" fill="#2B72BB"/>
+      <circle cx="6" cy="18" r="1" fill="#2B72BB"/>
+      <line x1="10" y1="6" x2="18" y2="6" stroke="#64748b" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="10" y1="18" x2="18" y2="18" stroke="#64748b" stroke-width="1.5" stroke-linecap="round"/>
+    </g>
+
+    <!-- Icône Base de Données Relationnelle -->
+    <g id="icon-database">
+      <ellipse cx="12" cy="5" rx="9" ry="3" fill="none" stroke="#047857" stroke-width="2"/>
+      <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" fill="none" stroke="#047857" stroke-width="2"/>
+      <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" fill="none" stroke="#047857" stroke-width="2"/>
+    </g>
+
+    <!-- Icône Cache / Redis -->
+    <g id="icon-redis">
+      <polygon points="12,2 22,7 12,12 2,7" fill="none" stroke="#b91c1c" stroke-width="2"/>
+      <path d="M2 12l10 5 10-5" fill="none" stroke="#b91c1c" stroke-width="2"/>
+      <path d="M2 17l10 5 10-5" fill="none" stroke="#b91c1c" stroke-width="2"/>
+    </g>
+
+    <!-- Icône Éclair / Temps Réel -->
+    <g id="icon-bolt">
+      <polygon points="13,2 3,14 12,14 11,22 21,10 12,10" fill="#f59e0b" stroke="#d97706" stroke-width="1.5"/>
+    </g>
+
+    <!-- Icône Stockage / Disque -->
+    <g id="icon-storage">
+      <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" fill="none" stroke="#475569" stroke-width="2"/>
+    </g>
+
+    <!-- Icône Bouclier Sécurité / Reverse Proxy -->
+    <g id="icon-shield">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="none" stroke="#2B72BB" stroke-width="2"/>
+    </g>
+
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#2B72BB" />
+    </marker>
+    <marker id="arrow-orange" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#CB732B" />
+    </marker>
+  </defs>
+
+  <rect width="100%" height="100%" class="bg" />
+
+  <!-- Titre Principal -->
+  <text x="600" y="42" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="24" font-weight="bold" fill="#0f172a">
+    DIAGRAMME DE CAS D'UTILISATION — FORCE MENTOR
+  </text>
+  <text x="600" y="68" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="13" fill="#64748b">
+    Modélisation formelle des acteurs, frontières du système et dépendances
+  </text>
+
+  <!-- Frontière du Système -->
+  <rect x="230" y="95" width="740" height="755" class="system-box" />
+  <rect x="230" y="95" width="740" height="40" fill="#2B72BB" rx="12" />
+  <rect x="230" y="125" width="740" height="10" fill="#2B72BB" />
+  <text x="600" y="122" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="16" font-weight="bold" fill="#ffffff">
+    Système : Application Web « Force Mentor »
+  </text>
+
+  <!-- ACTEUR 1 : Mentoré (Gauche Haut) -->
+  <g transform="translate(110, 240)">
+    <circle cx="0" cy="0" r="16" fill="#eff6ff" stroke="#2B72BB" stroke-width="2.5" />
+    <line x1="0" y1="16" x2="0" y2="52" stroke="#2B72BB" stroke-width="2.5" />
+    <line x1="-22" y1="28" x2="22" y2="28" stroke="#2B72BB" stroke-width="2.5" />
+    <line x1="0" y1="52" x2="-18" y2="85" stroke="#2B72BB" stroke-width="2.5" />
+    <line x1="0" y1="52" x2="18" y2="85" stroke="#2B72BB" stroke-width="2.5" />
+    <g transform="translate(-12, 95)"><use href="#icon-student" width="24" height="24" /></g>
+    <text x="0" y="130" class="actor-text">Mentoré</text>
+    <text x="0" y="145" class="actor-sub">(Apprenant Force-N)</text>
+  </g>
+
+  <!-- ACTEUR 2 : Mentor (Gauche Bas) -->
+  <g transform="translate(110, 560)">
+    <circle cx="0" cy="0" r="16" fill="#f0fdf4" stroke="#45A846" stroke-width="2.5" />
+    <line x1="0" y1="16" x2="0" y2="52" stroke="#45A846" stroke-width="2.5" />
+    <line x1="-22" y1="28" x2="22" y2="28" stroke="#45A846" stroke-width="2.5" />
+    <line x1="0" y1="52" x2="-18" y2="85" stroke="#45A846" stroke-width="2.5" />
+    <line x1="0" y1="52" x2="18" y2="85" stroke="#45A846" stroke-width="2.5" />
+    <g transform="translate(-12, 95)"><use href="#icon-mentor" width="24" height="24" /></g>
+    <text x="0" y="130" class="actor-text">Mentor</text>
+    <text x="0" y="145" class="actor-sub">(Accompagnateur)</text>
+  </g>
+
+  <!-- ACTEUR 3 : Administrateur (Droite Haut) -->
+  <g transform="translate(1090, 240)">
+    <circle cx="0" cy="0" r="16" fill="#fef2f2" stroke="#dc2626" stroke-width="2.5" />
+    <line x1="0" y1="16" x2="0" y2="52" stroke="#dc2626" stroke-width="2.5" />
+    <line x1="-22" y1="28" x2="22" y2="28" stroke="#dc2626" stroke-width="2.5" />
+    <line x1="0" y1="52" x2="-18" y2="85" stroke="#dc2626" stroke-width="2.5" />
+    <line x1="0" y1="52" x2="18" y2="85" stroke="#dc2626" stroke-width="2.5" />
+    <g transform="translate(-12, 95)"><use href="#icon-admin" width="24" height="24" /></g>
+    <text x="0" y="130" class="actor-text">Administrateur</text>
+    <text x="0" y="145" class="actor-sub">(Encadrant Force-N)</text>
+  </g>
+
+  <!-- ACTEUR 4 : Serveur Email (Droite Bas) -->
+  <g transform="translate(1090, 560)">
+    <rect x="-35" y="-20" width="70" height="46" rx="6" fill="#fff7ed" stroke="#CB732B" stroke-width="2" />
+    <path d="M -35 -20 L 0 10 L 35 -20" fill="none" stroke="#CB732B" stroke-width="2" />
+    <g transform="translate(-12, 35)"><use href="#icon-mail" width="24" height="24" /></g>
+    <text x="0" y="70" class="actor-text">Serveur SMTP</text>
+    <text x="0" y="85" class="actor-sub">(Système externe)</text>
+  </g>
+
+  <!-- CAS D'UTILISATION (Ellipses) -->
+
+  <!-- UC Communs : Auth & Profil -->
+  <g transform="translate(390, 175)">
+    <rect x="-100" y="-18" width="200" height="36" rx="18" class="uc-ellipse" />
+    <text x="0" y="5" class="uc-text">S'authentifier (Login / Register)</text>
+  </g>
+  <g transform="translate(390, 235)">
+    <rect x="-100" y="-18" width="200" height="36" rx="18" class="uc-ellipse" />
+    <text x="0" y="5" class="uc-text">Gérer son profil étudiant</text>
+  </g>
+  <g transform="translate(390, 295)">
+    <rect x="-100" y="-18" width="200" height="36" rx="18" class="uc-ellipse" />
+    <text x="0" y="5" class="uc-text">Consulter le tableau de bord</text>
+  </g>
+
+  <!-- UC Mentoré -->
+  <g transform="translate(390, 375)">
+    <rect x="-100" y="-18" width="200" height="36" rx="18" class="uc-ellipse" />
+    <text x="0" y="5" class="uc-text">Rechercher des mentors</text>
+  </g>
+  <g transform="translate(680, 375)">
+    <rect x="-100" y="-18" width="200" height="36" rx="18" class="uc-ellipse-orange" />
+    <text x="0" y="5" class="uc-text">Filtrer par matière</text>
+  </g>
+  <g transform="translate(390, 445)">
+    <rect x="-105" y="-18" width="210" height="36" rx="18" class="uc-ellipse" />
+    <text x="0" y="5" class="uc-text">Envoyer une demande de mentorat</text>
+  </g>
+
+  <!-- UC Échanges / Temps réel avec icône vectorielle -->
+  <g transform="translate(600, 520)">
+    <rect x="-120" y="-22" width="240" height="44" rx="22" class="uc-ellipse-green" />
+    <g transform="translate(-105, -10)"><use href="#icon-chat" width="20" height="20" /></g>
+    <text x="8" y="-1" class="uc-text" fill="#15803d">Messagerie Instantanée</text>
+    <text x="8" y="14" class="actor-sub">(Échanges temps réel WebSockets)</text>
+  </g>
+
+  <!-- UC Mentor -->
+  <g transform="translate(390, 595)">
+    <rect x="-105" y="-18" width="210" height="36" rx="18" class="uc-ellipse" />
+    <text x="0" y="5" class="uc-text">Gérer compétences et matières</text>
+  </g>
+  <g transform="translate(390, 660)">
+    <rect x="-105" y="-18" width="210" height="36" rx="18" class="uc-ellipse" />
+    <text x="0" y="5" class="uc-text">Traiter les demandes reçues</text>
+  </g>
+  <g transform="translate(390, 725)">
+    <rect x="-105" y="-18" width="210" height="36" rx="18" class="uc-ellipse" />
+    <text x="0" y="5" class="uc-text">Clôturer une session</text>
+  </g>
+  <g transform="translate(680, 725)">
+    <rect x="-100" y="-18" width="200" height="36" rx="18" class="uc-ellipse-orange" />
+    <text x="0" y="5" class="uc-text">Évaluer et noter le mentor</text>
+  </g>
+
+  <!-- UC Admin -->
+  <g transform="translate(800, 180)">
+    <rect x="-100" y="-18" width="200" height="36" rx="18" class="uc-ellipse" />
+    <text x="0" y="5" class="uc-text">Gérer utilisateurs et rôles</text>
+  </g>
+  <g transform="translate(800, 235)">
+    <rect x="-100" y="-18" width="200" height="36" rx="18" class="uc-ellipse" />
+    <text x="0" y="5" class="uc-text">Gérer le catalogue des matières</text>
+  </g>
+  <g transform="translate(800, 290)">
+    <rect x="-100" y="-18" width="200" height="36" rx="18" class="uc-ellipse" />
+    <text x="0" y="5" class="uc-text">Superviser l'activité globale</text>
+  </g>
+
+  <!-- UC Notification -->
+  <g transform="translate(800, 610)">
+    <rect x="-100" y="-18" width="200" height="36" rx="18" class="uc-ellipse" />
+    <text x="0" y="5" class="uc-text">Notifier par courriel</text>
+  </g>
+
+  <!-- LIGNES DE LIAISON -->
+  <line x1="150" y1="240" x2="290" y2="175" class="line" />
+  <line x1="150" y1="245" x2="290" y2="235" class="line" />
+  <line x1="150" y1="250" x2="290" y2="295" class="line" />
+  <line x1="150" y1="260" x2="290" y2="375" class="line" />
+  <line x1="150" y1="270" x2="285" y2="445" class="line" />
+  <line x1="150" y1="285" x2="480" y2="520" class="line" stroke="#15803d" stroke-width="2" />
+
+  <line x1="150" y1="570" x2="290" y2="185" class="line" />
+  <line x1="150" y1="575" x2="290" y2="240" class="line" />
+  <line x1="150" y1="580" x2="290" y2="300" class="line" />
+  <line x1="150" y1="585" x2="480" y2="520" class="line" stroke="#15803d" stroke-width="2" />
+  <line x1="150" y1="595" x2="285" y2="595" class="line" />
+  <line x1="150" y1="605" x2="285" y2="660" class="line" />
+  <line x1="150" y1="615" x2="285" y2="725" class="line" />
+
+  <line x1="1050" y1="240" x2="900" y2="180" class="line" />
+  <line x1="1050" y1="245" x2="900" y2="235" class="line" />
+  <line x1="1050" y1="250" x2="900" y2="290" class="line" />
+
+  <line x1="1050" y1="570" x2="900" y2="610" class="line" />
+
+  <line x1="580" y1="375" x2="490" y2="375" class="dashed-extend" />
+  <text x="535" y="365" class="stereo-text" fill="#CB732B" text-anchor="middle">&lt;&lt;extend&gt;&gt;</text>
+
+  <line x1="580" y1="725" x2="495" y2="725" class="dashed-extend" />
+  <text x="535" y="715" class="stereo-text" fill="#CB732B" text-anchor="middle">&lt;&lt;extend&gt;&gt;</text>
+
+  <path d="M 495 445 L 800 445 L 800 592" fill="none" class="dashed-include" />
+  <text x="650" y="435" class="stereo-text" fill="#2B72BB" text-anchor="middle">&lt;&lt;include&gt;&gt;</text>
+
+  <path d="M 495 660 L 720 660 L 720 615 L 700 615" fill="none" class="dashed-include" />
+  <text x="615" y="650" class="stereo-text" fill="#2B72BB" text-anchor="middle">&lt;&lt;include&gt;&gt;</text>
+</svg>

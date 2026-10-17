@@ -29,14 +29,23 @@ class ProfileSerializer(serializers.ModelSerializer):
     role_display = serializers.CharField(source='get_role_display', read_only=True)
     niveau_display = serializers.CharField(source='get_niveau_display', read_only=True)
     competences = CompetenceMentorSerializer(many=True, read_only=True)
+    photo_url = serializers.SerializerMethodField()
 
     class Meta:
         model = Profile
         fields = [
             'id', 'user', 'role', 'role_display', 'filiere', 'niveau', 
             'niveau_display', 'bio', 'telephone', 'est_disponible', 
-            'est_mentor', 'est_mentore', 'competences'
+            'est_mentor', 'est_mentore', 'competences', 'photo_url'
         ]
+
+    def get_photo_url(self, obj):
+        if obj.photo:
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(obj.photo.url)
+            return f"http://127.0.0.1:8001{obj.photo.url}"
+        return None
 
 
 class DemandeMentoratSerializer(serializers.ModelSerializer):

@@ -37,7 +37,8 @@ import { Profile, Matiere } from '../../models/models';
           <div class="col-12 col-lg-7">
             <div class="card p-4 border-0 shadow-sm rounded-4 bg-white mb-4">
               <div class="d-flex align-items-center gap-3 mb-4 flex-wrap">
-                <div class="avatar-initials" style="width: 72px; height: 72px; font-size: 1.6rem;">
+                <img *ngIf="mentor.photo_url" [src]="mentor.photo_url" [alt]="mentor.user.first_name" class="rounded-circle object-fit-cover shadow-sm" style="width: 72px; height: 72px;">
+                <div *ngIf="!mentor.photo_url" class="avatar-initials" style="width: 72px; height: 72px; font-size: 1.6rem;">
                   {{ mentor.user.first_name ? mentor.user.first_name[0].toUpperCase() : 'M' }}{{ mentor.user.last_name ? mentor.user.last_name[0].toUpperCase() : '' }}
                 </div>
                 <div>

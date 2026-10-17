@@ -8,7 +8,7 @@ import { DemandeMentorat } from '../models/models';
 })
 export class MentorshipService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://127.0.0.1:8080/api';
+  private apiUrl = 'http://127.0.0.1:8001/api';
 
   getDemandes(): Observable<{ recues: DemandeMentorat[]; envoyees: DemandeMentorat[] }> {
     return this.http.get<{ recues: DemandeMentorat[]; envoyees: DemandeMentorat[] }>(

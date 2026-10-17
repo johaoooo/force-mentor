@@ -1,7 +1,12 @@
 {% extends "base.html" %}
+
+{% block title %}Force Mentor — Trouvez le mentor idéal pour progresser{% endblock %}
+
 {% block content %}
   {% include "mentors/partials/_hero.html" %}
+  {% include "mentors/partials/_stats.html" %}
   {% include "mentors/partials/_how.html" %}
   {% include "mentors/partials/_mentors.html" %}
-  {% include "mentors/partials/_stats.html" %}
+  {% include "mentors/partials/_testimonial.html" %}
+  {% include "mentors/partials/_faq.html" %}
 {% endblock %}

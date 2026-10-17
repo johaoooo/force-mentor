@@ -9,192 +9,179 @@ import { AuthService } from '../../services/auth.service';
   standalone: true,
   imports: [CommonModule, RouterModule, FormsModule],
   template: `
-    <div class="cnib-bg-wrapper">
-      <div class="cnib-bg-glow-1"></div>
-      <div class="cnib-bg-glow-2"></div>
+    <div class="onboarding-page">
+      <div class="onboarding-card">
+        
+        <!-- Header Brand Figma -->
+        <div class="onboarding-header">
+          <a routerLink="/" class="logo-brand mb-2">
+            <img src="/logo_force_mentor.svg" width="46" height="34" alt="Force Mentor" class="logo-brand__icon">
+            <span class="logo-brand__text">FORCE <span>MENTOR</span></span>
+          </a>
+          <h2>Bienvenue</h2>
+          <p>Créez votre compte pour commencer l'entraide</p>
+        </div>
 
-      <!-- Bouton Retour Accueil -->
-      <a routerLink="/" class="cnib-home-btn" title="Retour à l'accueil">
-        <i class="bi bi-arrow-left"></i>
-        <span>Accueil</span>
-      </a>
+        <!-- Multi-step Progress Bar -->
+        <div class="wizard-progress">
+          <div class="wizard-step-bar" [class.active]="currentStep >= 1"></div>
+          <div class="wizard-step-bar" [class.active]="currentStep >= 2"></div>
+          <div class="wizard-step-bar" [class.active]="currentStep >= 3"></div>
+        </div>
 
-      <div class="container position-relative" style="z-index: 10;">
-        <div class="row justify-content-center">
-          <div class="col-12 col-md-11 col-lg-10 col-xl-9">
-            <div class="cnib-split-container">
-              <div class="row g-0 align-items-stretch">
-                <!-- Colonne Formulaire Inscription -->
-                <div class="col-12 col-lg-7 cnib-form-panel d-flex flex-column justify-content-center">
-                  <div class="mb-3 text-start">
-                    <a routerLink="/">
-                      <img src="/Logo_Force_Mentor.png" alt="Force Mentor" height="40" style="max-height: 40px; width: auto;">
-                    </a>
-                  </div>
+        <!-- Alert Erreur -->
+        <div *ngIf="errorMessage" class="cnib-alert-danger mb-3">
+          <i class="bi bi-exclamation-triangle-fill fs-5 me-2 flex-shrink-0"></i>
+          <div>{{ errorMessage }}</div>
+        </div>
 
-                  <h2 class="cnib-form-title">Créer un compte</h2>
-                  <p class="cnib-form-subtitle">Rejoignez la communauté d'entraide étudiante Force Mentor.</p>
-
-                  <!-- Erreur -->
-                  <div *ngIf="errorMessage" class="cnib-alert-danger mb-3">
-                    <i class="bi bi-exclamation-triangle-fill fs-5 me-2 flex-shrink-0"></i>
-                    <div>
-                      <strong>Erreur d'inscription :</strong>
-                      <div>{{ errorMessage }}</div>
-                    </div>
-                  </div>
-
-                  <form (ngSubmit)="onSubmit()">
-                    <!-- Choix du rôle -->
-                    <div class="mb-3">
-                      <label class="cnib-label">Je m'inscris en tant que *</label>
-                      <div class="row g-2">
-                        <div class="col-4">
-                          <div class="cnib-role-card" [class.active]="role === 'MENTORE'" (click)="role = 'MENTORE'">
-                            <span *ngIf="role === 'MENTORE'" class="role-badge-check"><i class="bi bi-check"></i></span>
-                            <i class="bi bi-mortarboard cnib-role-icon"></i>
-                            <div class="role-card-title">Étudiant</div>
-                            <span class="role-card-desc">Accompagné</span>
-                          </div>
-                        </div>
-                        <div class="col-4">
-                          <div class="cnib-role-card" [class.active]="role === 'MENTOR'" (click)="role = 'MENTOR'">
-                            <span *ngIf="role === 'MENTOR'" class="role-badge-check"><i class="bi bi-check"></i></span>
-                            <i class="bi bi-award cnib-role-icon"></i>
-                            <div class="role-card-title">Mentor</div>
-                            <span class="role-card-desc">Partager</span>
-                          </div>
-                        </div>
-                        <div class="col-4">
-                          <div class="cnib-role-card" [class.active]="role === 'LES_DEUX'" (click)="role = 'LES_DEUX'">
-                            <span *ngIf="role === 'LES_DEUX'" class="role-badge-check"><i class="bi bi-check"></i></span>
-                            <i class="bi bi-people cnib-role-icon"></i>
-                            <div class="role-card-title">Les deux</div>
-                            <span class="role-card-desc">Mixte</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="row g-2 mb-3">
-                      <div class="col-6">
-                        <label class="cnib-label">Prénom *</label>
-                        <div class="cnib-input-wrap">
-                          <i class="bi bi-person cnib-input-icon"></i>
-                          <input type="text" [(ngModel)]="firstName" name="firstName" class="cnib-input-field" placeholder="Moussa" required>
-                        </div>
-                      </div>
-                      <div class="col-6">
-                        <label class="cnib-label">Nom *</label>
-                        <div class="cnib-input-wrap">
-                          <i class="bi bi-person cnib-input-icon"></i>
-                          <input type="text" [(ngModel)]="lastName" name="lastName" class="cnib-input-field" placeholder="Diop" required>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="mb-3">
-                      <label class="cnib-label">Nom d'utilisateur *</label>
-                      <div class="cnib-input-wrap">
-                        <i class="bi bi-at cnib-input-icon"></i>
-                        <input type="text" [(ngModel)]="username" name="username" class="cnib-input-field" placeholder="moussa.diop" required>
-                      </div>
-                    </div>
-
-                    <div class="mb-3">
-                      <label class="cnib-label">Adresse Email *</label>
-                      <div class="cnib-input-wrap">
-                        <i class="bi bi-envelope cnib-input-icon"></i>
-                        <input type="email" [(ngModel)]="email" name="email" class="cnib-input-field" placeholder="etudiant@force-n.sn" required>
-                      </div>
-                    </div>
-
-                    <div class="row g-2 mb-3">
-                      <div class="col-7">
-                        <label class="cnib-label">Filière / Programme *</label>
-                        <div class="cnib-input-wrap">
-                          <i class="bi bi-book cnib-input-icon"></i>
-                          <input type="text" [(ngModel)]="filiere" name="filiere" class="cnib-input-field" placeholder="ex: Informatique / Web" required>
-                        </div>
-                      </div>
-                      <div class="col-5">
-                        <label class="cnib-label">Niveau d'études *</label>
-                        <select [(ngModel)]="niveau" name="niveau" class="cnib-input-field" style="padding-left: 10px;">
-                          <option value="L1">Licence 1</option>
-                          <option value="L2">Licence 2</option>
-                          <option value="L3">Licence 3</option>
-                          <option value="M1">Master 1</option>
-                          <option value="M2">Master 2</option>
-                        </select>
-                      </div>
-                    </div>
-
-                    <div class="mb-3">
-                      <label class="cnib-label">Mot de passe *</label>
-                      <div class="cnib-input-wrap">
-                        <i class="bi bi-lock cnib-input-icon"></i>
-                        <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" name="password" class="cnib-input-field" placeholder="••••••••" required>
-                        <button type="button" class="cnib-eye-btn" (click)="showPassword = !showPassword">
-                          <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
-                        </button>
-                      </div>
-                    </div>
-
-                    <div class="mb-4">
-                      <label class="cnib-label">Confirmer le mot de passe *</label>
-                      <div class="cnib-input-wrap">
-                        <i class="bi bi-shield-check cnib-input-icon"></i>
-                        <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="confirmPassword" name="confirmPassword" class="cnib-input-field" placeholder="••••••••" required>
-                      </div>
-                    </div>
-
-                    <button type="submit" [disabled]="loading" class="cnib-submit-btn mb-3">
-                      <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
-                      <i *ngIf="!loading" class="bi bi-check2-circle me-2"></i>Créer mon compte
-                    </button>
-
-                    <div class="text-center d-block d-lg-none pt-2">
-                      <span class="small text-muted">Déjà un compte ?</span>
-                      <a routerLink="/connexion" class="small fw-bold ms-1" style="color: var(--blue);">Se connecter</a>
-                    </div>
-                  </form>
-                </div>
-
-                <!-- Colonne Dégradé Bleu Royal -->
-                <div class="col-lg-5 d-none d-lg-flex flex-column align-self-stretch">
-                  <div class="cnib-overlay-panel flex-grow-1 w-100">
-                    <div class="p-2 px-3 rounded-3 mb-4" style="background: rgba(255, 255, 255, 0.95); display: inline-block;">
-                      <img src="/Logo_Force_Mentor.png" alt="Force Mentor" height="38" style="max-height: 38px; width: auto; display: block;">
-                    </div>
-                    <h3 class="cnib-overlay-title">Bienvenue parmi nous !</h3>
-                    <p class="cnib-overlay-text">
-                      Rejoignez un réseau solidaire d'étudiants, développez vos compétences et bénéficiez de l'aide de mentors investis.
-                    </p>
-
-                    <div class="d-flex flex-column gap-2 mb-4 w-100" style="max-width: 300px;">
-                      <div class="p-2 rounded-3 text-start d-flex align-items-center gap-2" style="background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15);">
-                        <i class="bi bi-patch-check-fill text-warning fs-5"></i>
-                        <div>
-                          <strong class="d-block text-white" style="font-size: 13px;">100% Gratuit</strong>
-                          <small style="font-size: 11px; color: rgba(255,255,255,0.75);">Réservé au programme Force-N</small>
-                        </div>
-                      </div>
-                      <div class="p-2 rounded-3 text-start d-flex align-items-center gap-2" style="background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15);">
-                        <i class="bi bi-clock-history text-info fs-5"></i>
-                        <div>
-                          <strong class="d-block text-white" style="font-size: 13px;">Flexibilité totale</strong>
-                          <small style="font-size: 11px; color: rgba(255,255,255,0.75);">Selon vos disponibilités</small>
-                        </div>
-                      </div>
-                    </div>
-
-                    <a routerLink="/connexion" class="cnib-ghost-btn">J'ai déjà un compte</a>
-                  </div>
-                </div>
+        <!-- ÉTAPE 1 : IDENTITÉ & MOT DE PASSE -->
+        <div *ngIf="currentStep === 1">
+          <div class="row g-2 mb-3">
+            <div class="col-6">
+              <label class="cnib-label">Prénom *</label>
+              <div class="cnib-input-wrap">
+                <input type="text" [(ngModel)]="firstName" placeholder="Prénom" class="cnib-input-field" required>
+              </div>
+            </div>
+            <div class="col-6">
+              <label class="cnib-label">Nom *</label>
+              <div class="cnib-input-wrap">
+                <input type="text" [(ngModel)]="lastName" placeholder="Nom" class="cnib-input-field" required>
               </div>
             </div>
           </div>
+
+          <div class="mb-3">
+            <label class="cnib-label">Adresse email *</label>
+            <div class="cnib-input-wrap">
+              <i class="bi bi-envelope cnib-input-icon"></i>
+              <input type="email" [(ngModel)]="email" placeholder="etudiant@forcen.sn" class="cnib-input-field" required>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label class="cnib-label">Mot de passe *</label>
+            <div class="cnib-input-wrap">
+              <i class="bi bi-lock cnib-input-icon"></i>
+              <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" placeholder="••••••••" class="cnib-input-field" required>
+              <button type="button" class="cnib-eye-btn" (click)="showPassword = !showPassword">
+                <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+              </button>
+            </div>
+          </div>
+
+          <button type="button" class="cnib-submit-btn mb-3" (click)="goToStep2()">
+            <span>Continuer</span>
+            <i class="bi bi-arrow-right ms-2"></i>
+          </button>
+
+          <div class="text-center pt-2">
+            <span class="small text-muted">Vous avez déjà un compte ?</span>
+            <a routerLink="/connexion" class="fw-bold ms-1" style="color: var(--blue);">Se connecter</a>
+          </div>
         </div>
+
+        <!-- ÉTAPE 2 : RÔLE & PARCOURS ACADÉMIQUE -->
+        <div *ngIf="currentStep === 2">
+          <button type="button" class="btn btn-sm btn-link text-muted p-0 mb-3 text-decoration-none" (click)="currentStep = 1">
+            <i class="bi bi-arrow-left me-1"></i>Retour
+          </button>
+
+          <label class="cnib-label mb-2">Votre rôle sur la plateforme *</label>
+          <div class="role-pills">
+            <button type="button" class="role-pill-btn" [class.active]="role === 'MENTORE'" (click)="role = 'MENTORE'">
+              <i class="bi bi-mortarboard fs-5"></i>
+              <span>Mentoré</span>
+            </button>
+            <button type="button" class="role-pill-btn" [class.active]="role === 'MENTOR'" (click)="role = 'MENTOR'">
+              <i class="bi bi-award fs-5"></i>
+              <span>Mentor</span>
+            </button>
+            <button type="button" class="role-pill-btn" [class.active]="role === 'LES_DEUX'" (click)="role = 'LES_DEUX'">
+              <i class="bi bi-people fs-5"></i>
+              <span>Les deux</span>
+            </button>
+          </div>
+
+          <div class="mb-3">
+            <label class="cnib-label">Filière / Spécialité *</label>
+            <select [(ngModel)]="filiere" class="cnib-input-field">
+              <option value="Génie Logiciel & Dev Web">Génie Logiciel & Dev Web</option>
+              <option value="Réseaux & Télécommunications">Réseaux & Télécommunications</option>
+              <option value="Data Science & Intelligence Artificielle">Data Science & Intelligence Artificielle</option>
+              <option value="Cybersécurité & Systèmes">Cybersécurité & Systèmes</option>
+              <option value="Marketing Digital & Entrepreneuriat">Marketing Digital & Entrepreneuriat</option>
+            </select>
+          </div>
+
+          <div class="mb-4">
+            <label class="cnib-label">Niveau d'études *</label>
+            <select [(ngModel)]="niveau" class="cnib-input-field">
+              <option value="L1">Licence 1 (Débutant)</option>
+              <option value="L2">Licence 2 (Intermédiaire)</option>
+              <option value="L3">Licence 3 (Avancé)</option>
+              <option value="M1">Master 1</option>
+              <option value="M2">Master 2 (Expert)</option>
+            </select>
+          </div>
+
+          <button type="button" class="cnib-submit-btn mb-3" (click)="goToStep3()">
+            <span>Continuer</span>
+            <i class="bi bi-arrow-right ms-2"></i>
+          </button>
+
+          <div class="text-center pt-2">
+            <span class="small text-muted">Vous avez déjà un compte ?</span>
+            <a routerLink="/connexion" class="fw-bold ms-1" style="color: var(--blue);">Se connecter</a>
+          </div>
+        </div>
+
+        <!-- ÉTAPE 3 : MATIÈRES & COMPÉTENCES (NUAGE DE TAGS FIGMA) -->
+        <div *ngIf="currentStep === 3">
+          <button type="button" class="btn btn-sm btn-link text-muted p-0 mb-3 text-decoration-none" (click)="currentStep = 2">
+            <i class="bi bi-arrow-left me-1"></i>Retour
+          </button>
+
+          <h5 class="fw-bold text-dark mb-1" style="font-size: 16px;">Matières de prédilection</h5>
+          <p class="text-muted small mb-2">Sélectionnez les matières où vous souhaitez recevoir ou apporter de l'aide :</p>
+
+          <div class="skills-cloud">
+            <div 
+              *ngFor="let s of availableSkills" 
+              class="skill-chip" 
+              [class.selected]="selectedSkills.includes(s)"
+              (click)="toggleSkill(s)"
+            >
+              <i class="bi" [ngClass]="selectedSkills.includes(s) ? 'bi-check-circle-fill' : 'bi-plus'"></i>
+              <span>{{ s }}</span>
+            </div>
+          </div>
+
+          <div class="form-check mb-4">
+            <input class="form-check-input" type="checkbox" id="termsCheck" [(ngModel)]="acceptedTerms">
+            <label class="form-check-label small text-muted" for="termsCheck">
+              J'accepte la charte d'entraide et les conditions de Force Mentor.
+            </label>
+          </div>
+
+          <button 
+            type="button" 
+            class="cnib-submit-btn mb-3" 
+            [disabled]="loading || !acceptedTerms"
+            (click)="submitRegistration()"
+          >
+            <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+            <i *ngIf="!loading" class="bi bi-check-circle-fill me-2"></i>
+            <span>Créer mon compte</span>
+          </button>
+
+          <div class="text-center pt-2">
+            <span class="small text-muted">Vous avez déjà un compte ?</span>
+            <a routerLink="/connexion" class="fw-bold ms-1" style="color: var(--blue);">Se connecter</a>
+          </div>
+        </div>
+
       </div>
     </div>
   `
@@ -203,52 +190,96 @@ export class RegisterComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
 
-  role: 'MENTORE' | 'MENTOR' | 'LES_DEUX' = 'MENTORE';
-  firstName = '';
-  lastName = '';
-  username = '';
-  email = '';
-  filiere = '';
-  niveau = 'L1';
-  password = '';
-  confirmPassword = '';
-  showPassword = false;
+  currentStep = 1;
   loading = false;
   errorMessage = '';
+  showPassword = false;
 
-  onSubmit(): void {
-    if (!this.username || !this.password || !this.firstName || !this.lastName) {
-      this.errorMessage = 'Veuillez remplir tous les champs obligatoires (*).';
+  // Step 1
+  firstName = '';
+  lastName = '';
+  email = '';
+  password = '';
+
+  // Step 2
+  role = 'MENTORE';
+  filiere = 'Génie Logiciel & Dev Web';
+  niveau = 'L1';
+
+  // Step 3
+  availableSkills = [
+    'Python Fondamentaux',
+    'Développement Web Django',
+    'Algorithmique & Structures de données',
+    'Bases de Données & SQL',
+    'Réseaux Informatiques',
+    'JavaScript & TypeScript',
+    'Sécurité & Cryptographie',
+    'Marketing Digital',
+    'Intelligence Artificielle',
+    'Architecture Logicielle',
+    'Systèmes Linux',
+    'Anglais Technique'
+  ];
+  selectedSkills: string[] = ['Python Fondamentaux', 'Algorithmique & Structures de données'];
+  acceptedTerms = true;
+
+  goToStep2(): void {
+    if (!this.firstName.trim() || !this.lastName.trim() || !this.email.trim() || !this.password) {
+      this.errorMessage = 'Veuillez remplir tous les champs obligatoires.';
       return;
     }
+    this.errorMessage = '';
+    this.currentStep = 2;
+  }
 
-    if (this.password !== this.confirmPassword) {
-      this.errorMessage = 'Les mots de passe ne correspondent pas.';
+  goToStep3(): void {
+    this.errorMessage = '';
+    this.currentStep = 3;
+  }
+
+  toggleSkill(skill: string): void {
+    const idx = this.selectedSkills.indexOf(skill);
+    if (idx > -1) {
+      this.selectedSkills.splice(idx, 1);
+    } else {
+      this.selectedSkills.push(skill);
+    }
+  }
+
+  submitRegistration(): void {
+    if (!this.acceptedTerms) {
+      this.errorMessage = 'Veuillez accepter les conditions pour continuer.';
       return;
     }
 
     this.loading = true;
     this.errorMessage = '';
 
-    const payload = {
-      username: this.username,
+    // Génération automatique d'un username basé sur prénom et nom
+    const baseUsername = `${this.firstName.toLowerCase().replace(/[^a-z0-9]/g, '')}.${this.lastName.toLowerCase().replace(/[^a-z0-9]/g, '')}`;
+    const username = baseUsername || `user_${Date.now().toString().slice(-4)}`;
+
+    const registrationData = {
+      username: username,
+      first_name: this.firstName.trim(),
+      last_name: this.lastName.trim(),
+      email: this.email.trim(),
       password: this.password,
-      first_name: this.firstName,
-      last_name: this.lastName,
-      email: this.email,
       role: this.role,
+      filiere: this.filiere,
       niveau: this.niveau,
-      filiere: this.filiere
+      competences: this.selectedSkills
     };
 
-    this.authService.register(payload).subscribe({
+    this.authService.register(registrationData).subscribe({
       next: () => {
         this.loading = false;
         this.router.navigate(['/tableau-de-bord']);
       },
       error: (err) => {
         this.loading = false;
-        this.errorMessage = err?.error?.error || 'Une erreur est survenue lors de l\'inscription.';
+        this.errorMessage = err.error?.error || 'Une erreur est survenue lors de l\'inscription.';
       }
     });
   }

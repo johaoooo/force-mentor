@@ -1,0 +1,870 @@
+#!/usr/bin/env python3
+"""
+Générateur de Schémas UML Professionnels pour Force Mentor
+Remplace tous les emojis par des icônes vectorielles SVG professionnelles (Lucide / Material style)
+et génère des rendus PNG haute résolution.
+"""
+
+import os
+import subprocess
+
+OUTPUT_DIR = "/home/joe/Bureau/force-mentor/docs/diagrammes_img"
+os.makedirs(OUTPUT_DIR, exist_ok=True)
+
+# DÉFINITIONS D'ICÔNES VECTORIELLES PROFESSIONNELLES
+COMMON_ICON_DEFS = """
+    <!-- Icône Étudiant / Mentoré -->
+    <g id="icon-student">
+      <path d="M12 2L1 7l11 5 9-4.09V14a1 1 0 002 0V7L12 2z" fill="#2B72BB"/>
+      <path d="M4 10.5v4c0 3 3.5 5.5 8 5.5s8-2.5 8-5.5v-4" fill="none" stroke="#2B72BB" stroke-width="2" stroke-linecap="round"/>
+    </g>
+
+    <!-- Icône Mentor / Accompagnateur -->
+    <g id="icon-mentor">
+      <circle cx="10" cy="7" r="4" fill="none" stroke="#45A846" stroke-width="2"/>
+      <path d="M2 20v-2a6 6 0 0112 0v2" fill="none" stroke="#45A846" stroke-width="2" stroke-linecap="round"/>
+      <polyline points="15 11 18 14 23 8" fill="none" stroke="#45A846" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+
+    <!-- Icône Administrateur -->
+    <g id="icon-admin">
+      <circle cx="12" cy="12" r="3" fill="none" stroke="#dc2626" stroke-width="2"/>
+      <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" fill="none" stroke="#dc2626" stroke-width="1.8"/>
+    </g>
+
+    <!-- Icône Serveur Courriel / SMTP -->
+    <g id="icon-mail">
+      <rect x="2" y="4" width="20" height="16" rx="2" fill="none" stroke="#CB732B" stroke-width="2"/>
+      <path d="M22 6l-10 7L2 6" fill="none" stroke="#CB732B" stroke-width="2" stroke-linecap="round"/>
+    </g>
+
+    <!-- Icône Chat / Messagerie Instantanée -->
+    <g id="icon-chat">
+      <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" fill="none" stroke="#15803d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <line x1="8" y1="9" x2="16" y2="9" stroke="#15803d" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="8" y1="13" x2="13" y2="13" stroke="#15803d" stroke-width="1.8" stroke-linecap="round"/>
+    </g>
+
+    <!-- Icône Navigateur Web -->
+    <g id="icon-browser">
+      <rect x="2" y="3" width="20" height="18" rx="3" fill="none" stroke="#2B72BB" stroke-width="2"/>
+      <line x1="2" y1="8" x2="22" y2="8" stroke="#2B72BB" stroke-width="1.8"/>
+      <circle cx="5" cy="5.5" r="1" fill="#2B72BB"/>
+      <circle cx="8" cy="5.5" r="1" fill="#2B72BB"/>
+      <circle cx="11" cy="5.5" r="1" fill="#2B72BB"/>
+    </g>
+
+    <!-- Icône Serveur Applicatif / WSGI-ASGI -->
+    <g id="icon-server">
+      <rect x="2" y="2" width="20" height="8" rx="2" fill="none" stroke="#334155" stroke-width="2"/>
+      <rect x="2" y="14" width="20" height="8" rx="2" fill="none" stroke="#334155" stroke-width="2"/>
+      <circle cx="6" cy="6" r="1" fill="#2B72BB"/>
+      <circle cx="6" cy="18" r="1" fill="#2B72BB"/>
+      <line x1="10" y1="6" x2="18" y2="6" stroke="#64748b" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="10" y1="18" x2="18" y2="18" stroke="#64748b" stroke-width="1.5" stroke-linecap="round"/>
+    </g>
+
+    <!-- Icône Base de Données Relationnelle -->
+    <g id="icon-database">
+      <ellipse cx="12" cy="5" rx="9" ry="3" fill="none" stroke="#047857" stroke-width="2"/>
+      <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" fill="none" stroke="#047857" stroke-width="2"/>
+      <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" fill="none" stroke="#047857" stroke-width="2"/>
+    </g>
+
+    <!-- Icône Cache / Redis -->
+    <g id="icon-redis">
+      <polygon points="12,2 22,7 12,12 2,7" fill="none" stroke="#b91c1c" stroke-width="2"/>
+      <path d="M2 12l10 5 10-5" fill="none" stroke="#b91c1c" stroke-width="2"/>
+      <path d="M2 17l10 5 10-5" fill="none" stroke="#b91c1c" stroke-width="2"/>
+    </g>
+
+    <!-- Icône Éclair / Temps Réel -->
+    <g id="icon-bolt">
+      <polygon points="13,2 3,14 12,14 11,22 21,10 12,10" fill="#f59e0b" stroke="#d97706" stroke-width="1.5"/>
+    </g>
+
+    <!-- Icône Stockage / Disque -->
+    <g id="icon-storage">
+      <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" fill="none" stroke="#475569" stroke-width="2"/>
+    </g>
+
+    <!-- Icône Bouclier Sécurité / Reverse Proxy -->
+    <g id="icon-shield">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="none" stroke="#2B72BB" stroke-width="2"/>
+    </g>
+"""
+
+# 1. DIAGRAMME DE CAS D'UTILISATION (SVG)
+svg_usecase = f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 880" width="1200" height="880">
+  <defs>
+    <style>
+      .bg {{ fill: #f8fafc; }}
+      .system-box {{ fill: #ffffff; stroke: #2B72BB; stroke-width: 2.5; rx: 12; }}
+      .actor-text {{ font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; font-weight: bold; fill: #1e293b; text-anchor: middle; }}
+      .actor-sub {{ font-family: 'Segoe UI', Arial, sans-serif; font-size: 11px; fill: #64748b; text-anchor: middle; }}
+      .uc-ellipse {{ fill: #eff6ff; stroke: #2B72BB; stroke-width: 2; rx: 95; ry: 24; }}
+      .uc-ellipse-orange {{ fill: #fff7ed; stroke: #CB732B; stroke-width: 2; rx: 95; ry: 24; }}
+      .uc-ellipse-green {{ fill: #f0fdf4; stroke: #45A846; stroke-width: 2; rx: 95; ry: 24; }}
+      .uc-text {{ font-family: 'Segoe UI', Arial, sans-serif; font-size: 12px; font-weight: 600; fill: #1e293b; text-anchor: middle; }}
+      .line {{ stroke: #334155; stroke-width: 1.5; }}
+      .dashed-include {{ stroke: #2B72BB; stroke-width: 1.5; stroke-dasharray: 5,4; marker-end: url(#arrow-blue); }}
+      .dashed-extend {{ stroke: #CB732B; stroke-width: 1.5; stroke-dasharray: 5,4; marker-end: url(#arrow-orange); }}
+      .stereo-text {{ font-family: 'Segoe UI', Arial, sans-serif; font-size: 11px; font-weight: bold; }}
+    </style>
+    {COMMON_ICON_DEFS}
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#2B72BB" />
+    </marker>
+    <marker id="arrow-orange" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#CB732B" />
+    </marker>
+  </defs>
+
+  <rect width="100%" height="100%" class="bg" />
+
+  <!-- Titre Principal -->
+  <text x="600" y="42" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="24" font-weight="bold" fill="#0f172a">
+    DIAGRAMME DE CAS D'UTILISATION — FORCE MENTOR
+  </text>
+  <text x="600" y="68" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="13" fill="#64748b">
+    Modélisation formelle des acteurs, frontières du système et dépendances
+  </text>
+
+  <!-- Frontière du Système -->
+  <rect x="230" y="95" width="740" height="755" class="system-box" />
+  <rect x="230" y="95" width="740" height="40" fill="#2B72BB" rx="12" />
+  <rect x="230" y="125" width="740" height="10" fill="#2B72BB" />
+  <text x="600" y="122" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="16" font-weight="bold" fill="#ffffff">
+    Système : Application Web « Force Mentor »
+  </text>
+
+  <!-- ACTEUR 1 : Mentoré (Gauche Haut) -->
+  <g transform="translate(110, 240)">
+    <circle cx="0" cy="0" r="16" fill="#eff6ff" stroke="#2B72BB" stroke-width="2.5" />
+    <line x1="0" y1="16" x2="0" y2="52" stroke="#2B72BB" stroke-width="2.5" />
+    <line x1="-22" y1="28" x2="22" y2="28" stroke="#2B72BB" stroke-width="2.5" />
+    <line x1="0" y1="52" x2="-18" y2="85" stroke="#2B72BB" stroke-width="2.5" />
+    <line x1="0" y1="52" x2="18" y2="85" stroke="#2B72BB" stroke-width="2.5" />
+    <g transform="translate(-12, 95)"><use href="#icon-student" width="24" height="24" /></g>
+    <text x="0" y="130" class="actor-text">Mentoré</text>
+    <text x="0" y="145" class="actor-sub">(Apprenant Force-N)</text>
+  </g>
+
+  <!-- ACTEUR 2 : Mentor (Gauche Bas) -->
+  <g transform="translate(110, 560)">
+    <circle cx="0" cy="0" r="16" fill="#f0fdf4" stroke="#45A846" stroke-width="2.5" />
+    <line x1="0" y1="16" x2="0" y2="52" stroke="#45A846" stroke-width="2.5" />
+    <line x1="-22" y1="28" x2="22" y2="28" stroke="#45A846" stroke-width="2.5" />
+    <line x1="0" y1="52" x2="-18" y2="85" stroke="#45A846" stroke-width="2.5" />
+    <line x1="0" y1="52" x2="18" y2="85" stroke="#45A846" stroke-width="2.5" />
+    <g transform="translate(-12, 95)"><use href="#icon-mentor" width="24" height="24" /></g>
+    <text x="0" y="130" class="actor-text">Mentor</text>
+    <text x="0" y="145" class="actor-sub">(Accompagnateur)</text>
+  </g>
+
+  <!-- ACTEUR 3 : Administrateur (Droite Haut) -->
+  <g transform="translate(1090, 240)">
+    <circle cx="0" cy="0" r="16" fill="#fef2f2" stroke="#dc2626" stroke-width="2.5" />
+    <line x1="0" y1="16" x2="0" y2="52" stroke="#dc2626" stroke-width="2.5" />
+    <line x1="-22" y1="28" x2="22" y2="28" stroke="#dc2626" stroke-width="2.5" />
+    <line x1="0" y1="52" x2="-18" y2="85" stroke="#dc2626" stroke-width="2.5" />
+    <line x1="0" y1="52" x2="18" y2="85" stroke="#dc2626" stroke-width="2.5" />
+    <g transform="translate(-12, 95)"><use href="#icon-admin" width="24" height="24" /></g>
+    <text x="0" y="130" class="actor-text">Administrateur</text>
+    <text x="0" y="145" class="actor-sub">(Encadrant Force-N)</text>
+  </g>
+
+  <!-- ACTEUR 4 : Serveur Email (Droite Bas) -->
+  <g transform="translate(1090, 560)">
+    <rect x="-35" y="-20" width="70" height="46" rx="6" fill="#fff7ed" stroke="#CB732B" stroke-width="2" />
+    <path d="M -35 -20 L 0 10 L 35 -20" fill="none" stroke="#CB732B" stroke-width="2" />
+    <g transform="translate(-12, 35)"><use href="#icon-mail" width="24" height="24" /></g>
+    <text x="0" y="70" class="actor-text">Serveur SMTP</text>
+    <text x="0" y="85" class="actor-sub">(Système externe)</text>
+  </g>
+
+  <!-- CAS D'UTILISATION (Ellipses) -->
+
+  <!-- UC Communs : Auth & Profil -->
+  <g transform="translate(390, 175)">
+    <rect x="-100" y="-18" width="200" height="36" rx="18" class="uc-ellipse" />
+    <text x="0" y="5" class="uc-text">S'authentifier (Login / Register)</text>
+  </g>
+  <g transform="translate(390, 235)">
+    <rect x="-100" y="-18" width="200" height="36" rx="18" class="uc-ellipse" />
+    <text x="0" y="5" class="uc-text">Gérer son profil étudiant</text>
+  </g>
+  <g transform="translate(390, 295)">
+    <rect x="-100" y="-18" width="200" height="36" rx="18" class="uc-ellipse" />
+    <text x="0" y="5" class="uc-text">Consulter le tableau de bord</text>
+  </g>
+
+  <!-- UC Mentoré -->
+  <g transform="translate(390, 375)">
+    <rect x="-100" y="-18" width="200" height="36" rx="18" class="uc-ellipse" />
+    <text x="0" y="5" class="uc-text">Rechercher des mentors</text>
+  </g>
+  <g transform="translate(680, 375)">
+    <rect x="-100" y="-18" width="200" height="36" rx="18" class="uc-ellipse-orange" />
+    <text x="0" y="5" class="uc-text">Filtrer par matière</text>
+  </g>
+  <g transform="translate(390, 445)">
+    <rect x="-105" y="-18" width="210" height="36" rx="18" class="uc-ellipse" />
+    <text x="0" y="5" class="uc-text">Envoyer une demande de mentorat</text>
+  </g>
+
+  <!-- UC Échanges / Temps réel avec icône vectorielle -->
+  <g transform="translate(600, 520)">
+    <rect x="-120" y="-22" width="240" height="44" rx="22" class="uc-ellipse-green" />
+    <g transform="translate(-105, -10)"><use href="#icon-chat" width="20" height="20" /></g>
+    <text x="8" y="-1" class="uc-text" fill="#15803d">Messagerie Instantanée</text>
+    <text x="8" y="14" class="actor-sub">(Échanges temps réel WebSockets)</text>
+  </g>
+
+  <!-- UC Mentor -->
+  <g transform="translate(390, 595)">
+    <rect x="-105" y="-18" width="210" height="36" rx="18" class="uc-ellipse" />
+    <text x="0" y="5" class="uc-text">Gérer compétences et matières</text>
+  </g>
+  <g transform="translate(390, 660)">
+    <rect x="-105" y="-18" width="210" height="36" rx="18" class="uc-ellipse" />
+    <text x="0" y="5" class="uc-text">Traiter les demandes reçues</text>
+  </g>
+  <g transform="translate(390, 725)">
+    <rect x="-105" y="-18" width="210" height="36" rx="18" class="uc-ellipse" />
+    <text x="0" y="5" class="uc-text">Clôturer une session</text>
+  </g>
+  <g transform="translate(680, 725)">
+    <rect x="-100" y="-18" width="200" height="36" rx="18" class="uc-ellipse-orange" />
+    <text x="0" y="5" class="uc-text">Évaluer et noter le mentor</text>
+  </g>
+
+  <!-- UC Admin -->
+  <g transform="translate(800, 180)">
+    <rect x="-100" y="-18" width="200" height="36" rx="18" class="uc-ellipse" />
+    <text x="0" y="5" class="uc-text">Gérer utilisateurs et rôles</text>
+  </g>
+  <g transform="translate(800, 235)">
+    <rect x="-100" y="-18" width="200" height="36" rx="18" class="uc-ellipse" />
+    <text x="0" y="5" class="uc-text">Gérer le catalogue des matières</text>
+  </g>
+  <g transform="translate(800, 290)">
+    <rect x="-100" y="-18" width="200" height="36" rx="18" class="uc-ellipse" />
+    <text x="0" y="5" class="uc-text">Superviser l'activité globale</text>
+  </g>
+
+  <!-- UC Notification -->
+  <g transform="translate(800, 610)">
+    <rect x="-100" y="-18" width="200" height="36" rx="18" class="uc-ellipse" />
+    <text x="0" y="5" class="uc-text">Notifier par courriel</text>
+  </g>
+
+  <!-- LIGNES DE LIAISON -->
+  <line x1="150" y1="240" x2="290" y2="175" class="line" />
+  <line x1="150" y1="245" x2="290" y2="235" class="line" />
+  <line x1="150" y1="250" x2="290" y2="295" class="line" />
+  <line x1="150" y1="260" x2="290" y2="375" class="line" />
+  <line x1="150" y1="270" x2="285" y2="445" class="line" />
+  <line x1="150" y1="285" x2="480" y2="520" class="line" stroke="#15803d" stroke-width="2" />
+
+  <line x1="150" y1="570" x2="290" y2="185" class="line" />
+  <line x1="150" y1="575" x2="290" y2="240" class="line" />
+  <line x1="150" y1="580" x2="290" y2="300" class="line" />
+  <line x1="150" y1="585" x2="480" y2="520" class="line" stroke="#15803d" stroke-width="2" />
+  <line x1="150" y1="595" x2="285" y2="595" class="line" />
+  <line x1="150" y1="605" x2="285" y2="660" class="line" />
+  <line x1="150" y1="615" x2="285" y2="725" class="line" />
+
+  <line x1="1050" y1="240" x2="900" y2="180" class="line" />
+  <line x1="1050" y1="245" x2="900" y2="235" class="line" />
+  <line x1="1050" y1="250" x2="900" y2="290" class="line" />
+
+  <line x1="1050" y1="570" x2="900" y2="610" class="line" />
+
+  <line x1="580" y1="375" x2="490" y2="375" class="dashed-extend" />
+  <text x="535" y="365" class="stereo-text" fill="#CB732B" text-anchor="middle">&lt;&lt;extend&gt;&gt;</text>
+
+  <line x1="580" y1="725" x2="495" y2="725" class="dashed-extend" />
+  <text x="535" y="715" class="stereo-text" fill="#CB732B" text-anchor="middle">&lt;&lt;extend&gt;&gt;</text>
+
+  <path d="M 495 445 L 800 445 L 800 592" fill="none" class="dashed-include" />
+  <text x="650" y="435" class="stereo-text" fill="#2B72BB" text-anchor="middle">&lt;&lt;include&gt;&gt;</text>
+
+  <path d="M 495 660 L 720 660 L 720 615 L 700 615" fill="none" class="dashed-include" />
+  <text x="615" y="650" class="stereo-text" fill="#2B72BB" text-anchor="middle">&lt;&lt;include&gt;&gt;</text>
+</svg>
+"""
+
+with open(os.path.join(OUTPUT_DIR, "01_diagramme_cas_utilisation.svg"), "w") as f:
+    f.write(svg_usecase)
+
+print("SVG 1 (Cas d'utilisation) généré avec icônes pro.")
+
+# 2. DIAGRAMME DE CLASSES (SVG)
+svg_classes = f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1300 920" width="1300" height="920">
+  <defs>
+    <style>
+      .bg {{ fill: #f8fafc; }}
+      .class-box {{ fill: #ffffff; stroke: #1e293b; stroke-width: 1.8; rx: 6; }}
+      .header-auth {{ fill: #2B72BB; }}
+      .header-mentorship {{ fill: #0284c7; }}
+      .header-chat {{ fill: #45A846; }}
+      .header-eval {{ fill: #CB732B; }}
+      .class-title {{ font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; font-weight: bold; fill: #ffffff; text-anchor: middle; }}
+      .class-stereo {{ font-family: 'Segoe UI', Arial, sans-serif; font-size: 10px; font-style: italic; fill: #e2e8f0; text-anchor: middle; }}
+      .class-body {{ font-family: 'Consolas', 'Courier New', monospace; font-size: 11.5px; fill: #1e293b; }}
+      .class-method {{ font-family: 'Consolas', 'Courier New', monospace; font-size: 11.5px; fill: #0f766e; }}
+      .div-line {{ stroke: #cbd5e1; stroke-width: 1.2; }}
+      .assoc-line {{ stroke: #334155; stroke-width: 1.6; }}
+      .card-text {{ font-family: 'Segoe UI', Arial, sans-serif; font-size: 12px; font-weight: bold; fill: #0f172a; }}
+      .role-text {{ font-family: 'Segoe UI', Arial, sans-serif; font-size: 11px; font-style: italic; fill: #475569; }}
+    </style>
+    {COMMON_ICON_DEFS}
+    <marker id="diamond" viewBox="0 0 16 16" refX="0" refY="8" markerWidth="10" markerHeight="10">
+      <polygon points="0,8 8,0 16,8 8,16" fill="#1e293b" />
+    </marker>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#334155" />
+    </marker>
+  </defs>
+
+  <rect width="100%" height="100%" class="bg" />
+
+  <text x="650" y="40" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="24" font-weight="bold" fill="#0f172a">
+    DIAGRAMME DE CLASSES MÉTIER ET TEMPS RÉEL — FORCE MENTOR
+  </text>
+  <text x="650" y="65" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="13" fill="#64748b">
+    Modélisation objet complète avec attributs typés, visibilités (+), méthodes et cardinalités
+  </text>
+
+  <!-- CLASSE : User (Django Auth) -->
+  <g transform="translate(60, 100)">
+    <rect width="250" height="190" class="class-box" />
+    <rect width="250" height="38" class="header-auth" rx="6" />
+    <rect y="25" width="250" height="13" class="header-auth" />
+    <text x="125" y="18" class="class-stereo">&lt;&lt;Django Auth&gt;&gt;</text>
+    <text x="125" y="32" class="class-title">User</text>
+    
+    <text x="12" y="56" class="class-body">+ id : int {{PK}}</text>
+    <text x="12" y="74" class="class-body">+ username : string</text>
+    <text x="12" y="92" class="class-body">+ email : string</text>
+    <text x="12" y="110" class="class-body">+ first_name : string</text>
+    <text x="12" y="128" class="class-body">+ last_name : string</text>
+    <text x="12" y="146" class="class-body">+ password : string [haché]</text>
+    <line x1="0" y1="154" x2="250" y2="154" class="div-line" />
+    <text x="12" y="172" class="class-method">+ check_password(raw) : bool</text>
+  </g>
+
+  <!-- CLASSE : Profile (accounts) -->
+  <g transform="translate(420, 100)">
+    <rect width="270" height="240" class="class-box" />
+    <rect width="270" height="38" class="header-auth" rx="6" />
+    <rect y="25" width="270" height="13" class="header-auth" />
+    <text x="135" y="18" class="class-stereo">&lt;&lt;Modèle Étendu&gt;&gt;</text>
+    <text x="135" y="32" class="class-title">Profile</text>
+    
+    <text x="12" y="56" class="class-body">+ id : int {{PK}}</text>
+    <text x="12" y="74" class="class-body">+ user_id : int {{FK, Unique}}</text>
+    <text x="12" y="92" class="class-body">+ role : RoleEnum</text>
+    <text x="12" y="110" class="class-body">+ filiere : string</text>
+    <text x="12" y="128" class="class-body">+ niveau : NiveauEnum</text>
+    <text x="12" y="146" class="class-body">+ bio : text</text>
+    <text x="12" y="164" class="class-body">+ telephone : string [WhatsApp]</text>
+    <text x="12" y="182" class="class-body">+ est_disponible : boolean</text>
+    <line x1="0" y1="192" x2="270" y2="192" class="div-line" />
+    <text x="12" y="210" class="class-method">+ est_mentor() : bool</text>
+    <text x="12" y="228" class="class-method">+ get_note_moyenne() : float</text>
+  </g>
+
+  <!-- CLASSE : Matiere (mentorship) -->
+  <g transform="translate(970, 100)">
+    <rect width="260" height="150" class="class-box" />
+    <rect width="260" height="38" class="header-mentorship" rx="6" />
+    <rect y="25" width="260" height="13" class="header-mentorship" />
+    <text x="130" y="18" class="class-stereo">&lt;&lt;Entité Métier&gt;&gt;</text>
+    <text x="130" y="32" class="class-title">Matiere</text>
+    
+    <text x="12" y="56" class="class-body">+ id : int {{PK}}</text>
+    <text x="12" y="74" class="class-body">+ nom : string {{Unique}}</text>
+    <text x="12" y="92" class="class-body">+ description : text</text>
+    <text x="12" y="110" class="class-body">+ icone : string</text>
+    <line x1="0" y1="120" x2="260" y2="120" class="div-line" />
+    <text x="12" y="138" class="class-method">+ get_mentors_count() : int</text>
+  </g>
+
+  <!-- CLASSE : CompetenceMentor (mentorship) -->
+  <g transform="translate(800, 310)">
+    <rect width="260" height="130" class="class-box" />
+    <rect width="260" height="38" class="header-mentorship" rx="6" />
+    <rect y="25" width="260" height="13" class="header-mentorship" />
+    <text x="130" y="18" class="class-stereo">&lt;&lt;Table de Jonction&gt;&gt;</text>
+    <text x="130" y="32" class="class-title">CompetenceMentor</text>
+    
+    <text x="12" y="56" class="class-body">+ id : int {{PK}}</text>
+    <text x="12" y="74" class="class-body">+ mentor_id : int {{FK}}</text>
+    <text x="12" y="92" class="class-body">+ matiere_id : int {{FK}}</text>
+    <text x="12" y="110" class="class-body">+ niveau_expertise : ExpertiseEnum</text>
+  </g>
+
+  <!-- CLASSE : DemandeMentorat (mentorship) -->
+  <g transform="translate(420, 430)">
+    <rect width="280" height="230" class="class-box" />
+    <rect width="280" height="38" class="header-mentorship" rx="6" />
+    <rect y="25" width="280" height="13" class="header-mentorship" />
+    <text x="140" y="18" class="class-stereo">&lt;&lt;Gestion des Demandes&gt;&gt;</text>
+    <text x="140" y="32" class="class-title">DemandeMentorat</text>
+    
+    <text x="12" y="56" class="class-body">+ id : int {{PK}}</text>
+    <text x="12" y="74" class="class-body">+ mentore_id : int {{FK Profile}}</text>
+    <text x="12" y="92" class="class-body">+ mentor_id : int {{FK Profile}}</text>
+    <text x="12" y="110" class="class-body">+ matiere_id : int {{FK Matiere}}</text>
+    <text x="12" y="128" class="class-body">+ message : text</text>
+    <text x="12" y="146" class="class-body">+ statut : StatutDemandeEnum</text>
+    <text x="12" y="164" class="class-body">+ date_creation : datetime</text>
+    <line x1="0" y1="174" x2="280" y2="174" class="div-line" />
+    <text x="12" y="192" class="class-method">+ accepter() : void</text>
+    <text x="12" y="210" class="class-method">+ refuser() : void</text>
+    <text x="12" y="224" class="class-method">+ cloturer() : void</text>
+  </g>
+
+  <!-- CLASSE : Conversation (chat temps réel) -->
+  <g transform="translate(60, 480)">
+    <rect width="260" height="160" class="class-box" />
+    <rect width="260" height="38" class="header-chat" rx="6" />
+    <rect y="25" width="260" height="13" class="header-chat" />
+    <text x="130" y="18" class="class-stereo">&lt;&lt;Temps Réel Channels&gt;&gt;</text>
+    <text x="130" y="32" class="class-title">Conversation</text>
+    
+    <text x="12" y="56" class="class-body">+ id : int {{PK}}</text>
+    <text x="12" y="74" class="class-body">+ demande_id : int {{FK, Unique}}</text>
+    <text x="12" y="92" class="class-body">+ date_creation : datetime</text>
+    <text x="12" y="110" class="class-body">+ derniere_activite : datetime</text>
+    <line x1="0" y1="120" x2="260" y2="120" class="div-line" />
+    <text x="12" y="140" class="class-method">+ get_non_lus(user) : int</text>
+  </g>
+
+  <!-- CLASSE : Message (chat temps réel) -->
+  <g transform="translate(60, 710)">
+    <rect width="260" height="160" class="class-box" />
+    <rect width="260" height="38" class="header-chat" rx="6" />
+    <rect y="25" width="260" height="13" class="header-chat" />
+    <text x="130" y="18" class="class-stereo">&lt;&lt;Trame WebSocket&gt;&gt;</text>
+    <text x="130" y="32" class="class-title">Message</text>
+    
+    <text x="12" y="56" class="class-body">+ id : int {{PK}}</text>
+    <text x="12" y="74" class="class-body">+ conversation_id : int {{FK}}</text>
+    <text x="12" y="92" class="class-body">+ expediteur_id : int {{FK Profile}}</text>
+    <text x="12" y="110" class="class-body">+ contenu : text</text>
+    <text x="12" y="128" class="class-body">+ est_lu : boolean</text>
+    <text x="12" y="146" class="class-body">+ date_envoi : datetime</text>
+  </g>
+
+  <!-- CLASSE : AvisEvaluation (notation) -->
+  <g transform="translate(860, 500)">
+    <rect width="260" height="170" class="class-box" />
+    <rect width="260" height="38" class="header-eval" rx="6" />
+    <rect y="25" width="260" height="13" class="header-eval" />
+    <text x="130" y="18" class="class-stereo">&lt;&lt;Avis et Score&gt;&gt;</text>
+    <text x="130" y="32" class="class-title">AvisEvaluation</text>
+    
+    <text x="12" y="56" class="class-body">+ id : int {{PK}}</text>
+    <text x="12" y="74" class="class-body">+ demande_id : int {{FK, Unique}}</text>
+    <text x="12" y="92" class="class-body">+ mentor_id : int {{FK Profile}}</text>
+    <text x="12" y="110" class="class-body">+ auteur_id : int {{FK Profile}}</text>
+    <text x="12" y="128" class="class-body">+ note : int [1..5]</text>
+    <text x="12" y="146" class="class-body">+ commentaire : text</text>
+    <text x="12" y="164" class="class-body">+ date_creation : datetime</text>
+  </g>
+
+  <!-- RELATIONS ET MULTIPLICITES -->
+  <line x1="310" y1="180" x2="420" y2="180" class="assoc-line" />
+  <text x="320" y="172" class="card-text">1</text>
+  <text x="400" y="172" class="card-text">1</text>
+  <text x="345" y="196" class="role-text">possède</text>
+
+  <line x1="690" y1="260" x2="800" y2="330" class="assoc-line" />
+  <text x="705" y="260" class="card-text">1</text>
+  <text x="780" y="325" class="card-text">0..*</text>
+
+  <line x1="1050" y1="250" x2="980" y2="310" class="assoc-line" />
+  <text x="1040" y="270" class="card-text">1</text>
+  <text x="990" y="300" class="card-text">0..*</text>
+
+  <line x1="510" y1="340" x2="510" y2="430" class="assoc-line" />
+  <text x="490" y="360" class="card-text">1</text>
+  <text x="490" y="420" class="card-text">0..*</text>
+  <text x="440" y="390" class="role-text">émet / reçoit</text>
+
+  <path d="M 700 500 L 1100 500 L 1100 250" fill="none" class="assoc-line" />
+  <text x="710" y="492" class="card-text">0..*</text>
+  <text x="1080" y="270" class="card-text">1</text>
+  <text x="890" y="492" class="role-text">porte sur</text>
+
+  <line x1="420" y1="540" x2="320" y2="540" class="assoc-line" />
+  <text x="400" y="532" class="card-text">1</text>
+  <text x="330" y="532" class="card-text">0..1</text>
+  <text x="345" y="555" class="role-text">débloque</text>
+
+  <line x1="190" y1="640" x2="190" y2="710" class="assoc-line" marker-start="url(#diamond)" />
+  <text x="200" y="660" class="card-text">1</text>
+  <text x="200" y="700" class="card-text">0..*</text>
+
+  <line x1="700" y1="570" x2="860" y2="570" class="assoc-line" />
+  <text x="710" y="562" class="card-text">1</text>
+  <text x="835" y="562" class="card-text">0..1</text>
+  <text x="750" y="585" class="role-text">évaluée par</text>
+</svg>
+"""
+
+with open(os.path.join(OUTPUT_DIR, "02_diagramme_classes.svg"), "w") as f:
+    f.write(svg_classes)
+
+print("SVG 2 (Classes) généré.")
+
+# 3. DIAGRAMME DE SÉQUENCE (SVG)
+svg_sequence = f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 950" width="1200" height="950">
+  <defs>
+    <style>
+      .bg {{ fill: #f8fafc; }}
+      .lifeline {{ stroke: #94a3b8; stroke-width: 1.5; stroke-dasharray: 6,6; }}
+      .box-actor {{ fill: #eff6ff; stroke: #2B72BB; stroke-width: 2; rx: 8; }}
+      .box-server {{ fill: #f8fafc; stroke: #334155; stroke-width: 1.8; rx: 8; }}
+      .box-redis {{ fill: #fef2f2; stroke: #dc2626; stroke-width: 1.8; rx: 8; }}
+      .box-mysql {{ fill: #ecfdf5; stroke: #059669; stroke-width: 1.8; rx: 8; }}
+      .title-text {{ font-family: 'Segoe UI', Arial, sans-serif; font-size: 13px; font-weight: bold; text-anchor: middle; }}
+      .sub-text {{ font-family: 'Segoe UI', Arial, sans-serif; font-size: 10px; fill: #64748b; text-anchor: middle; }}
+      .activation {{ fill: #bfdbfe; stroke: #2B72BB; stroke-width: 1.2; rx: 2; }}
+      .activation-redis {{ fill: #fecaca; stroke: #dc2626; stroke-width: 1.2; rx: 2; }}
+      .activation-mysql {{ fill: #a7f3d0; stroke: #059669; stroke-width: 1.2; rx: 2; }}
+      .msg-line {{ stroke: #1e293b; stroke-width: 1.6; marker-end: url(#arrow-sync); }}
+      .msg-ws {{ stroke: #2563eb; stroke-width: 1.8; marker-end: url(#arrow-ws); }}
+      .msg-reply {{ stroke: #64748b; stroke-width: 1.4; stroke-dasharray: 5,4; marker-end: url(#arrow-reply); }}
+      .msg-text {{ font-family: 'Segoe UI', Arial, sans-serif; font-size: 11px; font-weight: 600; fill: #0f172a; }}
+      .msg-text-ws {{ font-family: 'Segoe UI', Arial, sans-serif; font-size: 11px; font-weight: bold; fill: #1d4ed8; }}
+      .par-box {{ fill: #f1f5f9; stroke: #64748b; stroke-dasharray: 4,4; stroke-width: 1.5; rx: 6; }}
+      .par-label {{ font-family: 'Segoe UI', Arial, sans-serif; font-size: 11px; font-weight: bold; fill: #334155; }}
+    </style>
+    {COMMON_ICON_DEFS}
+    <marker id="arrow-sync" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#1e293b" />
+    </marker>
+    <marker id="arrow-ws" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#2563eb" />
+    </marker>
+    <marker id="arrow-reply" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 2 L 8 5 L 0 8 z" fill="#64748b" />
+    </marker>
+  </defs>
+
+  <rect width="100%" height="100%" class="bg" />
+
+  <text x="600" y="38" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="22" font-weight="bold" fill="#0f172a">
+    DIAGRAMME DE SÉQUENCE : MESSAGERIE INSTANTANÉE WEBSOCKET ET MYSQL
+  </text>
+  <text x="600" y="60" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="13" fill="#64748b">
+    Connexion persistante, diffusion asynchrone Redis et persistance dans MySQL 8.0
+  </text>
+
+  <!-- PARTICIPANTS & COLONNES AVEC ICÔNES PRO -->
+  <!-- Col 1 : Mentoré (100) -->
+  <g transform="translate(100, 85)">
+    <rect x="-65" y="0" width="130" height="55" class="box-actor" />
+    <g transform="translate(-8, 5)"><use href="#icon-student" width="16" height="16" /></g>
+    <text x="0" y="34" class="title-text" fill="#1e3a8a">Mentoré</text>
+    <text x="0" y="47" class="sub-text">Apprenant actif</text>
+    <line x1="0" y1="55" x2="0" y2="830" class="lifeline" />
+  </g>
+
+  <!-- Col 2 : Frontend Angular (280) -->
+  <g transform="translate(280, 85)">
+    <rect x="-65" y="0" width="130" height="55" class="box-server" />
+    <g transform="translate(-8, 5)"><use href="#icon-browser" width="16" height="16" /></g>
+    <text x="0" y="34" class="title-text" fill="#0f172a">Client Angular</text>
+    <text x="0" y="47" class="sub-text">RxJS WebSocket</text>
+    <line x1="0" y1="55" x2="0" y2="830" class="lifeline" />
+  </g>
+
+  <!-- Col 3 : Serveur ASGI Daphne (500) -->
+  <g transform="translate(500, 85)">
+    <rect x="-70" y="0" width="140" height="55" class="box-server" />
+    <g transform="translate(-8, 5)"><use href="#icon-bolt" width="16" height="16" /></g>
+    <text x="0" y="34" class="title-text" fill="#0f172a">Daphne / Channels</text>
+    <text x="0" y="47" class="sub-text">Async ChatConsumer</text>
+    <line x1="0" y1="55" x2="0" y2="830" class="lifeline" />
+  </g>
+
+  <!-- Col 4 : Redis Channel Layer (710) -->
+  <g transform="translate(710, 85)">
+    <rect x="-65" y="0" width="130" height="55" class="box-redis" />
+    <g transform="translate(-8, 5)"><use href="#icon-redis" width="16" height="16" /></g>
+    <text x="0" y="34" class="title-text" fill="#b91c1c">Redis Layer</text>
+    <text x="0" y="47" class="sub-text">Broker Pub/Sub</text>
+    <line x1="0" y1="55" x2="0" y2="830" class="lifeline" />
+  </g>
+
+  <!-- Col 5 : SGBD MySQL (900) -->
+  <g transform="translate(900, 85)">
+    <rect x="-65" y="0" width="130" height="55" class="box-mysql" />
+    <g transform="translate(-8, 5)"><use href="#icon-database" width="16" height="16" /></g>
+    <text x="0" y="34" class="title-text" fill="#047857">MySQL 8.0</text>
+    <text x="0" y="47" class="sub-text">Stockage InnoDB</text>
+    <line x1="0" y1="55" x2="0" y2="830" class="lifeline" />
+  </g>
+
+  <!-- Col 6 : Client Mentor (1100) -->
+  <g transform="translate(1100, 85)">
+    <rect x="-65" y="0" width="130" height="55" class="box-actor" />
+    <g transform="translate(-8, 5)"><use href="#icon-mentor" width="16" height="16" /></g>
+    <text x="0" y="34" class="title-text" fill="#1e3a8a">Mentor</text>
+    <text x="0" y="47" class="sub-text">Navigateur connecté</text>
+    <line x1="0" y1="55" x2="0" y2="830" class="lifeline" />
+  </g>
+
+  <!-- ÉTAPE 1 : HANDSHAKE WEBSOCKET -->
+  <rect x="493" y="170" width="14" height="110" class="activation" />
+
+  <line x1="100" y1="180" x2="280" y2="180" class="msg-line" />
+  <text x="190" y="172" text-anchor="middle" class="msg-text">1: Clique sur « Ouvrir le chat »</text>
+
+  <line x1="280" y1="210" x2="493" y2="210" class="msg-ws" />
+  <text x="385" y="202" text-anchor="middle" class="msg-text-ws">2: WSS Handshake /ws/chat/room_42/</text>
+
+  <line x1="507" y1="235" x2="703" y2="235" class="msg-line" />
+  <text x="605" y="227" text-anchor="middle" class="msg-text">3: group_add("room_42", channel_name)</text>
+
+  <line x1="703" y1="250" x2="507" y2="250" class="msg-reply" />
+  <text x="605" y="265" text-anchor="middle" class="sub-text">OK (Ajouté au groupe)</text>
+
+  <line x1="493" y1="275" x2="280" y2="275" class="msg-reply" />
+  <text x="385" y="290" text-anchor="middle" class="msg-text">4: 101 Switching Protocols (WS Ouvert)</text>
+
+  <!-- ÉTAPE 2 : ÉMISSION ET DIFFUSION DU MESSAGE -->
+  <rect x="273" y="340" width="14" height="400" class="activation" />
+  <rect x="493" y="360" width="14" height="380" class="activation" />
+  <rect x="703" y="480" width="14" height="120" class="activation-redis" />
+  <rect x="893" y="480" width="14" height="80" class="activation-mysql" />
+  <rect x="1093" y="620" width="14" height="100" class="activation" />
+
+  <line x1="100" y1="350" x2="273" y2="350" class="msg-line" />
+  <text x="185" y="342" text-anchor="middle" class="msg-text">5: Rédige le message et valide</text>
+
+  <line x1="287" y1="375" x2="493" y2="375" class="msg-ws" />
+  <text x="390" y="367" text-anchor="middle" class="msg-text-ws">6: Trame JSON : {{"type": "chat.message", "text": "..."}}</text>
+
+  <!-- BLOC PARALLÈLE -->
+  <rect x="430" y="420" width="530" height="190" class="par-box" />
+  <text x="445" y="440" class="par-label">par [Traitement Concomitant Asynchrone]</text>
+
+  <!-- Branche 1 : Sauvegarde MySQL -->
+  <line x1="507" y1="485" x2="893" y2="485" class="msg-line" stroke="#059669" />
+  <text x="700" y="475" text-anchor="middle" class="msg-text" fill="#047857">7a: INSERT INTO chat_message (InnoDB)</text>
+
+  <line x1="893" y1="540" x2="507" y2="540" class="msg-reply" stroke="#059669" />
+  <text x="700" y="555" text-anchor="middle" class="sub-text">Message persisté avec ID=108</text>
+
+  <!-- Branche 2 : Redis Pub/Sub -->
+  <line x1="507" y1="495" x2="703" y2="495" class="msg-line" stroke="#dc2626" />
+  <text x="605" y="485" text-anchor="middle" class="msg-text" fill="#dc2626">7b: group_send("room_42", payload)</text>
+
+  <line x1="703" y1="575" x2="507" y2="575" class="msg-line" stroke="#dc2626" />
+  <text x="605" y="590" text-anchor="middle" class="msg-text" fill="#dc2626">8: Broadcast vers Daphne Consumers</text>
+
+  <!-- ÉTAPE 3 : DIFFUSION VERS LE DESTINATAIRE -->
+  <line x1="507" y1="630" x2="1093" y2="630" class="msg-ws" />
+  <text x="800" y="622" text-anchor="middle" class="msg-text-ws">9: Diffusion WS vers Mentor : {{"id": 108, "text": "..."}}</text>
+
+  <text x="1100" y="665" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="11" font-weight="bold" fill="#059669">
+    Affichage immédiat (&lt; 50ms)
+  </text>
+
+  <!-- Accusé de réception expéditeur -->
+  <line x1="493" y1="680" x2="287" y2="680" class="msg-reply" />
+  <text x="390" y="672" text-anchor="middle" class="msg-text">10: ACK WS (Statut transmis / Lu)</text>
+
+  <line x1="273" y1="710" x2="100" y2="710" class="msg-reply" />
+  <text x="185" y="702" text-anchor="middle" class="msg-text">11: Coche de validation visuelle</text>
+</svg>
+"""
+
+with open(os.path.join(OUTPUT_DIR, "03_diagramme_sequence.svg"), "w") as f:
+    f.write(svg_sequence)
+
+print("SVG 3 (Séquence temps réel) généré avec icônes pro.")
+
+# 4. DIAGRAMME DE DÉPLOIEMENT (SVG)
+svg_deployment = f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 850" width="1200" height="850">
+  <defs>
+    <style>
+      .bg {{ fill: #f8fafc; }}
+      .node-box {{ fill: #ffffff; stroke: #334155; stroke-width: 2; rx: 8; }}
+      .node-title {{ font-family: 'Segoe UI', Arial, sans-serif; font-size: 15px; font-weight: bold; fill: #0f172a; }}
+      .node-stereo {{ font-family: 'Segoe UI', Arial, sans-serif; font-size: 11px; font-style: italic; fill: #64748b; }}
+      .comp-box {{ fill: #eff6ff; stroke: #2B72BB; stroke-width: 1.5; rx: 6; }}
+      .comp-box-green {{ fill: #ecfdf5; stroke: #059669; stroke-width: 1.5; rx: 6; }}
+      .comp-box-orange {{ fill: #fff7ed; stroke: #CB732B; stroke-width: 1.5; rx: 6; }}
+      .comp-box-red {{ fill: #fef2f2; stroke: #dc2626; stroke-width: 1.5; rx: 6; }}
+      .comp-title {{ font-family: 'Segoe UI', Arial, sans-serif; font-size: 12.5px; font-weight: bold; fill: #1e293b; }}
+      .comp-desc {{ font-family: 'Segoe UI', Arial, sans-serif; font-size: 10.5px; fill: #64748b; }}
+      .link-line {{ stroke: #1e293b; stroke-width: 2; }}
+      .link-label {{ font-family: 'Consolas', monospace; font-size: 11px; font-weight: bold; fill: #1d4ed8; background: #ffffff; }}
+    </style>
+    {COMMON_ICON_DEFS}
+  </defs>
+
+  <rect width="100%" height="100%" class="bg" />
+
+  <text x="600" y="38" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="22" font-weight="bold" fill="#0f172a">
+    DIAGRAMME DE DÉPLOIEMENT ARCHITECTURAL — FORCE MENTOR
+  </text>
+  <text x="600" y="60" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="13" fill="#64748b">
+    Infrastructure serveur Linux Ubuntu : Nginx, Daphne (ASGI), Gunicorn (WSGI), Redis et MySQL 8.0
+  </text>
+
+  <!-- NŒUD 1 : CLIENT (Navigateur) -->
+  <g transform="translate(60, 180)">
+    <rect width="280" height="420" class="node-box" />
+    <rect width="280" height="35" fill="#f1f5f9" rx="8" />
+    <rect y="25" width="280" height="10" fill="#f1f5f9" />
+    <line x1="0" y1="35" x2="280" y2="35" stroke="#cbd5e1" stroke-width="1.5" />
+    <text x="140" y="16" text-anchor="middle" class="node-stereo">&lt;&lt;device&gt;&gt;</text>
+    <text x="140" y="30" text-anchor="middle" class="node-title">Poste Client Utilisateur</text>
+
+    <!-- Composant Browser -->
+    <g transform="translate(20, 55)">
+      <rect width="240" height="80" class="comp-box" />
+      <g transform="translate(14, 12)"><use href="#icon-browser" width="18" height="18" /></g>
+      <text x="38" y="26" class="comp-title">Navigateur Web Moderne</text>
+      <text x="15" y="47" class="comp-desc">Chrome, Firefox, Safari, Edge</text>
+      <text x="15" y="64" class="comp-desc">Desktop et Smartphones (Android / iOS)</text>
+    </g>
+
+    <!-- Composant Angular SPA -->
+    <g transform="translate(20, 160)">
+      <rect width="240" height="110" class="comp-box" />
+      <g transform="translate(14, 12)"><use href="#icon-server" width="18" height="18" /></g>
+      <text x="38" y="26" class="comp-title">Frontend Angular 17+</text>
+      <text x="15" y="47" class="comp-desc">- Client HTTP / REST (JSON)</text>
+      <text x="15" y="67" class="comp-desc">- RxJS WebSocket Subject</text>
+      <text x="15" y="87" class="comp-desc">- Bootstrap 5 &amp; Charte Force-N</text>
+    </g>
+
+    <!-- Cache Local -->
+    <g transform="translate(20, 290)">
+      <rect width="240" height="65" class="comp-box" />
+      <g transform="translate(14, 12)"><use href="#icon-storage" width="18" height="18" /></g>
+      <text x="38" y="26" class="comp-title">LocalStorage / Session</text>
+      <text x="15" y="47" class="comp-desc">Jetons d'authentification JWT &amp; État</text>
+    </g>
+  </g>
+
+  <!-- NŒUD 2 : SERVEUR DE PRODUCTION (Ubuntu Linux) -->
+  <g transform="translate(450, 100)">
+    <rect width="690" height="690" class="node-box" />
+    <rect width="690" height="38" fill="#e2e8f0" rx="8" />
+    <rect y="25" width="690" height="13" fill="#e2e8f0" />
+    <line x1="0" y1="38" x2="690" y2="38" stroke="#cbd5e1" stroke-width="1.5" />
+    <text x="345" y="16" text-anchor="middle" class="node-stereo">&lt;&lt;execution environment&gt;&gt;</text>
+    <text x="345" y="32" text-anchor="middle" class="node-title">Serveur VPS Ubuntu 24.04 LTS (Hébergement Force-N)</text>
+
+    <!-- Sous-nœud : Nginx -->
+    <g transform="translate(30, 60)">
+      <rect width="630" height="110" class="comp-box" />
+      <g transform="translate(18, 14)"><use href="#icon-shield" width="20" height="20" /></g>
+      <text x="44" y="29" class="comp-title">Serveur Web &amp; Reverse Proxy : Nginx</text>
+      <text x="20" y="54" class="comp-desc">• Terminaison SSL/TLS (HTTPS Port 443 via Let's Encrypt)</text>
+      <text x="20" y="72" class="comp-desc">• Routage HTTP standard (/api/, /admin/) -&gt; Gunicorn WSGI</text>
+      <text x="20" y="90" class="comp-desc">• Routage WebSocket (Upgrade: websocket sur /ws/) -&gt; Daphne ASGI</text>
+    </g>
+
+    <!-- Sous-nœud : Python App Server -->
+    <g transform="translate(30, 200)">
+      <rect width="630" height="190" class="comp-box" />
+      <g transform="translate(18, 12)"><use href="#icon-server" width="20" height="20" /></g>
+      <text x="44" y="27" class="comp-title">Serveurs Applicatifs Python (Django 5.x)</text>
+
+      <!-- Worker Gunicorn -->
+      <g transform="translate(20, 42)">
+        <rect width="280" height="120" class="comp-box-orange" />
+        <g transform="translate(14, 10)"><use href="#icon-server" width="16" height="16" /></g>
+        <text x="35" y="23" class="comp-title" fill="#c2410c">Gunicorn (WSGI) : Port 8000</text>
+        <text x="15" y="45" class="comp-desc">- Traitement API REST &amp; Auth</text>
+        <text x="15" y="65" class="comp-desc">- Django REST Framework</text>
+        <text x="15" y="85" class="comp-desc">- Administration &amp; Rapports</text>
+      </g>
+
+      <!-- Worker Daphne -->
+      <g transform="translate(325, 42)">
+        <rect width="280" height="120" class="comp-box-green" />
+        <g transform="translate(14, 10)"><use href="#icon-bolt" width="16" height="16" /></g>
+        <text x="35" y="23" class="comp-title" fill="#047857">Daphne (ASGI) : Port 8001</text>
+        <text x="15" y="45" class="comp-desc">- Serveur Asynchrone</text>
+        <text x="15" y="65" class="comp-desc">- Django Channels 4.x</text>
+        <text x="15" y="85" class="comp-desc">- Salons Chat WebSockets</text>
+      </g>
+    </g>
+
+    <!-- Sous-nœud : Redis Message Broker -->
+    <g transform="translate(30, 420)">
+      <rect width="290" height="120" class="comp-box-red" />
+      <g transform="translate(18, 14)"><use href="#icon-redis" width="20" height="20" /></g>
+      <text x="44" y="29" class="comp-title" fill="#b91c1c">Redis Server 7.x</text>
+      <text x="20" y="54" class="comp-desc">• Port d'écoute : 6379 (Local)</text>
+      <text x="20" y="74" class="comp-desc">• Channels Layer (Pub/Sub en RAM)</text>
+      <text x="20" y="94" class="comp-desc">• Routage ultra-rapide des messages</text>
+    </g>
+
+    <!-- Sous-nœud : SGBD MySQL 8.0 -->
+    <g transform="translate(350, 420)">
+      <rect width="310" height="120" class="comp-box-green" />
+      <g transform="translate(18, 14)"><use href="#icon-database" width="20" height="20" /></g>
+      <text x="44" y="29" class="comp-title" fill="#047857">SGBD MySQL 8.0 (Production)</text>
+      <text x="20" y="54" class="comp-desc">• Port sécurisé : 3306</text>
+      <text x="20" y="74" class="comp-desc">• Moteur InnoDB (Transactions ACID)</text>
+      <text x="20" y="94" class="comp-desc">• Persistance Utilisateurs, Demandes, Chat</text>
+    </g>
+
+    <!-- Fichiers Statiques & Media -->
+    <g transform="translate(30, 570)">
+      <rect width="630" height="90" class="comp-box" />
+      <g transform="translate(18, 12)"><use href="#icon-storage" width="18" height="18" /></g>
+      <text x="42" y="27" class="comp-title">Volume de Stockage Disque (Assets &amp; Médias)</text>
+      <text x="20" y="52" class="comp-desc">/var/www/static (Frontend Angular compilé, styles, scripts) &amp; /var/www/media (Avatars, logos Force-N)</text>
+    </g>
+  </g>
+
+  <!-- LIAISON CLIENT -> NGINX -->
+  <line x1="340" y1="300" x2="480" y2="220" class="link-line" />
+  <rect x="360" y="235" width="90" height="20" fill="#ffffff" rx="3" />
+  <text x="405" y="250" text-anchor="middle" class="link-label">HTTPS (443)</text>
+
+  <line x1="340" y1="360" x2="480" y2="245" class="link-line" stroke="#2563eb" />
+  <rect x="360" y="295" width="90" height="20" fill="#ffffff" rx="3" />
+  <text x="405" y="310" text-anchor="middle" class="link-label" fill="#2563eb">WSS (443)</text>
+</svg>
+"""
+
+with open(os.path.join(OUTPUT_DIR, "04_diagramme_deploiement.svg"), "w") as f:
+    f.write(svg_deployment)
+
+print("SVG 4 (Déploiement) généré avec icônes pro.")
+
+# 5. RENDU PNG HAUTE DÉFINITION VIA CHROMIUM HEADLESS
+for name in ["01_diagramme_cas_utilisation", "02_diagramme_classes", "03_diagramme_sequence", "04_diagramme_deploiement"]:
+    svg_path = os.path.join(OUTPUT_DIR, f"{name}.svg")
+    png_path = os.path.join(OUTPUT_DIR, f"{name}.png")
+    cmd = [
+        "chromium",
+        "--headless",
+        "--disable-gpu",
+        "--no-sandbox",
+        "--window-size=1400,1050",
+        f"--screenshot={png_path}",
+        svg_path
+    ]
+    try:
+        subprocess.run(cmd, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        print(f"PNG généré avec succès : {png_path}")
+    except Exception as e:
+        print(f"Erreur rendu PNG pour {name}: {e}")
+
+print("Tous les schémas graphiques ont été générés avec succès avec des icônes professionnelles !")

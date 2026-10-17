@@ -31,6 +31,7 @@ class Profile(models.Model):
     bio = models.TextField(blank=True, help_text="Présentez-vous, vos objectifs ou vos compétences")
     telephone = models.CharField(max_length=30, blank=True, help_text="Numéro WhatsApp ou contact")
     est_disponible = models.BooleanField(default=True, help_text="Disponible pour du mentorat")
+    photo = models.ImageField(upload_to='profiles/', blank=True, null=True, help_text="Photo de profil")
 
     class Meta:
         verbose_name = "Profil Étudiant"

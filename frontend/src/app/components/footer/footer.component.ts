@@ -10,25 +10,35 @@ import { RouterModule } from '@angular/router';
     <footer class="footer">
       <div class="container footer__inner">
         <div class="footer__col">
-          <a routerLink="/" style="display: inline-block; background: rgba(255,255,255,0.95); padding: 6px 12px; border-radius: 8px;">
-            <img src="/Logo_Force_Mentor.png" alt="Force Mentor" height="32" style="max-height: 32px; width: auto; display: block;">
+          <a routerLink="/" class="logo-brand logo-brand--footer" aria-label="Force Mentor">
+            <img src="/logo_force_mentor_white.svg" width="40" height="29" alt="Force Mentor" class="logo-brand__icon">
+            <span class="logo-brand__text logo-brand__text--white">FORCE <span>MENTOR</span></span>
           </a>
           <p class="footer__desc">
-            Plateforme d'accompagnement et d'entraide académique pour les apprenants du programme Force-N. Trouvez un mentor en quelques clics.
+            Plateforme d'accompagnement et d'entraide académique pour les apprenants du programme Force-N. Trouvez un mentor certifié en quelques clics.
           </p>
+          <div class="footer__socials mt-3">
+            <a href="#" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+            <a href="#" aria-label="Twitter / X"><i class="bi bi-twitter-x"></i></a>
+            <a href="#" aria-label="TikTok"><i class="bi bi-tiktok"></i></a>
+            <a href="#" aria-label="GitHub"><i class="bi bi-github"></i></a>
+          </div>
         </div>
         <div class="footer__links">
           <div>
             <strong>Plateforme</strong>
             <a routerLink="/">Accueil</a>
-            <a routerLink="/mentors">Annuaire des mentors</a>
-            <a routerLink="/tableau-de-bord">Tableau de bord</a>
-            <a routerLink="/profil">Mon profil</a>
+            <a routerLink="/mentors">Trouver un mentor</a>
+            <a routerLink="/comment-ca-marche">Comment ça marche</a>
+            <a routerLink="/temoignages">Témoignages</a>
+            <a routerLink="/faq">FAQs</a>
           </div>
           <div>
             <strong>Espace Compte</strong>
+            <a routerLink="/tableau-de-bord">Tableau de bord</a>
+            <a routerLink="/profil">Mon profil</a>
             <a routerLink="/connexion">Connexion</a>
-            <a routerLink="/inscription">Inscription</a>
+            <a routerLink="/inscription">Créer un compte</a>
           </div>
         </div>
       </div>

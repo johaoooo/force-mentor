@@ -8,7 +8,7 @@ import { Profile, Matiere, Stats } from '../models/models';
 })
 export class MentorService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://127.0.0.1:8080/api';
+  private apiUrl = 'http://127.0.0.1:8001/api';
 
   getMentors(matiereId?: number | null, niveau?: string | null, search?: string | null): Observable<Profile[]> {
     let params = new HttpParams();

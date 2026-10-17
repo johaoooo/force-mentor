@@ -1,8 +1,8 @@
 {% load static %}
 <header class="navbar">
   <div class="container navbar__inner">
-    <a href="{% url 'mentors:home' %}" class="logo-brand" aria-label="Force Mentor" style="display: flex; align-items: center;">
-      <img src="{% static 'img/Logo_Force_Mentor.png' %}" alt="Force Mentor" height="36" style="max-height: 36px; width: auto; display: block;">
+    <a href="{% url 'mentors:home' %}" class="logo-brand" aria-label="Force Mentor">
+      <img src="{% static 'img/logo_force_mentor.svg' %}" width="58" height="42" alt="Force Mentor" class="logo-brand__icon logo-brand__icon--navbar">
     </a>
 
     <button class="navbar__toggle" id="navbarToggle" aria-label="Ouvrir le menu" type="button">
@@ -10,11 +10,12 @@
     </button>
 
     <nav class="navbar__links" id="navbarLinks">
-      <a href="{% url 'mentors:home' %}" class="{% if request.path == '/' %}active{% endif %}">Accueil</a>
-      <a href="{% url 'mentors:list' %}" class="{% if '/mentors/' in request.path %}active{% endif %}">Mentors</a>
+      <a href="{% url 'mentors:list' %}" class="{% if '/mentors/' in request.path %}active{% endif %}">Trouver un mentor</a>
+      <a href="{% url 'mentors:home' %}#comment-ca-marche">Comment ça marche</a>
+      <a href="{% url 'mentors:home' %}#temoignages">Témoignages</a>
+      <a href="{% url 'mentors:home' %}#faq">FAQs</a>
       {% if user.is_authenticated %}
         <a href="{% url 'dashboard' %}" class="{% if '/tableau-de-bord/' in request.path %}active{% endif %}">Tableau de bord</a>
-        <a href="{% url 'profile' %}" class="{% if '/profil/' in request.path %}active{% endif %}">Mon profil</a>
       {% endif %}
     </nav>
     <div class="navbar__actions" id="navbarActions">

@@ -1,13 +1,20 @@
-<section class="section section--bordered">
+<section class="section section--bordered" id="mentors">
   <div class="container">
-    <h2 class="section__title">LES MENTORS</h2>
-    <p class="section__sub">Découvrez des professionnels de différents domaines, prêts à partager leur expertise<br>et leur expérience pour vous aider à avancer.</p>
+    <div class="section__header text-center">
+      <h2 class="section__title">LES MENTORS</h2>
+      <p class="section__sub">Des étudiants certifiés Force-N, recommandés pour leur excellence et leur pédagogie, prêts à vous guider dans vos cours et projets.</p>
+    </div>
     <div class="mentors">
       {% for mentor in mentors %}
         {% include "mentors/partials/_mentor_card.html" %}
       {% empty %}
-        <p class="empty">Aucun mentor ne correspond à votre recherche.</p>
+        <p class="empty">Aucun mentor disponible pour le moment.</p>
       {% endfor %}
+    </div>
+    <div class="text-center mt-5">
+      <a href="{% url 'mentors:list' %}" class="btn btn--outline" style="padding: 12px 28px; font-size: 14px; font-weight: 700;">
+        <i class="bi bi-people-fill me-2"></i>Voir tous les mentors disponibles
+      </a>
     </div>
   </div>
 </section>

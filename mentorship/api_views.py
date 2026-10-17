@@ -1,14 +1,22 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, permissions
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
+from rest_framework.authentication import SessionAuthentication
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.db.models import Q
+from django.core.files.base import ContentFile
+import base64
+import json
 from accounts.models import Profile
 from .models import Matiere, CompetenceMentor, DemandeMentorat
 from .api_serializers import (
     MatiereSerializer, ProfileSerializer, DemandeMentoratSerializer
 )
+
+from .authentication import CsrfExemptSessionAuthentication
+
 
 class MatiereListAPIView(APIView):
     """GET /api/matieres/"""
@@ -89,7 +97,7 @@ class AuthLoginAPIView(APIView):
             profile = user.profile
             return Response({
                 'message': 'Connexion réussie',
-                'user': ProfileSerializer(profile).data
+                'user': ProfileSerializer(profile, context={'request': request}).data
             })
         return Response({'error': 'Nom d\'utilisateur ou mot de passe incorrect'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -126,9 +134,20 @@ class AuthRegisterAPIView(APIView):
         profile.niveau = niveau
         profile.filiere = filiere
         profile.bio = bio
-        profile.save()
-
         login(request, user)
+
+        competences_data = data.get('competences', [])
+        if competences_data:
+            for item in competences_data:
+                try:
+                    if isinstance(item, int) or (isinstance(item, str) and item.isdigit()):
+                        mat = Matiere.objects.get(id=int(item))
+                    else:
+                        mat, _ = Matiere.objects.get_or_create(nom=str(item))
+                    CompetenceMentor.objects.get_or_create(mentor=profile, matiere=mat)
+                except Exception:
+                    pass
+
         return Response({
             'message': 'Inscription réussie',
             'user': ProfileSerializer(profile).data
@@ -148,13 +167,18 @@ class AuthMeAPIView(APIView):
         if request.user.is_authenticated:
             return Response({
                 'authenticated': True,
-                'user': ProfileSerializer(request.user.profile).data
+                'user': ProfileSerializer(request.user.profile, context={'request': request}).data
             })
         return Response({'authenticated': False, 'user': None})
 
 
 class ProfileUpdateAPIView(APIView):
-    """PUT /api/auth/profile/"""
+    """PUT or POST /api/auth/profile/"""
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
+
+    def post(self, request):
+        return self.put(request)
+
     def put(self, request):
         if not request.user.is_authenticated:
             return Response({'error': 'Non authentifié'}, status=status.HTTP_401_UNAUTHORIZED)
@@ -174,12 +198,41 @@ class ProfileUpdateAPIView(APIView):
         profile.bio = data.get('bio', profile.bio)
         profile.telephone = data.get('telephone', profile.telephone)
         if 'est_disponible' in data:
-            profile.est_disponible = bool(data['est_disponible'])
+            val = data['est_disponible']
+            if isinstance(val, str):
+                profile.est_disponible = val.lower() in ['true', '1']
+            else:
+                profile.est_disponible = bool(val)
+
+        # Gestion de la photo de profil (upload fichier ou base64)
+        if 'photo' in request.FILES:
+            profile.photo = request.FILES['photo']
+        elif 'photo_base64' in data and data['photo_base64']:
+            raw_b64 = str(data['photo_base64'])
+            try:
+                if ';base64,' in raw_b64:
+                    header, imgstr = raw_b64.split(';base64,')
+                    ext = header.split('/')[-1] if '/' in header else 'png'
+                else:
+                    imgstr = raw_b64
+                    ext = 'png'
+                profile.photo.save(f"avatar_{user.id}.{ext}", ContentFile(base64.b64decode(imgstr)), save=False)
+            except Exception:
+                pass
+
         profile.save()
 
         # Si le profil est mentor, gestion des matières
         if profile.est_mentor and 'matieres' in data:
-            selected_matieres = data.get('matieres', [])
+            raw_mats = data.get('matieres', [])
+            if isinstance(raw_mats, str):
+                try:
+                    selected_matieres = json.loads(raw_mats)
+                except Exception:
+                    selected_matieres = [int(x) for x in raw_mats.split(',') if x.strip().isdigit()]
+            else:
+                selected_matieres = raw_mats
+
             CompetenceMentor.objects.filter(mentor=profile).exclude(matiere_id__in=selected_matieres).delete()
             for mid in selected_matieres:
                 try:
@@ -193,7 +246,7 @@ class ProfileUpdateAPIView(APIView):
 
         return Response({
             'message': 'Profil mis à jour avec succès',
-            'user': ProfileSerializer(profile).data
+            'user': ProfileSerializer(profile, context={'request': request}).data
         })
 
 

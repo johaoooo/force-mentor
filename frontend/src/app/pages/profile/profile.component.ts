@@ -14,14 +14,38 @@ import { Profile, Matiere } from '../../models/models';
     <div class="py-5" style="background: var(--bg); min-height: 85vh;">
       <div class="container-custom" style="max-width: 860px;">
         <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 bg-white">
-          <!-- En-tête -->
-          <div class="d-flex align-items-center gap-3 mb-4 pb-3 border-bottom flex-wrap">
-            <div class="avatar-initials" style="width: 68px; height: 68px; font-size: 1.6rem;">
-              {{ profile?.user?.first_name ? profile!.user.first_name[0].toUpperCase() : 'U' }}{{ profile?.user?.last_name ? profile!.user.last_name[0].toUpperCase() : '' }}
+          <!-- En-tête avec Photo de Profil -->
+          <div class="d-flex align-items-center gap-4 mb-4 pb-4 border-bottom flex-wrap">
+            <div class="position-relative">
+              <img *ngIf="photoPreview || profile?.photo_url" 
+                   [src]="photoPreview || profile?.photo_url" 
+                   alt="Photo de profil" 
+                   class="rounded-circle shadow-sm border border-2 border-white" 
+                   style="width: 80px; height: 80px; object-fit: cover; display: block;">
+              <div *ngIf="!photoPreview && !profile?.photo_url" 
+                   class="avatar-initials shadow-sm" 
+                   style="width: 80px; height: 80px; font-size: 1.8rem;">
+                {{ profile?.user?.first_name ? profile!.user.first_name[0].toUpperCase() : 'U' }}{{ profile?.user?.last_name ? profile!.user.last_name[0].toUpperCase() : '' }}
+              </div>
+              <label class="btn btn-sm btn-primary position-absolute bottom-0 end-0 rounded-circle p-0 d-flex align-items-center justify-content-center shadow" 
+                     style="width: 28px; height: 28px; cursor: pointer; border: 2px solid #fff;"
+                     title="Changer ma photo">
+                <i class="bi bi-camera-fill" style="font-size: 12px;"></i>
+                <input type="file" (change)="onPhotoSelected($event)" accept="image/*" hidden>
+              </label>
             </div>
             <div>
-              <h1 class="fw-bold fs-4 text-dark mb-1">Mon Profil</h1>
-              <p class="text-muted small mb-0">Gérez vos informations personnelles et vos paramètres de mentorat</p>
+              <div class="d-flex align-items-center gap-2 mb-1 flex-wrap">
+                <h1 class="fw-bold fs-4 text-dark mb-0">{{ profile?.user?.first_name }} {{ profile?.user?.last_name }}</h1>
+                <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-2.5 py-1 small" style="font-size: 11.5px;">
+                  {{ profile?.role_display }}
+                </span>
+              </div>
+              <p class="text-muted small mb-2">Personnalisez votre avatar pour être facilement reconnu par vos pairs</p>
+              <label class="btn btn-sm btn-outline-primary" style="font-size: 12.5px; cursor: pointer; border-radius: 6px;">
+                <i class="bi bi-upload me-1"></i>Changer la photo de profil
+                <input type="file" (change)="onPhotoSelected($event)" accept="image/*" hidden>
+              </label>
             </div>
           </div>
 
@@ -156,6 +180,7 @@ export class ProfileComponent implements OnInit {
   estDisponible = true;
 
   saving = false;
+  photoPreview: string | null = null;
   successMessage = '';
   errorMessage = '';
 
@@ -173,6 +198,22 @@ export class ProfileComponent implements OnInit {
     this.mentorService.getMatieres().subscribe(mats => {
       this.allMatieres = mats;
     });
+  }
+
+  onPhotoSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      if (file.size > 5 * 1024 * 1024) {
+        this.errorMessage = "La taille de l'image ne doit pas dépasser 5 Mo.";
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.photoPreview = reader.result as string;
+      };
+      reader.readAsDataURL(file);
+    }
   }
 
   populateForm(p: Profile): void {
@@ -206,7 +247,7 @@ export class ProfileComponent implements OnInit {
     this.successMessage = '';
     this.errorMessage = '';
 
-    const payload = {
+    const payload: any = {
       first_name: this.firstName,
       last_name: this.lastName,
       email: this.email,
@@ -219,11 +260,16 @@ export class ProfileComponent implements OnInit {
       matieres: this.selectedMatiereIds
     };
 
+    if (this.photoPreview) {
+      payload.photo_base64 = this.photoPreview;
+    }
+
     this.authService.updateProfile(payload).subscribe({
       next: (res) => {
         this.saving = false;
         this.profile = res.user;
-        this.successMessage = 'Votre profil a été mis à jour avec succès.';
+        this.photoPreview = null;
+        this.successMessage = 'Votre profil et votre photo ont été mis à jour avec succès.';
       },
       error: (err) => {
         this.saving = false;

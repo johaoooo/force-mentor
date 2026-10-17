@@ -1,5 +1,5 @@
-<app-navbar></app-navbar>
-<main class="main-content">
+<app-navbar *ngIf="!isDashboard()"></app-navbar>
+<main class="main-content" [class.dashboard-mode]="isDashboard()">
   <router-outlet></router-outlet>
 </main>
-<app-footer></app-footer>
+<app-footer *ngIf="!isDashboard()"></app-footer>

@@ -1,0 +1,293 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1300 920" width="1300" height="920">
+  <defs>
+    <style>
+      .bg { fill: #f8fafc; }
+      .class-box { fill: #ffffff; stroke: #1e293b; stroke-width: 1.8; rx: 6; }
+      .header-auth { fill: #2B72BB; }
+      .header-mentorship { fill: #0284c7; }
+      .header-chat { fill: #45A846; }
+      .header-eval { fill: #CB732B; }
+      .class-title { font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; font-weight: bold; fill: #ffffff; text-anchor: middle; }
+      .class-stereo { font-family: 'Segoe UI', Arial, sans-serif; font-size: 10px; font-style: italic; fill: #e2e8f0; text-anchor: middle; }
+      .class-body { font-family: 'Consolas', 'Courier New', monospace; font-size: 11.5px; fill: #1e293b; }
+      .class-method { font-family: 'Consolas', 'Courier New', monospace; font-size: 11.5px; fill: #0f766e; }
+      .div-line { stroke: #cbd5e1; stroke-width: 1.2; }
+      .assoc-line { stroke: #334155; stroke-width: 1.6; }
+      .card-text { font-family: 'Segoe UI', Arial, sans-serif; font-size: 12px; font-weight: bold; fill: #0f172a; }
+      .role-text { font-family: 'Segoe UI', Arial, sans-serif; font-size: 11px; font-style: italic; fill: #475569; }
+    </style>
+    
+    <!-- Icône Étudiant / Mentoré -->
+    <g id="icon-student">
+      <path d="M12 2L1 7l11 5 9-4.09V14a1 1 0 002 0V7L12 2z" fill="#2B72BB"/>
+      <path d="M4 10.5v4c0 3 3.5 5.5 8 5.5s8-2.5 8-5.5v-4" fill="none" stroke="#2B72BB" stroke-width="2" stroke-linecap="round"/>
+    </g>
+
+    <!-- Icône Mentor / Accompagnateur -->
+    <g id="icon-mentor">
+      <circle cx="10" cy="7" r="4" fill="none" stroke="#45A846" stroke-width="2"/>
+      <path d="M2 20v-2a6 6 0 0112 0v2" fill="none" stroke="#45A846" stroke-width="2" stroke-linecap="round"/>
+      <polyline points="15 11 18 14 23 8" fill="none" stroke="#45A846" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+
+    <!-- Icône Administrateur -->
+    <g id="icon-admin">
+      <circle cx="12" cy="12" r="3" fill="none" stroke="#dc2626" stroke-width="2"/>
+      <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" fill="none" stroke="#dc2626" stroke-width="1.8"/>
+    </g>
+
+    <!-- Icône Serveur Courriel / SMTP -->
+    <g id="icon-mail">
+      <rect x="2" y="4" width="20" height="16" rx="2" fill="none" stroke="#CB732B" stroke-width="2"/>
+      <path d="M22 6l-10 7L2 6" fill="none" stroke="#CB732B" stroke-width="2" stroke-linecap="round"/>
+    </g>
+
+    <!-- Icône Chat / Messagerie Instantanée -->
+    <g id="icon-chat">
+      <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" fill="none" stroke="#15803d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <line x1="8" y1="9" x2="16" y2="9" stroke="#15803d" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="8" y1="13" x2="13" y2="13" stroke="#15803d" stroke-width="1.8" stroke-linecap="round"/>
+    </g>
+
+    <!-- Icône Navigateur Web -->
+    <g id="icon-browser">
+      <rect x="2" y="3" width="20" height="18" rx="3" fill="none" stroke="#2B72BB" stroke-width="2"/>
+      <line x1="2" y1="8" x2="22" y2="8" stroke="#2B72BB" stroke-width="1.8"/>
+      <circle cx="5" cy="5.5" r="1" fill="#2B72BB"/>
+      <circle cx="8" cy="5.5" r="1" fill="#2B72BB"/>
+      <circle cx="11" cy="5.5" r="1" fill="#2B72BB"/>
+    </g>
+
+    <!-- Icône Serveur Applicatif / WSGI-ASGI -->
+    <g id="icon-server">
+      <rect x="2" y="2" width="20" height="8" rx="2" fill="none" stroke="#334155" stroke-width="2"/>
+      <rect x="2" y="14" width="20" height="8" rx="2" fill="none" stroke="#334155" stroke-width="2"/>
+      <circle cx="6" cy="6" r="1" fill="#2B72BB"/>
+      <circle cx="6" cy="18" r="1" fill="#2B72BB"/>
+      <line x1="10" y1="6" x2="18" y2="6" stroke="#64748b" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="10" y1="18" x2="18" y2="18" stroke="#64748b" stroke-width="1.5" stroke-linecap="round"/>
+    </g>
+
+    <!-- Icône Base de Données Relationnelle -->
+    <g id="icon-database">
+      <ellipse cx="12" cy="5" rx="9" ry="3" fill="none" stroke="#047857" stroke-width="2"/>
+      <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" fill="none" stroke="#047857" stroke-width="2"/>
+      <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" fill="none" stroke="#047857" stroke-width="2"/>
+    </g>
+
+    <!-- Icône Cache / Redis -->
+    <g id="icon-redis">
+      <polygon points="12,2 22,7 12,12 2,7" fill="none" stroke="#b91c1c" stroke-width="2"/>
+      <path d="M2 12l10 5 10-5" fill="none" stroke="#b91c1c" stroke-width="2"/>
+      <path d="M2 17l10 5 10-5" fill="none" stroke="#b91c1c" stroke-width="2"/>
+    </g>
+
+    <!-- Icône Éclair / Temps Réel -->
+    <g id="icon-bolt">
+      <polygon points="13,2 3,14 12,14 11,22 21,10 12,10" fill="#f59e0b" stroke="#d97706" stroke-width="1.5"/>
+    </g>
+
+    <!-- Icône Stockage / Disque -->
+    <g id="icon-storage">
+      <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" fill="none" stroke="#475569" stroke-width="2"/>
+    </g>
+
+    <!-- Icône Bouclier Sécurité / Reverse Proxy -->
+    <g id="icon-shield">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="none" stroke="#2B72BB" stroke-width="2"/>
+    </g>
+
+    <marker id="diamond" viewBox="0 0 16 16" refX="0" refY="8" markerWidth="10" markerHeight="10">
+      <polygon points="0,8 8,0 16,8 8,16" fill="#1e293b" />
+    </marker>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#334155" />
+    </marker>
+  </defs>
+
+  <rect width="100%" height="100%" class="bg" />
+
+  <text x="650" y="40" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="24" font-weight="bold" fill="#0f172a">
+    DIAGRAMME DE CLASSES MÉTIER ET TEMPS RÉEL — FORCE MENTOR
+  </text>
+  <text x="650" y="65" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="13" fill="#64748b">
+    Modélisation objet complète avec attributs typés, visibilités (+), méthodes et cardinalités
+  </text>
+
+  <!-- CLASSE : User (Django Auth) -->
+  <g transform="translate(60, 100)">
+    <rect width="250" height="190" class="class-box" />
+    <rect width="250" height="38" class="header-auth" rx="6" />
+    <rect y="25" width="250" height="13" class="header-auth" />
+    <text x="125" y="18" class="class-stereo">&lt;&lt;Django Auth&gt;&gt;</text>
+    <text x="125" y="32" class="class-title">User</text>
+    
+    <text x="12" y="56" class="class-body">+ id : int {PK}</text>
+    <text x="12" y="74" class="class-body">+ username : string</text>
+    <text x="12" y="92" class="class-body">+ email : string</text>
+    <text x="12" y="110" class="class-body">+ first_name : string</text>
+    <text x="12" y="128" class="class-body">+ last_name : string</text>
+    <text x="12" y="146" class="class-body">+ password : string [haché]</text>
+    <line x1="0" y1="154" x2="250" y2="154" class="div-line" />
+    <text x="12" y="172" class="class-method">+ check_password(raw) : bool</text>
+  </g>
+
+  <!-- CLASSE : Profile (accounts) -->
+  <g transform="translate(420, 100)">
+    <rect width="270" height="240" class="class-box" />
+    <rect width="270" height="38" class="header-auth" rx="6" />
+    <rect y="25" width="270" height="13" class="header-auth" />
+    <text x="135" y="18" class="class-stereo">&lt;&lt;Modèle Étendu&gt;&gt;</text>
+    <text x="135" y="32" class="class-title">Profile</text>
+    
+    <text x="12" y="56" class="class-body">+ id : int {PK}</text>
+    <text x="12" y="74" class="class-body">+ user_id : int {FK, Unique}</text>
+    <text x="12" y="92" class="class-body">+ role : RoleEnum</text>
+    <text x="12" y="110" class="class-body">+ filiere : string</text>
+    <text x="12" y="128" class="class-body">+ niveau : NiveauEnum</text>
+    <text x="12" y="146" class="class-body">+ bio : text</text>
+    <text x="12" y="164" class="class-body">+ telephone : string [WhatsApp]</text>
+    <text x="12" y="182" class="class-body">+ est_disponible : boolean</text>
+    <line x1="0" y1="192" x2="270" y2="192" class="div-line" />
+    <text x="12" y="210" class="class-method">+ est_mentor() : bool</text>
+    <text x="12" y="228" class="class-method">+ get_note_moyenne() : float</text>
+  </g>
+
+  <!-- CLASSE : Matiere (mentorship) -->
+  <g transform="translate(970, 100)">
+    <rect width="260" height="150" class="class-box" />
+    <rect width="260" height="38" class="header-mentorship" rx="6" />
+    <rect y="25" width="260" height="13" class="header-mentorship" />
+    <text x="130" y="18" class="class-stereo">&lt;&lt;Entité Métier&gt;&gt;</text>
+    <text x="130" y="32" class="class-title">Matiere</text>
+    
+    <text x="12" y="56" class="class-body">+ id : int {PK}</text>
+    <text x="12" y="74" class="class-body">+ nom : string {Unique}</text>
+    <text x="12" y="92" class="class-body">+ description : text</text>
+    <text x="12" y="110" class="class-body">+ icone : string</text>
+    <line x1="0" y1="120" x2="260" y2="120" class="div-line" />
+    <text x="12" y="138" class="class-method">+ get_mentors_count() : int</text>
+  </g>
+
+  <!-- CLASSE : CompetenceMentor (mentorship) -->
+  <g transform="translate(800, 310)">
+    <rect width="260" height="130" class="class-box" />
+    <rect width="260" height="38" class="header-mentorship" rx="6" />
+    <rect y="25" width="260" height="13" class="header-mentorship" />
+    <text x="130" y="18" class="class-stereo">&lt;&lt;Table de Jonction&gt;&gt;</text>
+    <text x="130" y="32" class="class-title">CompetenceMentor</text>
+    
+    <text x="12" y="56" class="class-body">+ id : int {PK}</text>
+    <text x="12" y="74" class="class-body">+ mentor_id : int {FK}</text>
+    <text x="12" y="92" class="class-body">+ matiere_id : int {FK}</text>
+    <text x="12" y="110" class="class-body">+ niveau_expertise : ExpertiseEnum</text>
+  </g>
+
+  <!-- CLASSE : DemandeMentorat (mentorship) -->
+  <g transform="translate(420, 430)">
+    <rect width="280" height="230" class="class-box" />
+    <rect width="280" height="38" class="header-mentorship" rx="6" />
+    <rect y="25" width="280" height="13" class="header-mentorship" />
+    <text x="140" y="18" class="class-stereo">&lt;&lt;Gestion des Demandes&gt;&gt;</text>
+    <text x="140" y="32" class="class-title">DemandeMentorat</text>
+    
+    <text x="12" y="56" class="class-body">+ id : int {PK}</text>
+    <text x="12" y="74" class="class-body">+ mentore_id : int {FK Profile}</text>
+    <text x="12" y="92" class="class-body">+ mentor_id : int {FK Profile}</text>
+    <text x="12" y="110" class="class-body">+ matiere_id : int {FK Matiere}</text>
+    <text x="12" y="128" class="class-body">+ message : text</text>
+    <text x="12" y="146" class="class-body">+ statut : StatutDemandeEnum</text>
+    <text x="12" y="164" class="class-body">+ date_creation : datetime</text>
+    <line x1="0" y1="174" x2="280" y2="174" class="div-line" />
+    <text x="12" y="192" class="class-method">+ accepter() : void</text>
+    <text x="12" y="210" class="class-method">+ refuser() : void</text>
+    <text x="12" y="224" class="class-method">+ cloturer() : void</text>
+  </g>
+
+  <!-- CLASSE : Conversation (chat temps réel) -->
+  <g transform="translate(60, 480)">
+    <rect width="260" height="160" class="class-box" />
+    <rect width="260" height="38" class="header-chat" rx="6" />
+    <rect y="25" width="260" height="13" class="header-chat" />
+    <text x="130" y="18" class="class-stereo">&lt;&lt;Temps Réel Channels&gt;&gt;</text>
+    <text x="130" y="32" class="class-title">Conversation</text>
+    
+    <text x="12" y="56" class="class-body">+ id : int {PK}</text>
+    <text x="12" y="74" class="class-body">+ demande_id : int {FK, Unique}</text>
+    <text x="12" y="92" class="class-body">+ date_creation : datetime</text>
+    <text x="12" y="110" class="class-body">+ derniere_activite : datetime</text>
+    <line x1="0" y1="120" x2="260" y2="120" class="div-line" />
+    <text x="12" y="140" class="class-method">+ get_non_lus(user) : int</text>
+  </g>
+
+  <!-- CLASSE : Message (chat temps réel) -->
+  <g transform="translate(60, 710)">
+    <rect width="260" height="160" class="class-box" />
+    <rect width="260" height="38" class="header-chat" rx="6" />
+    <rect y="25" width="260" height="13" class="header-chat" />
+    <text x="130" y="18" class="class-stereo">&lt;&lt;Trame WebSocket&gt;&gt;</text>
+    <text x="130" y="32" class="class-title">Message</text>
+    
+    <text x="12" y="56" class="class-body">+ id : int {PK}</text>
+    <text x="12" y="74" class="class-body">+ conversation_id : int {FK}</text>
+    <text x="12" y="92" class="class-body">+ expediteur_id : int {FK Profile}</text>
+    <text x="12" y="110" class="class-body">+ contenu : text</text>
+    <text x="12" y="128" class="class-body">+ est_lu : boolean</text>
+    <text x="12" y="146" class="class-body">+ date_envoi : datetime</text>
+  </g>
+
+  <!-- CLASSE : AvisEvaluation (notation) -->
+  <g transform="translate(860, 500)">
+    <rect width="260" height="170" class="class-box" />
+    <rect width="260" height="38" class="header-eval" rx="6" />
+    <rect y="25" width="260" height="13" class="header-eval" />
+    <text x="130" y="18" class="class-stereo">&lt;&lt;Avis et Score&gt;&gt;</text>
+    <text x="130" y="32" class="class-title">AvisEvaluation</text>
+    
+    <text x="12" y="56" class="class-body">+ id : int {PK}</text>
+    <text x="12" y="74" class="class-body">+ demande_id : int {FK, Unique}</text>
+    <text x="12" y="92" class="class-body">+ mentor_id : int {FK Profile}</text>
+    <text x="12" y="110" class="class-body">+ auteur_id : int {FK Profile}</text>
+    <text x="12" y="128" class="class-body">+ note : int [1..5]</text>
+    <text x="12" y="146" class="class-body">+ commentaire : text</text>
+    <text x="12" y="164" class="class-body">+ date_creation : datetime</text>
+  </g>
+
+  <!-- RELATIONS ET MULTIPLICITES -->
+  <line x1="310" y1="180" x2="420" y2="180" class="assoc-line" />
+  <text x="320" y="172" class="card-text">1</text>
+  <text x="400" y="172" class="card-text">1</text>
+  <text x="345" y="196" class="role-text">possède</text>
+
+  <line x1="690" y1="260" x2="800" y2="330" class="assoc-line" />
+  <text x="705" y="260" class="card-text">1</text>
+  <text x="780" y="325" class="card-text">0..*</text>
+
+  <line x1="1050" y1="250" x2="980" y2="310" class="assoc-line" />
+  <text x="1040" y="270" class="card-text">1</text>
+  <text x="990" y="300" class="card-text">0..*</text>
+
+  <line x1="510" y1="340" x2="510" y2="430" class="assoc-line" />
+  <text x="490" y="360" class="card-text">1</text>
+  <text x="490" y="420" class="card-text">0..*</text>
+  <text x="440" y="390" class="role-text">émet / reçoit</text>
+
+  <path d="M 700 500 L 1100 500 L 1100 250" fill="none" class="assoc-line" />
+  <text x="710" y="492" class="card-text">0..*</text>
+  <text x="1080" y="270" class="card-text">1</text>
+  <text x="890" y="492" class="role-text">porte sur</text>
+
+  <line x1="420" y1="540" x2="320" y2="540" class="assoc-line" />
+  <text x="400" y="532" class="card-text">1</text>
+  <text x="330" y="532" class="card-text">0..1</text>
+  <text x="345" y="555" class="role-text">débloque</text>
+
+  <line x1="190" y1="640" x2="190" y2="710" class="assoc-line" marker-start="url(#diamond)" />
+  <text x="200" y="660" class="card-text">1</text>
+  <text x="200" y="700" class="card-text">0..*</text>
+
+  <line x1="700" y1="570" x2="860" y2="570" class="assoc-line" />
+  <text x="710" y="562" class="card-text">1</text>
+  <text x="835" y="562" class="card-text">0..1</text>
+  <text x="750" y="585" class="role-text">évaluée par</text>
+</svg>

@@ -10,13 +10,13 @@ import { Profile, Stats } from '../../models/models';
   standalone: true,
   imports: [CommonModule, RouterModule, FormsModule],
   template: `
-    <!-- HERO OFFICIEL DU FICHIER TÉLÉCHARGÉ -->
+    <!-- 1. HERO BANNER FIGMA -->
     <section class="hero">
       <div class="container hero__inner">
         <div class="hero__text">
           <h1>Trouvez le mentor idéal<br class="d-none d-sm-inline"> pour progresser</h1>
           <p>
-            Bénéficiez de l'accompagnement de professionnels expérimentés qui vous guideront dans votre parcours, vous aideront à développer vos compétences et à atteindre vos objectifs.
+            Mettez-vous en relation avec des étudiants de niveau supérieur pour surmonter vos difficultés, et partagez vos compétences dans les matières que vous maîtrisez.
           </p>
           <form class="search" (ngSubmit)="searchMentors()">
             <svg class="search__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
@@ -27,7 +27,7 @@ import { Profile, Stats } from '../../models/models';
               type="text" 
               [(ngModel)]="searchQuery" 
               name="q" 
-              placeholder="Rechercher un mentor, une compétence, un domaine..." 
+              placeholder="Rechercher par matière, compétence, domaine..." 
               aria-label="Rechercher"
             >
             <button type="submit" class="btn btn--green">
@@ -39,136 +39,222 @@ import { Profile, Stats } from '../../models/models';
           </form>
         </div>
         <div class="hero__art" aria-hidden="true">
-          <svg viewBox="0 0 500 420" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <path id="star" d="m0-9 2.6 5.8 6.4.7-4.8 4.3 1.4 6.2L0 4.6-5.6 8l1.4-6.2L-9-3.5l6.4-.7z"/>
-            </defs>
-            <!-- arcs pointillés -->
-            <g fill="none" stroke="#fff" stroke-width="1.8" stroke-dasharray="5 6" stroke-linecap="round">
-              <path d="M55 207C38 150 60 110 100 102C125 98 145 115 158 135"/>
-              <path d="M170 125C170 60 200 30 245 24C300 18 330 60 340 95"/>
-              <path d="M365 107C420 115 460 150 452 200C448 230 435 245 425 252"/>
-            </g>
-            <use href="#star" x="244" y="24" fill="#fff" transform="translate(244 24) scale(.5) translate(-244 -24)"/>
-            <use href="#star" x="271" y="26" fill="#fff" transform="translate(271 26) scale(.5) translate(-271 -26)"/>
-            <!-- nuage -->
-            <path fill="#e9f0fb" d="M80 305C72 240 70 190 100 160C125 140 160 150 185 160C200 140 205 95 240 85C265 85 290 130 320 150C370 170 405 200 412 250L415 305Z"/>
-            <g fill="#eef3fc">
-              <ellipse cx="250" cy="335" rx="205" ry="30"/>
-              <ellipse cx="248" cy="362" rx="95" ry="22"/>
-              <circle cx="44" cy="304" r="19"/>
-              <circle cx="62" cy="292" r="22"/>
-              <circle cx="440" cy="308" r="19"/>
-              <circle cx="424" cy="294" r="24"/>
-            </g>
-            <!-- escalier -->
-            <path fill="#2079df" d="M82 307L190 310V262L292 266V239L393 242V360L82 350Z"/>
-            <!-- personnage du sommet -->
-            <circle cx="257" cy="84" r="9" fill="#e08a4a"/>
-            <path d="M248 82c2-9 15-9 18-1z" fill="#1b2a5e"/>
-            <rect x="268" y="96" width="16" height="12" rx="2" fill="#fff" transform="rotate(25 276 102)"/>
-            <use href="#star" x="258" y="56" fill="#f5c518" transform="translate(258 56) scale(.9) translate(-258 -56)"/>
-            <use href="#star" x="350" y="103" fill="#f5c518"/>
-            <path d="M170 152l8 12-9 3z" fill="#f5c518"/>
-            <!-- personnage gauche (jaune) -->
-            <path d="M120 238 118 300" stroke="#1e3fae" stroke-width="12" stroke-linecap="round"/>
-            <path d="M143 244 165 270 152 296" fill="none" stroke="#1e3fae" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M110 304h16M148 298h14" stroke="#10163a" stroke-width="5" stroke-linecap="round"/>
-            <path d="M138 188 168 192 160 242 120 242C112 220 120 200 138 188Z" fill="#f2c72f"/>
-            <path d="M162 194 203 176" stroke="#f2c72f" stroke-width="10" stroke-linecap="round"/>
-            <circle cx="204" cy="175" r="5" fill="#8b5a3c"/>
-            <circle cx="156" cy="168" r="11" fill="#8b5a3c"/>
-            <path d="M143 164c2-12 20-12 24-2-2 4-7 3-9 1-5 1-10 4-12 9zM144 170c-5 2-8 8-7 14 5-1 8-5 9-9z" fill="#1b2a5e"/>
-            <!-- personnage central (bleu) -->
-            <path d="M250 190 236 250" stroke="#1e3fae" stroke-width="13" stroke-linecap="round"/>
-            <path d="M268 190 292 202 282 250" fill="none" stroke="#1e3fae" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M228 258h16" stroke="#10163a" stroke-width="5" stroke-linecap="round"/>
-            <rect x="276" y="248" width="12" height="14" rx="3" fill="#2d5fd0"/>
-            <path d="M242 148 282 156 280 192 248 192Z" fill="#5aa0ee"/>
-            <path d="M244 154 206 176" stroke="#5aa0ee" stroke-width="10" stroke-linecap="round"/>
-            <path d="M278 158 306 162" stroke="#5aa0ee" stroke-width="10" stroke-linecap="round"/>
-            <circle cx="263" cy="132" r="11" fill="#d9dde8"/>
-            <circle cx="268" cy="137" r="7" fill="#f0c9a6"/>
-            <!-- personnage droit (rouge) -->
-            <path d="M349 170 346 236M366 170 378 236" stroke="#1e3fae" stroke-width="12" stroke-linecap="round"/>
-            <path d="M338 240h16M372 238h16" stroke="#e3a99b" stroke-width="5" stroke-linecap="round"/>
-            <path d="M343 130 376 138 368 172 346 172Z" fill="#f0675a"/>
-            <path d="M346 140 306 162" stroke="#f0675a" stroke-width="10" stroke-linecap="round"/>
-            <path d="M372 140 384 170" stroke="#f0675a" stroke-width="9" stroke-linecap="round"/>
-            <circle cx="305" cy="162" r="4.5" fill="#f0c9a6"/>
-            <circle cx="332" cy="118" r="10" fill="#f0c9a6"/>
-            <path d="M322 116c2-10 18-10 21-1-4-1-9 0-12 3-3-2-6-2-9-2z" fill="#10163a"/>
-          </svg>
+          <img 
+            src="/hero_illustration.png" 
+            alt="Étudiants qui s'entraident vers la réussite" 
+            class="hero__img"
+          >
         </div>
       </div>
     </section>
 
-    <!-- SECTION COMMENT ÇA MARCHE (EXACT A1) -->
-    <section class="section">
+    <!-- 2. BANDEAU DE STATS (FIGMA : SOUS LE HERO) -->
+    <section class="section-stats-bar">
+      <div class="container stats-bar__inner">
+        <div class="stat-item">
+          <strong class="stat-number">{{ stats?.total_mentors || 25 }}</strong>
+          <div class="stat-label">
+            <span class="stat-title">MENTORS ÉTUDIANTS</span>
+            <small class="stat-sub">Disponibles dans vos filières</small>
+          </div>
+        </div>
+        <div class="stat-item">
+          <strong class="stat-number">{{ stats?.total_matieres || 12 }}</strong>
+          <div class="stat-label">
+            <span class="stat-title">ÉTUDIANTS ACCOMPAGNÉS</span>
+            <small class="stat-sub">Sessions d'entraide actives</small>
+          </div>
+        </div>
+        <div class="stat-item">
+          <strong class="stat-number">97%</strong>
+          <div class="stat-label">
+            <span class="stat-title">TAUX DE RÉUSSITE</span>
+            <small class="stat-sub">Satisfaction des mentorés</small>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. SECTION COMMENT ÇA MARCHE -->
+    <section class="section" id="comment-ca-marche">
       <div class="container">
-        <h2 class="section__title">COMMENT ÇA MARCHE</h2>
+        <div class="section__header text-center mb-5">
+          <h2 class="section__title">COMMENT ÇA MARCHE</h2>
+          <p class="section__sub">Un accompagnement d'entraide étudiante simple, rapide et structuré en 3 étapes</p>
+        </div>
         <div class="steps">
           <div class="step">
             <span class="step__num">01</span>
-            <h3>Créez votre profil</h3>
-            <p>Inscrivez-vous gratuitement et complétez votre profil en quelques minutes.</p>
+            <h3>Indiquez vos besoins</h3>
+            <p>Renseignez votre filière, votre niveau d'études et la matière sur laquelle vous souhaitez progresser ou partager votre savoir.</p>
           </div>
           <div class="step">
             <span class="step__num">02</span>
-            <h3>Choisissez un mentor</h3>
-            <p>Explorez notre réseau de mentors et trouvez celui qui correspond à vos besoins.</p>
+            <h3>Choisissez votre mentor</h3>
+            <p>Explorez les profils d'étudiants certifiés par Force-N et envoyez votre demande de mentorat en moins de 3 clics.</p>
           </div>
           <div class="step">
             <span class="step__num">03</span>
             <h3>Progressez ensemble</h3>
-            <p>Échangez, apprenez et atteignez vos objectifs grâce à un accompagnement personnalisé.</p>
+            <p>Planifiez vos séances de travail, échangez en visio ou présentiel et notez l'expérience pour valoriser l'accompagnement.</p>
           </div>
+        </div>
+        <div class="text-center mt-4 pt-2">
+          <a routerLink="/comment-ca-marche" class="btn btn--outline" style="padding: 10px 24px; font-size: 14px; font-weight: 600;">
+            <i class="bi bi-info-circle me-2"></i>Découvrir le guide complet & les rôles
+          </a>
         </div>
       </div>
     </section>
 
-    <!-- SECTION LES MENTORS (EXACT A1) -->
-    <section class="section section--bordered">
+    <!-- 4. SECTION LES MENTORS -->
+    <section class="section section--bordered" id="mentors">
       <div class="container">
-        <h2 class="section__title">LES MENTORS</h2>
-        <p class="section__sub">
-          Découvrez des professionnels de différents domaines, prêts à partager leur expertise<br>et leur expérience pour vous aider à avancer.
-        </p>
+        <div class="section__header text-center mb-4">
+          <h2 class="section__title">LES MENTORS</h2>
+          <p class="section__sub">
+            Des étudiants certifiés Force-N, recommandés pour leur excellence et leur pédagogie, prêts à vous guider dans vos cours et projets.
+          </p>
+        </div>
         <div class="mentors">
-          <article *ngFor="let mentor of mentors" class="mentor" [routerLink]="['/mentor', mentor.id]" style="cursor: pointer;">
+          <article *ngFor="let mentor of mentors" class="mentor">
             <div class="mentor__head">
               <span class="avatar avatar--initials">
                 {{ getInitials(mentor) }}
               </span>
               <div>
                 <strong>{{ mentor.user.first_name }} {{ mentor.user.last_name }}</strong>
-                <small>{{ mentor.filiere || 'Génie Logiciel' }}</small>
+                <small>{{ mentor.filiere || 'Génie Logiciel' }} &bull; {{ mentor.niveau_display }}</small>
               </div>
             </div>
+
+            <!-- Badges de compétences -->
+            <div class="mentor__tags">
+              <span *ngFor="let comp of mentor.competences | slice:0:3" class="badge-skill">
+                {{ comp.matiere.nom }}
+              </span>
+              <span *ngIf="!mentor.competences?.length" class="badge-skill">
+                {{ mentor.filiere || 'Informatique' }}
+              </span>
+            </div>
+
             <div class="rating">
               <span class="stars" style="--rating: 4.9" aria-label="Note 4.9 sur 5"></span>
               <span>4.9 ({{ (mentor.id * 7 + 12) }} avis)</span>
             </div>
-            <p>{{ mentor.bio || 'Spécialiste dans mon domaine, j\'aide les étudiants à progresser et à réussir leurs projets.' }}</p>
+
+            <p class="mentor__bio">
+              {{ mentor.bio || defaultBio }}
+            </p>
+
+            <div class="mentor__actions">
+              <a [routerLink]="['/mentor', mentor.id]" class="btn btn--outline btn-sm">Voir le profil</a>
+              <a [routerLink]="['/mentor', mentor.id]" class="btn btn--primary btn-sm">Demander</a>
+            </div>
           </article>
+        </div>
+
+        <div class="text-center mt-5">
+          <a routerLink="/mentors" class="btn btn--outline" style="padding: 12px 28px; font-size: 14.5px; font-weight: 700;">
+            <i class="bi bi-people-fill me-2"></i>Voir tous les mentors disponibles
+          </a>
         </div>
       </div>
     </section>
 
-    <!-- SECTION STATS (EXACT A1) -->
-    <section class="section section--bordered">
-      <div class="container stats">
-        <div>
-          <strong>{{ stats?.total_mentors || 25 }}</strong>
-          <span>Mentors disponibles<br><small>dans plusieurs domaines</small></span>
+    <!-- 5. SECTION TÉMOIGNAGE FIGMA -->
+    <section class="section section-testimonial" id="temoignages">
+      <div class="container">
+        <div class="testimonial-card">
+          <div class="testimonial-card__image-wrapper">
+            <img src="/testimonial_student.png" alt="Awa Sow - Étudiante mentorée" class="testimonial-card__image">
+          </div>
+          <div class="testimonial-card__content">
+            <div class="testimonial-card__quote-icon" aria-hidden="true">“</div>
+            <blockquote class="testimonial-card__quote">
+              « Grâce à Force Mentor, j'ai pu surmonter mes difficultés et trouver le mentor parfait pour progresser rapidement en Algorithmique et en Python. L'accompagnement personnalisé et bienveillant a fait toute la différence dans ma réussite aux examens. »
+            </blockquote>
+            <div class="testimonial-card__author">
+              <strong>Awa Sow</strong>
+              <span>Étudiante en Licence 1 Génie Logiciel — Mentorée</span>
+            </div>
+          </div>
         </div>
-        <div>
-          <strong>{{ stats?.total_matieres || 12 }}</strong>
-          <span>Domaines de compétences<br><small>pour tous vos projets</small></span>
+      </div>
+    </section>
+
+    <!-- 6. SECTION FAQ FIGMA -->
+    <section class="section section-faq section--bordered" id="faq">
+      <div class="container faq__grid">
+        <div class="faq__intro">
+          <span class="faq__badge">FAQs</span>
+          <h2 class="faq__title">Questions fréquentes</h2>
+          <p class="faq__desc">Toutes les réponses pour bien comprendre le fonctionnement de l'entraide sur Force Mentor.</p>
+          <div class="faq__help-box">
+            <i class="bi bi-question-circle-fill"></i>
+            <div>
+              <strong>Une autre question ?</strong>
+              <p>L'équipe pédagogique et le support Force-N sont disponibles pour vous orienter.</p>
+            </div>
+          </div>
         </div>
-        <div>
-          <strong>{{ stats?.total_demandes || 87 }}</strong>
-          <span>Utilisateurs accompagnés<br><small>et satisfaits</small></span>
+
+        <div class="faq__accordion">
+          <details class="faq-item" open>
+            <summary class="faq-item__question">
+              <span>Le service est-il gratuit ?</span>
+              <i class="bi bi-chevron-down faq-item__icon"></i>
+            </summary>
+            <div class="faq-item__answer">
+              <p>Oui, l'accès à Force Mentor et l'ensemble des sessions d'entraide entre apprenants sont <strong>100% gratuits</strong> dans le cadre du programme Force-N.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-item__question">
+              <span>À qui s'adresse la plateforme Force Mentor ?</span>
+              <i class="bi bi-chevron-down faq-item__icon"></i>
+            </summary>
+            <div class="faq-item__answer">
+              <p>La plateforme s'adresse à tous les apprenants et étudiants inscrits dans les cursus et formations Force-N, du niveau débutant aux niveaux avancés.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-item__question">
+              <span>Comment puis-je devenir mentor à mon tour ?</span>
+              <i class="bi bi-chevron-down faq-item__icon"></i>
+            </summary>
+            <div class="faq-item__answer">
+              <p>Dès que vous maîtrisez une matière ou validez un module avec succès, vous pouvez activer le rôle « Mentor » ou « Les deux » dans votre profil et y ajouter vos compétences.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-item__question">
+              <span>Comment se déroulent les sessions d'accompagnement ?</span>
+              <i class="bi bi-chevron-down faq-item__icon"></i>
+            </summary>
+            <div class="faq-item__answer">
+              <p>Les sessions peuvent se dérouler en ligne (Google Meet, Microsoft Teams, Discord) ou en présentiel selon les disponibilités convenues entre vous et votre mentor.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-item__question">
+              <span>Combien de demandes de mentorat puis-je envoyer ?</span>
+              <i class="bi bi-chevron-down faq-item__icon"></i>
+            </summary>
+            <div class="faq-item__answer">
+              <p>Vous pouvez solliciter plusieurs mentors, mais nous vous recommandons de vous concentrer sur 1 ou 2 demandes actives à la fois pour un meilleur suivi.</p>
+            </div>
+          </details>
+
+          <div class="text-center mt-4 pt-2">
+            <a routerLink="/faq" class="btn btn--outline" style="padding: 10px 24px; font-size: 14px; font-weight: 600;">
+              <i class="bi bi-question-circle me-2"></i>Consulter toutes les questions fréquentes (FAQ)
+            </a>
+          </div>
         </div>
       </div>
     </section>
@@ -181,10 +267,11 @@ export class HomeComponent implements OnInit {
   searchQuery = '';
   mentors: Profile[] = [];
   stats: Stats | null = null;
+  defaultBio = "Passionné par ma discipline, j'accompagne les apprenants avec écoute et bienveillance pour surmonter leurs difficultés.";
 
   ngOnInit(): void {
     this.mentorService.getMentors().subscribe(mentors => {
-      this.mentors = mentors.slice(0, 6);
+      this.mentors = mentors.slice(0, 3);
     });
 
     this.mentorService.getStats().subscribe(stats => {
