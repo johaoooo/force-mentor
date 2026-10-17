@@ -119,7 +119,8 @@ import { Profile, Stats } from '../../models/models';
         <div class="mentors">
           <article *ngFor="let mentor of mentors" class="mentor">
             <div class="mentor__head">
-              <span class="avatar avatar--initials">
+              <img *ngIf="mentor.photo_url" [src]="mentor.photo_url" [alt]="mentor.user.first_name" class="avatar">
+              <span *ngIf="!mentor.photo_url" class="avatar avatar--initials">
                 {{ getInitials(mentor) }}
               </span>
               <div>
