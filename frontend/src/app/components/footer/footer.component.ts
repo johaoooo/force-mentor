@@ -11,8 +11,7 @@ import { RouterModule } from '@angular/router';
       <div class="container footer__inner">
         <div class="footer__col">
           <a routerLink="/" class="logo-brand logo-brand--footer" aria-label="Force Mentor">
-            <img src="/logo_force_mentor_white.svg" width="40" height="29" alt="Force Mentor" class="logo-brand__icon">
-            <span class="logo-brand__text logo-brand__text--white">FORCE <span>MENTOR</span></span>
+            <img src="/logo_force_mentor_white.svg" width="58" height="42" alt="Force Mentor" class="logo-brand__icon">
           </a>
           <p class="footer__desc">
             Plateforme d'accompagnement et d'entraide académique pour les apprenants du programme Force-N. Trouvez un mentor certifié en quelques clics.

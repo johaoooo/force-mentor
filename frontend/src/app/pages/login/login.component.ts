@@ -14,9 +14,8 @@ import { AuthService } from '../../services/auth.service';
         
         <!-- Header Figma Brand -->
         <div class="onboarding-header">
-          <a routerLink="/" class="logo-brand mb-2">
-            <img src="/logo_force_mentor.svg" width="46" height="34" alt="Force Mentor" class="logo-brand__icon">
-            <span class="logo-brand__text">FORCE <span>MENTOR</span></span>
+          <a routerLink="/" class="logo-brand mb-2" aria-label="Force Mentor">
+            <img src="/logo_force_mentor.svg" width="62" height="45" alt="Force Mentor" class="logo-brand__icon">
           </a>
           <h2>Connexion</h2>
           <p>Accédez à votre espace de mentorat et d'apprentissage</p>
