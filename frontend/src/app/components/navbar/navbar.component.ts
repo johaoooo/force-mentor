@@ -42,9 +42,6 @@ import { Notification } from '../../models/models';
           <!-- Actions Auth Mobile -->
           <div class="navbar__actions-mobile d-lg-none pt-3 mt-2 border-top">
             <ng-container *ngIf="authService.currentUser$ | async as user; else mobileGuestActions">
-              <a routerLink="/messages" (click)="isMenuOpen = false" class="btn btn--outline w-100 mb-2 justify-content-center">
-                <i class="bi bi-chat-dots me-2"></i>Messagerie
-              </a>
               <a routerLink="/profil" (click)="isMenuOpen = false" class="btn btn--outline w-100 mb-2 justify-content-center">
                 <img *ngIf="user.photo_url" [src]="user.photo_url" alt="Avatar" class="rounded-circle object-fit-cover me-2" style="width: 24px; height: 24px;">
                 <i *ngIf="!user.photo_url" class="bi bi-person-fill me-1"></i>
