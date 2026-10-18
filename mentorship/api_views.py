@@ -5,6 +5,7 @@ from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.authentication import SessionAuthentication
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from django.db import models
 from django.db.models import Q
 from django.core.files.base import ContentFile
 from django.utils.dateparse import parse_datetime
@@ -15,12 +16,12 @@ import uuid
 from accounts.models import Profile
 from .models import (
     Matiere, CompetenceMentor, DemandeMentorat, DisponibiliteMentor,
-    Notification, Conversation, Message
+    Notification, Conversation, Message, AvisMentor
 )
 from .api_serializers import (
     MatiereSerializer, ProfileSerializer, DemandeMentoratSerializer,
     DisponibiliteMentorSerializer, NotificationSerializer,
-    ConversationSerializer, MessageSerializer
+    ConversationSerializer, MessageSerializer, AvisMentorSerializer
 )
 
 from .authentication import CsrfExemptSessionAuthentication
@@ -475,6 +476,15 @@ class DemandeActionAPIView(APIView):
             demande.statut = 'TERMINEE'
             if 'commentaire_mentor' in request.data:
                 demande.commentaire_mentor = request.data['commentaire_mentor']
+            
+            mentor_name = demande.mentor.user.get_full_name() or demande.mentor.user.username
+            Notification.objects.create(
+                destinataire=demande.mentore,
+                titre="Séance terminée - Donnez votre avis vérifié !",
+                message=f"Votre séance avec {mentor_name} en {demande.matiere.nom} est terminée. Laissez votre note et avis vérifié sur votre tableau de bord !",
+                lien="/tableau-de-bord",
+                type_notif="AVIS"
+            )
         else:
             return Response({'error': 'Action non reconnue'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -693,4 +703,105 @@ class MatchingMentorsAPIView(APIView):
             'total': len(results),
             'results': results
         })
+
+
+class AvisCreateAPIView(APIView):
+    """
+    POST /api/demandes/<int:pk>/avis/ ou POST /api/avis/
+    Crée ou met à jour un avis vérifié après une séance terminée.
+    """
+    authentication_classes = [CsrfExemptSessionAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, pk=None):
+        profile = request.user.profile
+        demande_id = pk or request.data.get('demande_id')
+        
+        if not demande_id:
+            return Response({'error': 'demande_id requis'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            demande = DemandeMentorat.objects.select_related('mentore', 'mentor', 'matiere').get(id=demande_id)
+        except DemandeMentorat.DoesNotExist:
+            return Response({'error': 'Séance de mentorat introuvable'}, status=status.HTTP_404_NOT_FOUND)
+
+        # Vérification 1 : Seul le mentoré ayant participé à cette séance peut noter
+        if demande.mentore != profile:
+            return Response(
+                {'error': 'Seul l\'étudiant mentoré ayant participé à cette séance peut laisser un avis.'},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        # Vérification 2 : La séance doit obligatoirement être TERMINEE
+        if demande.statut != 'TERMINEE':
+            return Response(
+                {'error': 'Un avis vérifié ne peut être déposé que pour une séance réellement terminée.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Validation de la note
+        note_val = request.data.get('note')
+        try:
+            note_int = int(note_val)
+            if note_int < 1 or note_int > 5:
+                raise ValueError()
+        except (ValueError, TypeError):
+            return Response(
+                {'error': 'La note doit être un entier compris entre 1 et 5 étoiles.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        commentaire = str(request.data.get('commentaire', '')).strip()
+
+        # Création ou mise à jour de l'avis vérifié
+        avis, created = AvisMentor.objects.update_or_create(
+            demande=demande,
+            defaults={
+                'mentor': demande.mentor,
+                'auteur': profile,
+                'note': note_int,
+                'commentaire': commentaire
+            }
+        )
+
+        # Notification in-app pour le mentor
+        student_name = profile.user.get_full_name() or profile.user.username
+        stars_str = "⭐" * note_int
+        Notification.objects.create(
+            destinataire=demande.mentor,
+            titre=f"Nouvel avis vérifié reçu ({note_int}/5) !",
+            message=f"{student_name} a noté votre séance en {demande.matiere.nom} : {stars_str} ({note_int}/5).",
+            lien=f"/mentor/{demande.mentor.id}",
+            type_notif="AVIS"
+        )
+
+        return Response({
+            'message': 'Votre avis vérifié a été enregistré avec succès !',
+            'created': created,
+            'avis': AvisMentorSerializer(avis, context={'request': request}).data
+        }, status=status.HTTP_201_CREATED if created else status.HTTP_200_OK)
+
+
+class MentorAvisListAPIView(APIView):
+    """
+    GET /api/mentors/<int:pk>/avis/
+    Liste les avis vérifiés pour un mentor donné avec note moyenne.
+    """
+    def get(self, request, pk):
+        try:
+            mentor = Profile.objects.get(id=pk, role__in=['MENTOR', 'LES_DEUX'])
+        except Profile.DoesNotExist:
+            return Response({'error': 'Mentor introuvable'}, status=status.HTTP_404_NOT_FOUND)
+
+        avis_qs = mentor.avis_recus.select_related('auteur__user', 'demande__matiere').order_by('-date_creation')
+        total = avis_qs.count()
+        avg_note = avis_qs.aggregate(models.Avg('note'))['note__avg']
+
+        return Response({
+            'mentor_id': mentor.id,
+            'total_avis': total,
+            'note_moyenne': round(avg_note, 1) if avg_note is not None else None,
+            'avis': AvisMentorSerializer(avis_qs, many=True, context={'request': request}).data
+        })
+
 

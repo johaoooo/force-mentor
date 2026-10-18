@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import (
     Matiere, CompetenceMentor, DemandeMentorat, DisponibiliteMentor,
-    Notification, Conversation, Message
+    Notification, Conversation, Message, AvisMentor
 )
 
 class CompetenceMentorInline(admin.TabularInline):
@@ -46,3 +46,9 @@ class MessageAdmin(admin.ModelAdmin):
     list_display = ('id', 'conversation', 'expediteur', 'est_lu', 'date_envoi')
     list_filter = ('est_lu', 'date_envoi')
     search_fields = ('expediteur__user__username', 'contenu')
+
+@admin.register(AvisMentor)
+class AvisMentorAdmin(admin.ModelAdmin):
+    list_display = ('id', 'demande', 'mentor', 'auteur', 'note', 'date_creation')
+    list_filter = ('note', 'date_creation')
+    search_fields = ('mentor__user__username', 'auteur__user__username', 'commentaire')

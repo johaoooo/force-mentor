@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { DemandeMentorat, DisponibiliteMentor, Notification, Conversation, ChatMessage, MatchingResponse, MatchingResult } from '../models/models';
+import { DemandeMentorat, DisponibiliteMentor, Notification, Conversation, ChatMessage, MatchingResponse, MatchingResult, AvisMentor } from '../models/models';
 
 @Injectable({
   providedIn: 'root'
@@ -151,4 +151,21 @@ export class MentorshipService {
       withCredentials: true
     });
   }
+
+  // --- Avis Vérifiés ---
+  laisserAvis(demandeId: number, note: number, commentaire: string): Observable<{ message: string; created: boolean; avis: AvisMentor }> {
+    return this.http.post<{ message: string; created: boolean; avis: AvisMentor }>(
+      `${this.apiUrl}/demandes/${demandeId}/avis/`,
+      { note, commentaire },
+      { withCredentials: true }
+    );
+  }
+
+  getMentorAvis(mentorId: number): Observable<{ mentor_id: number; total_avis: number; note_moyenne: number | null; avis: AvisMentor[] }> {
+    return this.http.get<{ mentor_id: number; total_avis: number; note_moyenne: number | null; avis: AvisMentor[] }>(
+      `${this.apiUrl}/mentors/${mentorId}/avis/`,
+      { withCredentials: true }
+    );
+  }
 }
+

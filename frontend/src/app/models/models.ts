@@ -29,6 +29,24 @@ export interface DisponibiliteMentor {
   est_actif: boolean;
 }
 
+export interface AvisMentor {
+  id: number;
+  demande_id: number;
+  mentor_id: number;
+  auteur: {
+    id: number;
+    nom_affiche: string;
+    filiere: string;
+    niveau_display: string;
+    photo_url?: string | null;
+  };
+  note: number;
+  commentaire: string;
+  matiere_nom?: string;
+  date_creation: string;
+  date_creation_formatee?: string;
+}
+
 export interface Profile {
   id: number;
   user: User;
@@ -45,6 +63,9 @@ export interface Profile {
   competences: CompetenceMentor[];
   disponibilites?: DisponibiliteMentor[];
   photo_url?: string | null;
+  note_moyenne?: number | null;
+  nb_avis?: number;
+  avis_recus?: AvisMentor[];
 }
 
 export interface DemandeMentorat {
@@ -62,6 +83,8 @@ export interface DemandeMentorat {
   commentaire_mentor?: string;
   date_creation: string;
   date_mise_a_jour: string;
+  avis?: AvisMentor | null;
+  peut_noter?: boolean;
 }
 
 export interface Notification {

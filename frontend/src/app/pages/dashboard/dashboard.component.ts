@@ -525,6 +525,27 @@ import { DemandeMentorat, Profile, DisponibiliteMentor, Notification, MatchingRe
                   <i class="bi bi-flag-fill me-1"></i>Terminée
                 </button>
               </div>
+
+              <!-- Bloc Avis vérifié reçu pour le mentor -->
+              <div *ngIf="demande.statut === 'TERMINEE'" class="mt-2">
+                <div *ngIf="demande.avis" class="p-2.5 rounded-3 bg-warning-subtle border border-warning-subtle">
+                  <div class="d-flex justify-content-between align-items-center mb-1">
+                    <span class="badge bg-warning text-dark fw-bold" style="font-size: 11px;">
+                      <i class="bi bi-patch-check-fill me-1"></i>Avis vérifié reçu
+                    </span>
+                    <div class="text-warning small">
+                      <i *ngFor="let s of [1,2,3,4,5]" class="bi" [ngClass]="s <= demande.avis.note ? 'bi-star-fill' : 'bi-star'"></i>
+                      <span class="text-dark fw-bold ms-1">{{ demande.avis.note }}/5</span>
+                    </div>
+                  </div>
+                  <p *ngIf="demande.avis.commentaire" class="text-dark small mb-0 fst-italic">
+                    « {{ demande.avis.commentaire }} »
+                  </p>
+                </div>
+                <div *ngIf="!demande.avis" class="text-muted small fst-italic">
+                  <i class="bi bi-clock me-1"></i>Séance terminée. En attente de l'évaluation du mentoré.
+                </div>
+              </div>
             </div>
           </div>
 
@@ -578,10 +599,43 @@ import { DemandeMentorat, Profile, DisponibiliteMentor, Notification, MatchingRe
                 </a>
               </div>
 
-              <div *ngIf="demande.statut === 'ACCEPTEE'" class="d-flex justify-content-end">
+              <div *ngIf="demande.statut === 'ACCEPTEE'" class="d-flex gap-2 justify-content-end flex-wrap">
                 <button (click)="handleAction(demande.id, 'annuler')" class="btn btn-sm btn-outline-danger">
                   <i class="bi bi-x-circle me-1"></i>Annuler ma réservation
                 </button>
+                <button (click)="handleAction(demande.id, 'terminer')" class="btn btn-sm btn-outline-success">
+                  <i class="bi bi-check2-circle me-1"></i>Séance effectuée
+                </button>
+              </div>
+
+              <!-- Bloc Avis vérifié pour le mentoré -->
+              <div *ngIf="demande.statut === 'TERMINEE'" class="mt-2">
+                <div *ngIf="demande.avis" class="p-2.5 rounded-3 bg-warning-subtle border border-warning-subtle">
+                  <div class="d-flex justify-content-between align-items-center mb-1">
+                    <span class="badge bg-warning text-dark fw-bold" style="font-size: 11px;">
+                      <i class="bi bi-patch-check-fill me-1"></i>Votre avis vérifié déposé
+                    </span>
+                    <div class="text-warning small">
+                      <i *ngFor="let s of [1,2,3,4,5]" class="bi" [ngClass]="s <= demande.avis.note ? 'bi-star-fill' : 'bi-star'"></i>
+                      <span class="text-dark fw-bold ms-1">{{ demande.avis.note }}/5</span>
+                    </div>
+                  </div>
+                  <p *ngIf="demande.avis.commentaire" class="text-dark small mb-0 fst-italic">
+                    « {{ demande.avis.commentaire }} »
+                  </p>
+                </div>
+
+                <div *ngIf="!demande.avis" class="p-2.5 rounded-3 bg-warning-subtle border border-warning-subtle d-flex justify-content-between align-items-center flex-wrap gap-2">
+                  <div>
+                    <strong class="text-dark small d-block">
+                      <i class="bi bi-star-fill text-warning me-1"></i>Séance terminée ! Donnez votre avis vérifié
+                    </strong>
+                    <span class="text-muted" style="font-size: 11px;">Évaluez la clarté et la pédagogie de votre mentor.</span>
+                  </div>
+                  <button (click)="openAvisModal(demande)" class="btn btn-sm btn-warning text-dark fw-bold rounded-pill px-3 shadow-sm">
+                    <i class="bi bi-star-fill me-1"></i>Laisser un avis
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -830,6 +884,79 @@ import { DemandeMentorat, Profile, DisponibiliteMentor, Notification, MatchingRe
 
       </aside>
 
+      <!-- MODAL AVIS VÉRIFIÉ (POST-SÉANCE) -->
+      <div *ngIf="isAvisModalOpen && selectedAvisDemande" class="modal-backdrop-custom d-flex align-items-center justify-content-center p-3" style="position: fixed; inset: 0; background: rgba(15, 27, 61, 0.55); z-index: 2000; backdrop-filter: blur(3px);">
+        <div class="card border-0 shadow-lg rounded-4 p-4 bg-white" style="max-width: 480px; width: 100%;">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+              <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-2.5 py-1 mb-2 fw-bold" style="font-size: 11px;">
+                <i class="bi bi-shield-check me-1"></i>Avis vérifié post-séance
+              </span>
+              <h5 class="fw-bold text-dark mb-0">Évaluer votre mentor</h5>
+            </div>
+            <button type="button" (click)="closeAvisModal()" class="btn-close" aria-label="Fermer"></button>
+          </div>
+
+          <p class="text-muted small mb-3">
+            Votre séance de mentorat en <strong>{{ selectedAvisDemande.matiere.nom }}</strong> avec <strong>{{ selectedAvisDemande.mentor.user.first_name }} {{ selectedAvisDemande.mentor.user.last_name }}</strong> est terminée. Donnez votre retour d'expérience :
+          </p>
+
+          <div *ngIf="avisError" class="alert alert-danger p-2 small mb-3 rounded-3">
+            <i class="bi bi-exclamation-triangle-fill me-1"></i>{{ avisError }}
+          </div>
+
+          <form (ngSubmit)="submitAvis()">
+            <!-- Étoiles interactives -->
+            <div class="text-center py-3 bg-light rounded-3 mb-3 border">
+              <label class="small text-muted fw-bold d-block mb-2">Votre note globale</label>
+              <div class="d-flex justify-content-center gap-2 mb-2">
+                <button 
+                  type="button" 
+                  *ngFor="let s of [1,2,3,4,5]" 
+                  (click)="setAvisNote(s)"
+                  (mouseenter)="avisHoverNote = s"
+                  (mouseleave)="avisHoverNote = 0"
+                  class="btn p-0 border-0 bg-transparent"
+                  style="font-size: 1.8rem; cursor: pointer; transition: transform 0.15s ease;"
+                  [title]="s + ' étoile(s)'"
+                >
+                  <i class="bi" [ngClass]="(avisHoverNote || avisNote) >= s ? 'bi-star-fill text-warning' : 'bi-star text-muted'"></i>
+                </button>
+              </div>
+              <div class="small fw-bold text-primary" style="font-size: 12.5px;">
+                {{ getRatingText(avisHoverNote || avisNote) }}
+              </div>
+            </div>
+
+            <!-- Commentaire -->
+            <div class="mb-3">
+              <label class="small text-muted fw-bold mb-1 d-block">Votre commentaire (facultatif mais recommandé)</label>
+              <textarea 
+                [(ngModel)]="avisCommentaire" 
+                name="commentaire" 
+                rows="3" 
+                class="form-control" 
+                placeholder="Ex : Explications très claires, mentor patient et ponctuel. J'ai enfin compris les notions clés !"
+                style="font-size: 13px;"
+              ></textarea>
+              <div class="form-text" style="font-size: 11px;">
+                <i class="bi bi-shield-lock me-1"></i>Votre prénom et votre cursus apparaîtront publiquement avec la mention « Avis vérifié ».
+              </div>
+            </div>
+
+            <div class="d-flex gap-2 justify-content-end">
+              <button type="button" (click)="closeAvisModal()" class="btn btn-light border btn-sm px-3" [disabled]="submittingAvis">
+                Annuler
+              </button>
+              <button type="submit" class="btn btn-primary btn-sm px-4 fw-bold" [disabled]="submittingAvis">
+                <span *ngIf="submittingAvis" class="spinner-border spinner-border-sm me-1"></span>
+                <i *ngIf="!submittingAvis" class="bi bi-check2-circle me-1"></i>Publier mon avis vérifié
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
     </div>
   `
 })
@@ -851,6 +978,15 @@ export class DashboardComponent implements OnInit {
 
   isMobileDrawerOpen = false;
 
+  // Modal Avis vérifié
+  isAvisModalOpen = false;
+  selectedAvisDemande: DemandeMentorat | null = null;
+  avisNote: number = 5;
+  avisHoverNote: number = 0;
+  avisCommentaire: string = '';
+  submittingAvis = false;
+  avisError = '';
+
   // Formulaire nouveau créneau
   newJour: number = 1;
   newDebut: string = '18:00';
@@ -859,6 +995,62 @@ export class DashboardComponent implements OnInit {
   notifications: Notification[] = [];
   unreadCount = 0;
   isNotifOpen = false;
+
+  openAvisModal(demande: DemandeMentorat): void {
+    this.selectedAvisDemande = demande;
+    this.avisNote = 5;
+    this.avisHoverNote = 0;
+    this.avisCommentaire = '';
+    this.avisError = '';
+    this.isAvisModalOpen = true;
+  }
+
+  closeAvisModal(): void {
+    this.isAvisModalOpen = false;
+    this.selectedAvisDemande = null;
+    this.avisError = '';
+  }
+
+  setAvisNote(n: number): void {
+    this.avisNote = n;
+  }
+
+  getRatingText(rating: number): string {
+    switch (rating) {
+      case 5: return '⭐⭐⭐⭐⭐ Excellent, très pédagogue et clair !';
+      case 4: return '⭐⭐⭐⭐ Très bien, séance enrichissante';
+      case 3: return '⭐⭐⭐ Bien, objectifs atteints';
+      case 2: return '⭐⭐ Moyen, des points à améliorer';
+      case 1: return '⭐ Décevant';
+      default: return '';
+    }
+  }
+
+  submitAvis(): void {
+    if (!this.selectedAvisDemande) return;
+    this.submittingAvis = true;
+    this.avisError = '';
+    this.mentorshipService.laisserAvis(
+      this.selectedAvisDemande.id,
+      this.avisNote,
+      this.avisCommentaire
+    ).subscribe({
+      next: (res) => {
+        this.submittingAvis = false;
+        this.actionMessage = 'Votre avis vérifié a été enregistré avec succès !';
+        if (this.selectedAvisDemande) {
+          this.selectedAvisDemande.avis = res.avis;
+          this.selectedAvisDemande.peut_noter = false;
+        }
+        this.closeAvisModal();
+        this.loadDemandes();
+      },
+      error: (err) => {
+        this.submittingAvis = false;
+        this.avisError = err?.error?.error || 'Erreur lors de l\'enregistrement de votre avis.';
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.currentUser = this.authService.currentUser;

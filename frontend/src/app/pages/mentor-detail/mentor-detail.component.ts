@@ -53,6 +53,12 @@ import { Profile, Matiere } from '../../models/models';
                     <span class="badge-status-accepted">
                       <i class="bi bi-circle-fill" style="font-size: 6px;"></i> Disponible pour mentorat
                     </span>
+                    <span *ngIf="mentor.nb_avis && mentor.nb_avis > 0" class="badge bg-warning-subtle text-dark border border-warning-subtle px-2.5 py-1 rounded-pill fw-bold d-inline-flex align-items-center gap-1" style="font-size: 12px;">
+                      <i class="bi bi-star-fill text-warning"></i> {{ mentor.note_moyenne | number:'1.1-1' }}/5 ({{ mentor.nb_avis }} avis vérifié{{ mentor.nb_avis > 1 ? 's' : '' }})
+                    </span>
+                    <span *ngIf="!mentor.nb_avis || mentor.nb_avis === 0" class="badge bg-light text-muted border px-2.5 py-1 rounded-pill" style="font-size: 12px;">
+                      <i class="bi bi-patch-check text-primary me-1"></i>Nouveau mentor certifié
+                    </span>
                     <a [routerLink]="['/messages']" [queryParams]="{ destinataireId: mentor.id }" class="btn btn-sm btn-outline-primary rounded-pill px-3 py-1 fw-medium d-inline-flex align-items-center gap-1 shadow-sm">
                       <i class="bi bi-chat-dots-fill"></i> Contacter / Messagerie
                     </a>
@@ -109,6 +115,69 @@ import { Profile, Matiere } from '../../models/models';
                 <ng-template #noDispos>
                   <div class="p-3 bg-light rounded-3 text-muted small border">
                     <i class="bi bi-info-circle me-1"></i>Ce mentor n'a pas encore fixé d'horaires hebdomadaires stricts. Vous pouvez proposer l'horaire de votre choix ci-contre.
+                  </div>
+                </ng-template>
+              </div>
+
+              <!-- Avis vérifiés de la communauté -->
+              <div class="mt-4 pt-4 border-top">
+                <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
+                  <div>
+                    <h2 class="fw-bold text-dark fs-6 mb-1">
+                      <i class="bi bi-shield-check text-success me-2"></i>Avis vérifiés des étudiants
+                    </h2>
+                    <p class="text-muted small mb-0">Notes attribuées uniquement après une séance réellement terminée.</p>
+                  </div>
+                  <div *ngIf="mentor.nb_avis && mentor.nb_avis > 0" class="text-end">
+                    <div class="fs-4 fw-bold text-dark lh-1">
+                      <i class="bi bi-star-fill text-warning me-1"></i>{{ mentor.note_moyenne | number:'1.1-1' }}<span class="text-muted fs-6 fw-normal"> / 5</span>
+                    </div>
+                    <small class="text-muted">{{ mentor.nb_avis }} avis vérifié{{ mentor.nb_avis > 1 ? 's' : '' }}</small>
+                  </div>
+                </div>
+
+                <!-- Liste des avis -->
+                <div *ngIf="mentor.avis_recus && mentor.avis_recus.length > 0; else noAvis" class="d-flex flex-column gap-3">
+                  <div *ngFor="let avis of mentor.avis_recus" class="p-3 rounded-3 border bg-light">
+                    <div class="d-flex justify-content-between align-items-start mb-2 flex-wrap gap-1">
+                      <div class="d-flex align-items-center gap-2">
+                        <div class="avatar-initials" style="width: 32px; height: 32px; font-size: 12px;">
+                          {{ avis.auteur.nom_affiche.substring(0, 2).toUpperCase() }}
+                        </div>
+                        <div>
+                          <div class="fw-bold text-dark small">{{ avis.auteur.nom_affiche }}</div>
+                          <div class="text-muted" style="font-size: 11px;">
+                            {{ avis.auteur.filiere }} &bull; {{ avis.auteur.niveau_display }}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="d-flex align-items-center gap-2">
+                        <span class="badge bg-primary-subtle text-primary border rounded-pill px-2 py-0.5" style="font-size: 11px;">
+                          {{ avis.matiere_nom || 'Séance de mentorat' }}
+                        </span>
+                        <div class="text-warning small">
+                          <i *ngFor="let s of [1,2,3,4,5]" class="bi" [ngClass]="s <= avis.note ? 'bi-star-fill' : 'bi-star'"></i>
+                        </div>
+                      </div>
+                    </div>
+
+                    <p *ngIf="avis.commentaire" class="text-dark small mb-1" style="line-height: 1.5; font-style: italic;">
+                      « {{ avis.commentaire }} »
+                    </p>
+                    <div class="text-end">
+                      <small class="text-muted" style="font-size: 10.5px;">
+                        <i class="bi bi-check-circle-fill text-success me-1"></i>Séance vérifiée le {{ avis.date_creation_formatee || (avis.date_creation | date:'dd/MM/yyyy') }}
+                      </small>
+                    </div>
+                  </div>
+                </div>
+
+                <ng-template #noAvis>
+                  <div class="p-4 bg-light rounded-3 text-center border">
+                    <i class="bi bi-chat-heart text-muted fs-3 d-block mb-2"></i>
+                    <p class="text-dark fw-medium small mb-1">Aucun avis vérifié pour l'instant</p>
+                    <p class="text-muted small mb-0">Ce mentor n'a pas encore reçu d'avis. Réservez une séance pour être le premier à donner votre avis vérifié !</p>
                   </div>
                 </ng-template>
               </div>

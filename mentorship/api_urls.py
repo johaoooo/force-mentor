@@ -36,4 +36,9 @@ urlpatterns = [
 
     # Matching Intelligent
     path('matching/', api_views.MatchingMentorsAPIView.as_view(), name='api_matching'),
+
+    # Avis vérifiés
+    path('demandes/<int:pk>/avis/', api_views.AvisCreateAPIView.as_view(), name='api_demande_avis'),
+    path('avis/', api_views.AvisCreateAPIView.as_view(), name='api_avis_create'),
+    path('mentors/<int:pk>/avis/', api_views.MentorAvisListAPIView.as_view(), name='api_mentor_avis'),
 ]

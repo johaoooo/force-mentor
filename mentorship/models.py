@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator
 from accounts.models import Profile
 
 class Matiere(models.Model):
@@ -108,6 +109,7 @@ class Notification(models.Model):
         ('RAPPEL', 'Rappel de séance'),
         ('ANNULATION', 'Séance annulée'),
         ('MESSAGE', 'Nouveau message'),
+        ('AVIS', 'Avis vérifié'),
         ('SYSTEME', 'Information système'),
     ]
 
@@ -159,3 +161,43 @@ class Message(models.Model):
 
     def __str__(self):
         return f"Message #{self.id} de {self.expediteur.user.username} : {self.contenu[:30]}"
+
+
+class AvisMentor(models.Model):
+    """
+    Avis vérifié laissé par un mentoré après une séance réellement effectuée (statut=TERMINEE).
+    """
+    demande = models.OneToOneField(
+        DemandeMentorat, 
+        on_delete=models.CASCADE, 
+        related_name='avis',
+        help_text="Séance de mentorat ayant servi de base à cet avis vérifié"
+    )
+    mentor = models.ForeignKey(
+        Profile, 
+        on_delete=models.CASCADE, 
+        related_name='avis_recus'
+    )
+    auteur = models.ForeignKey(
+        Profile, 
+        on_delete=models.CASCADE, 
+        related_name='avis_laisses'
+    )
+    note = models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(5)],
+        help_text="Note sur 5 (1 à 5 étoiles)"
+    )
+    commentaire = models.TextField(
+        blank=True, 
+        help_text="Commentaire détaillé sur la séance et la pédagogie"
+    )
+    date_creation = models.DateTimeField(auto_now_add=True)
+    date_modification = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Avis vérifié"
+        verbose_name_plural = "Avis vérifiés"
+        ordering = ['-date_creation']
+
+    def __str__(self):
+        return f"Avis {self.note}/5 de {self.auteur.user.username} pour {self.mentor.user.username} (Séance #{self.demande_id})"

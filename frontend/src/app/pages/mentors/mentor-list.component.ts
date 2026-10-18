@@ -274,6 +274,17 @@ import { Profile, Matiere, MatchingResult } from '../../models/models';
               </span>
             </div>
 
+            <!-- Note et Avis vérifiés -->
+            <div class="rating d-flex align-items-center gap-1 my-1">
+              <span class="stars" [style.--rating]="match.mentor.note_moyenne || 5"></span>
+              <span *ngIf="match.mentor.nb_avis && match.mentor.nb_avis > 0" class="fw-bold text-dark small">
+                {{ match.mentor.note_moyenne | number:'1.1-1' }} <span class="text-muted fw-normal">({{ match.mentor.nb_avis }} avis vérifié{{ match.mentor.nb_avis > 1 ? 's' : '' }})</span>
+              </span>
+              <span *ngIf="!match.mentor.nb_avis || match.mentor.nb_avis === 0" class="badge bg-light text-muted border" style="font-size: 11px;">
+                <i class="bi bi-patch-check me-1 text-primary"></i>Nouveau mentor
+              </span>
+            </div>
+
             <!-- Points forts de compatibilité -->
             <div class="matching-reasons-box p-3 rounded-3 bg-light border my-2">
               <div class="fw-bold text-dark small mb-1 d-flex align-items-center gap-1">
@@ -323,9 +334,14 @@ import { Profile, Matiere, MatchingResult } from '../../models/models';
               </span>
             </div>
 
-            <div class="rating">
-              <span class="stars" style="--rating: 4.9" aria-label="Note 4.9 sur 5"></span>
-              <span>4.9 ({{ (mentor.id * 7 + 12) }} avis)</span>
+            <div class="rating d-flex align-items-center gap-1">
+              <span class="stars" [style.--rating]="mentor.note_moyenne || 5" [attr.aria-label]="mentor.note_moyenne ? ('Note ' + mentor.note_moyenne + ' sur 5') : 'Nouveau mentor'"></span>
+              <span *ngIf="mentor.nb_avis && mentor.nb_avis > 0" class="fw-bold text-dark small">
+                {{ mentor.note_moyenne | number:'1.1-1' }} <span class="text-muted fw-normal">({{ mentor.nb_avis }} avis vérifié{{ mentor.nb_avis > 1 ? 's' : '' }})</span>
+              </span>
+              <span *ngIf="!mentor.nb_avis || mentor.nb_avis === 0" class="badge bg-light text-muted border" style="font-size: 11px;">
+                <i class="bi bi-patch-check me-1 text-primary"></i>Nouveau mentor
+              </span>
             </div>
 
             <p class="mentor__bio">
