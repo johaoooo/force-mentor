@@ -33,4 +33,7 @@ urlpatterns = [
     path('conversations/', api_views.ConversationsAPIView.as_view(), name='api_conversations'),
     path('conversations/demarrer/', api_views.ConversationDemarrerAPIView.as_view(), name='api_conversation_demarrer'),
     path('conversations/<int:pk>/messages/', api_views.ConversationMessagesAPIView.as_view(), name='api_conversation_messages'),
+
+    # Matching Intelligent
+    path('matching/', api_views.MatchingMentorsAPIView.as_view(), name='api_matching'),
 ]

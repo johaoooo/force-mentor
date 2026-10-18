@@ -3,7 +3,9 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MentorService } from '../../services/mentor.service';
-import { Profile, Matiere } from '../../models/models';
+import { MentorshipService } from '../../services/mentorship.service';
+import { AuthService } from '../../services/auth.service';
+import { Profile, Matiere, MatchingResult } from '../../models/models';
 
 @Component({
   selector: 'app-mentor-list',
@@ -23,12 +25,113 @@ import { Profile, Matiere } from '../../models/models';
       </section>
 
       <div class="container py-5">
-        <!-- 2. BARRE DE FILTRES STYLE FIGMA -->
-        <div class="filters-card mb-5">
+
+        <!-- 2. SÉLECTEUR DE MODE : MATCHING INTELLIGENT VS ANNUAIRE COMPLET -->
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+          <div class="mode-switch-group p-1 bg-white border rounded-pill shadow-sm d-inline-flex">
+            <button 
+              type="button" 
+              (click)="setDisplayMode('matching')" 
+              class="btn rounded-pill px-3 px-sm-4 py-2 fw-bold d-flex align-items-center gap-1 gap-sm-2"
+              [class.btn-primary]="displayMode === 'matching'"
+              [class.btn-light]="displayMode !== 'matching'"
+              style="font-size: 13px;"
+            >
+              <i class="bi bi-stars"></i>
+              <span>Matching</span>
+              <span *ngIf="matchingResults.length > 0" class="badge bg-white text-primary rounded-pill px-2" style="font-size: 11px;">
+                {{ matchingResults.length }}
+              </span>
+            </button>
+            <button 
+              type="button" 
+              (click)="setDisplayMode('all')" 
+              class="btn rounded-pill px-3 px-sm-4 py-2 fw-bold d-flex align-items-center gap-1 gap-sm-2"
+              [class.btn-primary]="displayMode === 'all'"
+              [class.btn-light]="displayMode !== 'all'"
+              style="font-size: 13px;"
+            >
+              <i class="bi bi-grid-fill"></i>
+              <span>Annuaire complet</span>
+              <span class="badge bg-secondary-subtle text-secondary rounded-pill px-2" style="font-size: 11px;">
+                {{ mentors.length }}
+              </span>
+            </button>
+          </div>
+
+          <div *ngIf="currentUser" class="small text-muted d-flex align-items-center gap-2">
+            <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-2 py-1">
+              <i class="bi bi-person-check-fill me-1"></i>Profil actif
+            </span>
+            <span>{{ currentUser.filiere || 'Informatique' }} &bull; {{ currentUser.niveau_display }}</span>
+          </div>
+        </div>
+
+        <!-- 3. ASSISTANT DE MATCHING INTELLIGENT (MODE MATCHING) -->
+        <div *ngIf="displayMode === 'matching'" class="filters-card mb-4 border-primary shadow-sm" style="border-width: 2px;">
+          <div class="d-flex align-items-center gap-3 mb-3">
+            <div class="p-2 rounded-circle bg-primary-subtle text-primary d-flex align-items-center justify-content-center" style="width: 44px; height: 44px;">
+              <i class="bi bi-stars fs-4"></i>
+            </div>
+            <div>
+              <h2 class="h5 fw-bold text-dark mb-0">Assistant de Matching Intelligent</h2>
+              <p class="text-muted small mb-0">
+                Nos algorithmes croisent votre filière, votre niveau, la matière choisie et les créneaux disponibles pour vous recommander les mentors les plus adaptés.
+              </p>
+            </div>
+          </div>
+
+          <div class="row g-3 align-items-end">
+            <!-- Matière recherchée -->
+            <div class="col-12 col-md-4">
+              <label class="filter-label">Matière où progresser</label>
+              <select [(ngModel)]="matchingMatiereId" (change)="loadMatching()" class="filter-select">
+                <option [ngValue]="null">Toutes mes matières prioritaires</option>
+                <option *ngFor="let mat of matieres" [ngValue]="mat.id">{{ mat.nom }}</option>
+              </select>
+            </div>
+
+            <!-- Jour préféré -->
+            <div class="col-12 col-sm-6 col-md-3">
+              <label class="filter-label">Jour de disponibilité préféré</label>
+              <select [(ngModel)]="matchingJour" (change)="loadMatching()" class="filter-select">
+                <option [ngValue]="null">Peu importe le jour</option>
+                <option [ngValue]="0">Lundi</option>
+                <option [ngValue]="1">Mardi</option>
+                <option [ngValue]="2">Mercredi</option>
+                <option [ngValue]="3">Jeudi</option>
+                <option [ngValue]="4">Vendredi</option>
+                <option [ngValue]="5">Samedi</option>
+                <option [ngValue]="6">Dimanche</option>
+              </select>
+            </div>
+
+            <!-- Score minimum -->
+            <div class="col-12 col-sm-6 col-md-3">
+              <label class="filter-label">Compatibilité minimale</label>
+              <select [(ngModel)]="minScoreFilter" (change)="loadMatching()" class="filter-select">
+                <option [ngValue]="null">Tous les scores</option>
+                <option [ngValue]="70">&ge; 70% (Bonne compatibilité)</option>
+                <option [ngValue]="80">&ge; 80% (Très forte)</option>
+                <option [ngValue]="90">&ge; 90% (Excellente)</option>
+              </select>
+            </div>
+
+            <!-- Bouton Réinitialiser -->
+            <div class="col-12 col-md-2">
+              <button (click)="resetMatchingFilters()" class="btn btn--outline w-100 justify-content-center" style="height: 44px; font-size: 13.5px;">
+                <i class="bi bi-arrow-counterclockwise me-1"></i>Effacer
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. BARRE DE FILTRES CLASSIQUE (MODE ANNUAIRE COMPLET) -->
+        <div *ngIf="displayMode === 'all'" class="filters-card mb-4">
           <div class="row g-3 align-items-center">
             <!-- Recherche textuelle -->
             <div class="col-12 col-md-5">
-              <label class="filter-label">Recherche</label>
+              <label class="filter-label">Recherche libre</label>
               <div class="input-search-wrapper">
                 <i class="bi bi-search search-icon"></i>
                 <input 
@@ -86,42 +189,118 @@ import { Profile, Matiere } from '../../models/models';
           </div>
         </div>
 
-        <!-- 3. COMPTEUR DE RÉSULTATS -->
+        <!-- 5. COMPTEUR DE RÉSULTATS -->
         <div class="d-flex justify-content-between align-items-center mb-4">
           <div class="results-count">
-            <span *ngIf="!loading">
-              <strong>{{ mentors.length }}</strong> mentor{{ mentors.length > 1 ? 's' : '' }} disponible{{ mentors.length > 1 ? 's' : '' }}
+            <span *ngIf="displayMode === 'matching' && !matchingLoading">
+              <strong>{{ matchingResults.length }}</strong> mentor{{ matchingResults.length > 1 ? 's' : '' }} suggéré{{ matchingResults.length > 1 ? 's' : '' }} par compatibilité
             </span>
-            <span *ngIf="loading" class="text-muted">
+            <span *ngIf="displayMode === 'all' && !loading">
+              <strong>{{ mentors.length }}</strong> mentor{{ mentors.length > 1 ? 's' : '' }} dans l'annuaire
+            </span>
+            <span *ngIf="(displayMode === 'matching' && matchingLoading) || (displayMode === 'all' && loading)" class="text-muted">
               Recherche en cours...
             </span>
           </div>
         </div>
 
-        <!-- 4. ÉTAT DE CHARGEMENT -->
-        <div *ngIf="loading" class="text-center py-5">
+        <!-- 6. ÉTAT DE CHARGEMENT -->
+        <div *ngIf="(displayMode === 'matching' && matchingLoading) || (displayMode === 'all' && loading)" class="text-center py-5">
           <div class="spinner-border text-primary" role="status">
             <span class="visually-hidden">Chargement...</span>
           </div>
-          <p class="text-muted small mt-3">Chargement des mentors...</p>
+          <p class="text-muted small mt-3">Analyse des mentors et calcul des scores...</p>
         </div>
 
-        <!-- 5. AUCUN RÉSULTAT -->
-        <div *ngIf="!loading && mentors.length === 0" class="empty-state text-center py-5">
+        <!-- 7. AUCUN RÉSULTAT -->
+        <div *ngIf="displayMode === 'matching' && !matchingLoading && matchingResults.length === 0" class="empty-state text-center py-5">
+          <div class="empty-state__icon mx-auto mb-3">
+            <i class="bi bi-person-x"></i>
+          </div>
+          <h3 class="fw-bold mb-2">Aucun mentor compatible trouvé</h3>
+          <p class="text-muted mb-4 mx-auto" style="max-width: 440px; font-size: 14.5px;">
+            Ajustez vos critères de matching (matière ou jour) pour élargir les résultats.
+          </p>
+          <button (click)="resetMatchingFilters()" class="btn btn--primary">
+            Réinitialiser les critères
+          </button>
+        </div>
+
+        <div *ngIf="displayMode === 'all' && !loading && mentors.length === 0" class="empty-state text-center py-5">
           <div class="empty-state__icon mx-auto mb-3">
             <i class="bi bi-person-x"></i>
           </div>
           <h3 class="fw-bold mb-2">Aucun mentor trouvé</h3>
           <p class="text-muted mb-4 mx-auto" style="max-width: 440px; font-size: 14.5px;">
-            Aucun mentor ne correspond à vos critères de recherche actuels. Essayez d'effacer les filtres ou de chercher une autre compétence.
+            Aucun mentor ne correspond à vos filtres actuels.
           </p>
           <button (click)="resetFilters()" class="btn btn--primary">
-            Réinitialiser les critères
+            Réinitialiser les filtres
           </button>
         </div>
 
-        <!-- 6. GRILLE DES MENTORS (DESIGN FIGMA IDENTIQUE) -->
-        <div *ngIf="!loading && mentors.length > 0" class="mentors">
+        <!-- 8. GRILLE DE RÉSULTATS DU MATCHING INTELLIGENT -->
+        <div *ngIf="displayMode === 'matching' && !matchingLoading && matchingResults.length > 0" class="mentors">
+          <article *ngFor="let match of matchingResults" class="mentor border position-relative" [class.border-primary]="match.score >= 85">
+            
+            <!-- Badge Score de compatibilité -->
+            <div class="position-absolute top-0 end-0 m-3">
+              <span class="badge rounded-pill px-3 py-2 fw-bold shadow-sm d-inline-flex align-items-center gap-1"
+                    [ngClass]="getScoreBadgeClass(match.score)"
+                    style="font-size: 12px;">
+                <i class="bi bi-stars"></i>
+                <span>{{ match.score }}% compatible</span>
+              </span>
+            </div>
+
+            <div class="mentor__head pe-5">
+              <img *ngIf="match.mentor.photo_url" [src]="match.mentor.photo_url" [alt]="match.mentor.user.first_name" class="avatar">
+              <span *ngIf="!match.mentor.photo_url" class="avatar avatar--initials">
+                {{ getInitials(match.mentor) }}
+              </span>
+              <div>
+                <strong>{{ match.mentor.user.first_name }} {{ match.mentor.user.last_name }}</strong>
+                <small>{{ match.mentor.filiere || 'Génie Logiciel' }} &bull; {{ match.mentor.niveau_display }}</small>
+              </div>
+            </div>
+
+            <!-- Badges de compétences -->
+            <div class="mentor__tags">
+              <span *ngFor="let comp of match.mentor.competences | slice:0:3" class="badge-skill">
+                {{ comp.matiere.nom }}
+              </span>
+              <span *ngIf="!match.mentor.competences?.length" class="badge-skill">
+                {{ match.mentor.filiere || 'Informatique' }}
+              </span>
+            </div>
+
+            <!-- Points forts de compatibilité -->
+            <div class="matching-reasons-box p-3 rounded-3 bg-light border my-2">
+              <div class="fw-bold text-dark small mb-1 d-flex align-items-center gap-1">
+                <i class="bi bi-check-circle-fill text-success"></i>
+                <span>Points forts de compatibilité :</span>
+              </div>
+              <ul class="list-unstyled mb-0" style="font-size: 11.5px;">
+                <li *ngFor="let raison of match.raisons" class="text-secondary d-flex align-items-start gap-1 mb-1">
+                  <i class="bi bi-dot text-primary fs-5 lh-1"></i>
+                  <span>{{ raison }}</span>
+                </li>
+              </ul>
+            </div>
+
+            <p class="mentor__bio">
+              {{ match.mentor.bio || defaultBio }}
+            </p>
+
+            <div class="mentor__actions">
+              <a [routerLink]="['/mentor', match.mentor.id]" class="btn btn--outline btn-sm">Voir le profil</a>
+              <a [routerLink]="['/mentor', match.mentor.id]" class="btn btn--primary btn-sm">Réserver / Demander</a>
+            </div>
+          </article>
+        </div>
+
+        <!-- 9. GRILLE ANNUAIRE COMPLET -->
+        <div *ngIf="displayMode === 'all' && !loading && mentors.length > 0" class="mentors">
           <article *ngFor="let mentor of mentors" class="mentor">
             <div class="mentor__head">
               <img *ngIf="mentor.photo_url" [src]="mentor.photo_url" [alt]="mentor.user.first_name" class="avatar">
@@ -159,6 +338,7 @@ import { Profile, Matiere } from '../../models/models';
             </div>
           </article>
         </div>
+
       </div>
     </main>
   `,
@@ -289,20 +469,34 @@ import { Profile, Matiere } from '../../models/models';
 })
 export class MentorListComponent implements OnInit {
   private mentorService = inject(MentorService);
+  private mentorshipService = inject(MentorshipService);
+  private authService = inject(AuthService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
 
+  currentUser: Profile | null = null;
+  displayMode: 'matching' | 'all' = 'matching';
+
+  // Annuaire complet
   mentors: Profile[] = [];
   matieres: Matiere[] = [];
   loading = true;
-
   searchQuery = '';
   selectedMatiereId: number | null = null;
   selectedNiveau: string | null = null;
 
+  // Matching intelligent
+  matchingResults: MatchingResult[] = [];
+  matchingLoading = true;
+  matchingMatiereId: number | null = null;
+  matchingJour: number | null = null;
+  minScoreFilter: number | null = null;
+
   defaultBio = 'Passionné par le partage de connaissances et l\'accompagnement académique sur les cours Force-N.';
 
   ngOnInit(): void {
+    this.currentUser = this.authService.currentUser;
+
     this.mentorService.getMatieres().subscribe(mats => {
       this.matieres = mats;
     });
@@ -310,15 +504,26 @@ export class MentorListComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       if (params['q']) {
         this.searchQuery = params['q'];
+        this.displayMode = 'all'; // Si recherche par texte, basculer sur l'annuaire complet
       }
       if (params['matiere']) {
         this.selectedMatiereId = +params['matiere'];
+        this.matchingMatiereId = +params['matiere'];
       }
       if (params['niveau']) {
         this.selectedNiveau = params['niveau'];
       }
+      if (params['mode']) {
+        this.displayMode = params['mode'] === 'all' ? 'all' : 'matching';
+      }
+
       this.loadMentors();
+      this.loadMatching();
     });
+  }
+
+  setDisplayMode(mode: 'matching' | 'all'): void {
+    this.displayMode = mode;
   }
 
   loadMentors(): void {
@@ -332,6 +537,37 @@ export class MentorListComponent implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+  loadMatching(): void {
+    this.matchingLoading = true;
+    this.mentorshipService.getMatching({
+      matiere_id: this.matchingMatiereId,
+      jour_semaine: this.matchingJour,
+      min_score: this.minScoreFilter || undefined
+    }).subscribe({
+      next: (res) => {
+        this.matchingResults = res.results || [];
+        this.matchingLoading = false;
+      },
+      error: () => {
+        this.matchingLoading = false;
+      }
+    });
+  }
+
+  resetMatchingFilters(): void {
+    this.matchingMatiereId = null;
+    this.matchingJour = null;
+    this.minScoreFilter = null;
+    this.loadMatching();
+  }
+
+  getScoreBadgeClass(score: number): string {
+    if (score >= 90) return 'bg-success text-white';
+    if (score >= 80) return 'bg-primary text-white';
+    if (score >= 70) return 'bg-info text-dark';
+    return 'bg-secondary text-white';
   }
 
   onFilterChange(): void {

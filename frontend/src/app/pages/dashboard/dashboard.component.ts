@@ -4,7 +4,7 @@ import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MentorshipService } from '../../services/mentorship.service';
 import { AuthService } from '../../services/auth.service';
-import { DemandeMentorat, Profile, DisponibiliteMentor, Notification } from '../../models/models';
+import { DemandeMentorat, Profile, DisponibiliteMentor, Notification, MatchingResult } from '../../models/models';
 
 @Component({
   selector: 'app-dashboard',
@@ -499,6 +499,51 @@ import { DemandeMentorat, Profile, DisponibiliteMentor, Notification } from '../
           </div>
         </div>
 
+        <!-- Mentors Recommandés (Matching Intelligent) -->
+        <div *ngIf="matchingMentors.length > 0" class="mb-4">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <h6 class="fw-bold text-dark mb-0" style="font-size: 13.5px;">
+              <i class="bi bi-stars me-1 text-primary"></i>Mentors recommandés
+            </h6>
+            <a routerLink="/mentors" [queryParams]="{ mode: 'matching' }" class="text-primary small text-decoration-none fw-bold" style="font-size: 11.5px;">
+              Voir tout &rarr;
+            </a>
+          </div>
+
+          <div *ngFor="let match of matchingMentors" class="card border rounded-3 p-2 mb-2 bg-white shadow-sm">
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <img *ngIf="match.mentor.photo_url" [src]="match.mentor.photo_url" class="rounded-circle object-fit-cover" style="width: 34px; height: 34px;">
+              <div *ngIf="!match.mentor.photo_url" class="avatar avatar--initials" style="width: 34px; height: 34px; font-size: 12px;">
+                {{ getInitials(match.mentor) }}
+              </div>
+              <div class="overflow-hidden me-auto">
+                <div class="fw-bold text-dark text-truncate" style="font-size: 12.5px;">
+                  {{ match.mentor.user.first_name }} {{ match.mentor.user.last_name }}
+                </div>
+                <small class="text-muted d-block text-truncate" style="font-size: 11px;">
+                  {{ match.mentor.filiere || 'Génie Logiciel' }}
+                </small>
+              </div>
+              <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-2 py-1 fw-bold" style="font-size: 10.5px;">
+                {{ match.score }}%
+              </span>
+            </div>
+
+            <p *ngIf="match.raisons?.length" class="text-muted small mb-2 text-truncate" style="font-size: 11px;" [title]="match.raisons[0]">
+              <i class="bi bi-check2 text-success me-1"></i>{{ match.raisons[0] }}
+            </p>
+
+            <div class="d-flex gap-1">
+              <a [routerLink]="['/mentor', match.mentor.id]" class="btn btn-outline-primary btn-sm flex-grow-1 p-1" style="font-size: 11.5px;">
+                Profil
+              </a>
+              <a [routerLink]="['/messages']" [queryParams]="{ destinataireId: match.mentor.id }" class="btn btn-light border btn-sm p-1 px-2" title="Contacter" style="font-size: 11.5px;">
+                <i class="bi bi-chat-dots"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
         <!-- Prochaines Sessions en Direct -->
         <h6 class="fw-bold text-dark mb-3">
           <i class="bi bi-camera-video me-1 text-primary"></i>Sessions confirmées
@@ -539,6 +584,7 @@ export class DashboardComponent implements OnInit {
   demandesRecues: DemandeMentorat[] = [];
   demandesEnvoyees: DemandeMentorat[] = [];
   mesDispos: DisponibiliteMentor[] = [];
+  matchingMentors: MatchingResult[] = [];
 
   activeTab: 'recues' | 'envoyees' | 'disponibilites' = 'recues';
   viewMode: 'mentor' | 'mentore' = 'mentor';
@@ -574,9 +620,18 @@ export class DashboardComponent implements OnInit {
     }
     this.loadDemandes();
     this.loadNotifications();
+    this.loadMatchingMentors();
     if (this.currentUser?.est_mentor) {
       this.loadMesDispos();
     }
+  }
+
+  loadMatchingMentors(): void {
+    this.mentorshipService.getMatching().subscribe({
+      next: (res) => {
+        this.matchingMentors = res.results ? res.results.slice(0, 3) : [];
+      }
+    });
   }
 
   loadNotifications(): void {
@@ -679,6 +734,13 @@ export class DashboardComponent implements OnInit {
     const fn = this.currentUser?.user?.first_name ? this.currentUser.user.first_name[0].toUpperCase() : 'U';
     const ln = this.currentUser?.user?.last_name ? this.currentUser.user.last_name[0].toUpperCase() : '';
     return `${fn}${ln}`;
+  }
+
+  getInitials(profile?: Profile): string {
+    if (!profile?.user) return 'M';
+    const f = profile.user.first_name ? profile.user.first_name[0].toUpperCase() : 'M';
+    const l = profile.user.last_name ? profile.user.last_name[0].toUpperCase() : '';
+    return f + l;
   }
 
   getPendingCount(): number {

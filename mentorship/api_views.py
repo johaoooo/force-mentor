@@ -622,3 +622,75 @@ class ConversationMessagesAPIView(APIView):
         serializer = MessageSerializer(msg, context={'request': request})
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+
+class MatchingMentorsAPIView(APIView):
+    """
+    GET /api/matching/
+    Suggère intelligemment les mentors selon la filière, le niveau, la matière
+    et les disponibilités hebdomadaires communes.
+    """
+    def get(self, request):
+        from .matching import calculate_mentor_match
+
+        matiere_id = request.query_params.get('matiere_id')
+        jour_semaine = request.query_params.get('jour_semaine')
+        filiere = request.query_params.get('filiere')
+        niveau = request.query_params.get('niveau')
+        min_score = request.query_params.get('min_score')
+
+        current_profile = None
+        if request.user.is_authenticated and hasattr(request.user, 'profile'):
+            current_profile = request.user.profile
+            if not filiere:
+                filiere = current_profile.filiere
+            if not niveau:
+                niveau = current_profile.niveau
+
+        mentors = Profile.objects.filter(
+            role__in=['MENTOR', 'LES_DEUX'],
+            est_disponible=True
+        ).select_related('user').prefetch_related('competences__matiere', 'disponibilites')
+
+        if current_profile:
+            mentors = mentors.exclude(id=current_profile.id)
+
+        results = []
+        for m in mentors:
+            match_res = calculate_mentor_match(
+                m,
+                student_filiere=filiere,
+                student_niveau=niveau,
+                matiere_id=matiere_id,
+                jour_semaine=jour_semaine
+            )
+            
+            score = match_res['score']
+            if min_score:
+                try:
+                    if score < int(min_score):
+                        continue
+                except ValueError:
+                    pass
+
+            results.append({
+                'mentor': ProfileSerializer(m, context={'request': request}).data,
+                'score': score,
+                'label': match_res['label'],
+                'color': match_res['color'],
+                'raisons': match_res['raisons']
+            })
+
+        # Trier par score de compatibilité décroissant
+        results.sort(key=lambda x: x['score'], reverse=True)
+
+        return Response({
+            'criteres': {
+                'filiere': filiere,
+                'niveau': niveau,
+                'matiere_id': matiere_id,
+                'jour_semaine': jour_semaine,
+            },
+            'total': len(results),
+            'results': results
+        })
+

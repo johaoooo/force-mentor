@@ -106,3 +106,22 @@ export interface Stats {
   total_demandes: number;
   total_utilisateurs: number;
 }
+
+export interface MatchingResult {
+  mentor: Profile;
+  score: number;
+  label: string;
+  color: string;
+  raisons: string[];
+}
+
+export interface MatchingResponse {
+  criteres: {
+    filiere?: string | null;
+    niveau?: string | null;
+    matiere_id?: string | number | null;
+    jour_semaine?: string | number | null;
+  };
+  total: number;
+  results: MatchingResult[];
+}

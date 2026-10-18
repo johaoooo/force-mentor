@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { DemandeMentorat, DisponibiliteMentor, Notification, Conversation, ChatMessage } from '../models/models';
+import { DemandeMentorat, DisponibiliteMentor, Notification, Conversation, ChatMessage, MatchingResponse, MatchingResult } from '../models/models';
 
 @Injectable({
   providedIn: 'root'
@@ -128,5 +128,27 @@ export class MentorshipService {
       { contenu },
       { withCredentials: true }
     );
+  }
+
+  // --- Matching Intelligent ---
+  getMatching(params?: {
+    matiere_id?: number | null;
+    jour_semaine?: number | null;
+    filiere?: string;
+    niveau?: string;
+    min_score?: number;
+  }): Observable<MatchingResponse> {
+    let httpParams = new HttpParams();
+    if (params) {
+      if (params.matiere_id) httpParams = httpParams.set('matiere_id', params.matiere_id.toString());
+      if (params.jour_semaine !== undefined && params.jour_semaine !== null) httpParams = httpParams.set('jour_semaine', params.jour_semaine.toString());
+      if (params.filiere) httpParams = httpParams.set('filiere', params.filiere);
+      if (params.niveau) httpParams = httpParams.set('niveau', params.niveau);
+      if (params.min_score) httpParams = httpParams.set('min_score', params.min_score.toString());
+    }
+    return this.http.get<MatchingResponse>(`${this.apiUrl}/matching/`, {
+      params: httpParams,
+      withCredentials: true
+    });
   }
 }
