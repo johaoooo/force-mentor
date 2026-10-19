@@ -157,6 +157,13 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
+ANGULAR_DIST_DIR = BASE_DIR / 'frontend/dist/frontend/browser'
+if ANGULAR_DIST_DIR.exists():
+    STATICFILES_DIRS.append(ANGULAR_DIST_DIR)
+    WHITENOISE_ROOT = ANGULAR_DIST_DIR
+else:
+    WHITENOISE_ROOT = BASE_DIR / 'staticfiles'
+
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 STORAGES = {

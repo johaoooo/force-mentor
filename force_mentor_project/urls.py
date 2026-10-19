@@ -1,23 +1,26 @@
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, re_path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from mentors import views as mentor_views
-from mentorship import views as mentorship_views
+from django.http import HttpResponse
+
+def serve_angular(request):
+    index_file = settings.BASE_DIR / 'frontend/dist/frontend/browser/index.html'
+    if not index_file.exists():
+        index_file = settings.BASE_DIR / 'staticfiles/index.html'
+    if index_file.exists():
+        with open(index_file, 'r', encoding='utf-8') as f:
+            return HttpResponse(f.read(), content_type='text/html')
+    from mentors import views as mentor_views
+    return mentor_views.home(request)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', mentor_views.home, name='home'),
-    path('mentors/', mentor_views.mentor_list, name='mentor_list'),
-    path('', include('mentors.urls')),
-    path('tableau-de-bord/', mentorship_views.dashboard, name='dashboard'),
-    path('mentor/<int:mentor_id>/', mentorship_views.mentor_detail, name='mentor_detail'),
-    path('demande/creer/<int:mentor_id>/', mentorship_views.create_request, name='create_request'),
-    path('demande/<int:request_id>/<str:action>/', mentorship_views.update_request_status, name='update_request_status'),
+    path('api/', include('mentorship.api_urls')),
     path('auth/', include('accounts.urls')),
     path('mentorship/', include('mentorship.urls')),
-    # API REST pour l'application Angular
-    path('api/', include('mentorship.api_urls')),
+    # Route toutes les pages de l'application vers Angular SPA
+    re_path(r'^(?!api/|admin/|static/|media/).*$', serve_angular, name='angular_app'),
 ]
 
 if settings.DEBUG:

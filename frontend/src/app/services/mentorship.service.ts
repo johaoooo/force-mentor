@@ -2,13 +2,14 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { DemandeMentorat, DisponibiliteMentor, Notification, Conversation, ChatMessage, MatchingResponse, MatchingResult, AvisMentor } from '../models/models';
+import { getApiUrl } from './api.config';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MentorshipService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://127.0.0.1:8001/api';
+  private apiUrl = getApiUrl();
 
   // --- Demandes & Réservations ---
   getDemandes(): Observable<{ recues: DemandeMentorat[]; envoyees: DemandeMentorat[] }> {

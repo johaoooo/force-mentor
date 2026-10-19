@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="790" height="575" viewBox="0 0 790 575">
+<defs>
+<clipPath id="clip-0">
+<path clip-rule="nonzero" d="M 7 182 L 776 182 L 776 570 L 7 570 Z M 7 182 "/>
+</clipPath>
+<clipPath id="clip-1">
+<path clip-rule="evenodd" d="M 7 570 C 7 300 90 182 200 182 C 270 182 300 230 345 310 C 385 375 415 400 455 400 C 520 400 560 350 640 303 C 730 303 776 400 776 563 L 676 563 C 676 470 650 383 600 383 C 560 383 520 437 455 437 C 390 437 340 400 300 350 C 270 310 250 292 220 292 C 170 292 122 380 122 570 Z M 7 570 "/>
+</clipPath>
+<linearGradient id="linear-pattern-0" gradientUnits="userSpaceOnUse" x1="7" y1="0" x2="776" y2="0" gradientTransform="matrix(1, 0, 0, -1, 0, 575)">
+<stop offset="0" stop-color="#ffffff"/>
+<stop offset="1" stop-color="#60a5fa"/>
+</linearGradient>
+</defs>
+<path fill-rule="evenodd" fill="#ffffff" fill-opacity="1" d="M 314 88 C 314 42.710938 277.289062 6 232 6 C 186.710938 6 150 42.710938 150 88 C 150 133.289062 186.710938 170 232 170 C 277.289062 170 314 133.289062 314 88 "/>
+<path fill-rule="evenodd" fill="#93c5fd" fill-opacity="1" d="M 701 236 C 701 201.207031 672.792969 173 638 173 C 603.207031 173 575 201.207031 575 236 C 575 270.792969 603.207031 299 638 299 C 672.792969 299 701 270.792969 701 236 "/>
+<g clip-path="url(#clip-0)">
+<g clip-path="url(#clip-1)">
+<path fill-rule="nonzero" fill="url(#linear-pattern-0)" d="M 7 570 L 7 182 L 776 182 L 776 570 Z M 7 570 "/>
+</g>
+</g>
+</svg>

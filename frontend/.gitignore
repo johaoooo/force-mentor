@@ -1,7 +1,12 @@
 # See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
 
 # Compiled output
-/dist
+/dist/*
+!/dist/frontend/
+/dist/frontend/*
+!/dist/frontend/browser/
+!/dist/frontend/browser/**
+*.map
 /tmp
 /out-tsc
 /bazel-out

@@ -1,0 +1,186 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 460" width="100%" height="100%">
+  <defs>
+    <!-- Dégradé pour le portail / arche nocturne -->
+    <linearGradient id="portalGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#002b7a" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#0043b3" stop-opacity="0.4"/>
+    </linearGradient>
+
+    <!-- Dégradé marches d'escalier -->
+    <linearGradient id="stepTop1" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#60a5fa"/>
+    </linearGradient>
+    <linearGradient id="stepSide1" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1d4ed8"/>
+      <stop offset="100%" stop-color="#1e3a8a"/>
+    </linearGradient>
+
+    <linearGradient id="cloudGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#e2e8f0"/>
+    </linearGradient>
+
+    <!-- Ombre douce -->
+    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+    <filter id="dropShadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#001845" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+
+  <!-- Arrière-plan : Arche stylisée étoilée -->
+  <g filter="url(#dropShadow)">
+    <path d="M 120,400 C 120,120 420,120 420,400 Z" fill="url(#portalGrad)" />
+    
+    <!-- Ligne pointillée décorative d'arche -->
+    <path d="M 105,400 C 105,95 435,95 435,400" fill="none" stroke="#93c5fd" stroke-width="2" stroke-dasharray="6,8" opacity="0.65" />
+    <path d="M 90,400 C 90,75 450,75 450,400" fill="none" stroke="#60a5fa" stroke-width="1.5" stroke-dasharray="4,10" opacity="0.35" />
+  </g>
+
+  <!-- Constellations & Étoiles scintillantes -->
+  <g fill="#ffffff">
+    <!-- Grandes étoiles scintillantes -->
+    <path d="M 270,110 L 273,122 L 285,125 L 273,128 L 270,140 L 267,128 L 255,125 L 267,122 Z" opacity="0.9" filter="url(#softGlow)"/>
+    <path d="M 175,170 L 177,178 L 185,180 L 177,182 L 175,190 L 173,182 L 165,180 L 173,178 Z" opacity="0.8"/>
+    <path d="M 370,165 L 372,173 L 380,175 L 372,177 L 370,185 L 368,177 L 360,175 L 368,173 Z" opacity="0.8"/>
+    
+    <!-- Petites étoiles et points -->
+    <circle cx="210" cy="140" r="2" opacity="0.7"/>
+    <circle cx="330" cy="135" r="2.5" opacity="0.8"/>
+    <circle cx="150" cy="220" r="1.5" opacity="0.6"/>
+    <circle cx="395" cy="210" r="2" opacity="0.7"/>
+    <circle cx="290" cy="180" r="1.5" opacity="0.5"/>
+    <circle cx="230" cy="195" r="2" opacity="0.6"/>
+    <circle cx="310" cy="230" r="1.5" opacity="0.5"/>
+  </g>
+
+  <!-- Nuage socle à la base -->
+  <path d="M 60,420 C 60,380 110,360 160,375 C 200,345 270,340 310,370 C 350,345 420,355 450,385 C 490,385 500,420 500,430 L 50,430 C 50,425 55,420 60,420 Z" fill="url(#cloudGrad)" opacity="0.95"/>
+
+  <!-- ==================== ESCALIER ISOMÉTRIQUE ==================== -->
+  <!-- Marche 1 (Basse - Gauche) -->
+  <g>
+    <!-- Face supérieure -->
+    <polygon points="140,360 210,340 250,365 180,385" fill="#60a5fa"/>
+    <!-- Face avant -->
+    <polygon points="180,385 250,365 250,410 180,430" fill="#2563eb"/>
+    <!-- Face latérale gauche -->
+    <polygon points="140,360 180,385 180,430 140,405" fill="#1d4ed8"/>
+  </g>
+
+  <!-- Marche 2 (Milieu) -->
+  <g>
+    <!-- Face supérieure -->
+    <polygon points="210,305 285,285 330,312 255,332" fill="#93c5fd"/>
+    <!-- Face avant -->
+    <polygon points="255,332 330,312 330,380 255,400" fill="#3b82f6"/>
+    <!-- Face latérale gauche -->
+    <polygon points="210,305 255,332 255,400 210,373" fill="#1d4ed8"/>
+  </g>
+
+  <!-- Marche 3 (Haute - Sommet) -->
+  <g>
+    <!-- Face supérieure -->
+    <polygon points="285,245 375,220 420,250 330,275" fill="#bfdbfe"/>
+    <!-- Face avant -->
+    <polygon points="330,275 420,250 420,350 330,375" fill="#2563eb"/>
+    <!-- Face latérale gauche -->
+    <polygon points="285,245 330,275 330,375 285,345" fill="#1e40af"/>
+  </g>
+
+  <!-- ==================== PERSONNAGES VECTORIELS ==================== -->
+
+  <!-- PERSONNAGE 1 (En bas à gauche : jaune, tend la main pour monter) -->
+  <g id="person1-yellow">
+    <!-- Ombre au sol -->
+    <ellipse cx="170" cy="370" rx="16" ry="6" fill="#1e3a8a" opacity="0.3"/>
+    
+    <!-- Jambe droite (arrière) -->
+    <path d="M 168,310 L 164,360" stroke="#1e293b" stroke-width="8" stroke-linecap="round"/>
+    <ellipse cx="163" cy="362" rx="6" ry="3" fill="#0f172a"/>
+    <!-- Jambe gauche (sur la marche) -->
+    <path d="M 174,310 L 188,348" stroke="#1e293b" stroke-width="8" stroke-linecap="round"/>
+    <ellipse cx="190" cy="350" rx="6" ry="3" fill="#0f172a"/>
+
+    <!-- Corps / T-shirt Jaune (Mockup A1) -->
+    <path d="M 160,265 C 160,255 185,255 188,265 L 180,312 L 165,312 Z" fill="#fbbf24"/>
+    
+    <!-- Tête -->
+    <circle cx="168" cy="242" r="10" fill="#f59e0b"/>
+    <!-- Cheveux -->
+    <path d="M 160,240 C 160,230 178,230 178,240 C 178,244 160,244 160,240 Z" fill="#78350f"/>
+
+    <!-- Bras gauche en arrière -->
+    <path d="M 163,268 L 148,292" stroke="#fbbf24" stroke-width="6" stroke-linecap="round"/>
+    <circle cx="147" cy="294" r="3.5" fill="#f59e0b"/>
+
+    <!-- Bras droit tendu vers le haut pour saisir la main du mentor -->
+    <path d="M 183,266 L 218,248" stroke="#fbbf24" stroke-width="6" stroke-linecap="round"/>
+    <!-- Main qui rejoint celle du mentor -->
+    <circle cx="220" cy="247" r="4.5" fill="#f59e0b"/>
+  </g>
+
+  <!-- PERSONNAGE 2 (Au milieu : Bleu, se penche et tire son camarade vers le haut) -->
+  <g id="person2-blue">
+    <!-- Ombre au sol -->
+    <ellipse cx="265" cy="320" rx="18" ry="7" fill="#1e3a8a" opacity="0.3"/>
+
+    <!-- Jambes -->
+    <path d="M 268,270 L 260,315" stroke="#0f172a" stroke-width="8" stroke-linecap="round"/>
+    <ellipse cx="258" cy="317" rx="6" ry="3" fill="#020617"/>
+    <path d="M 278,268 L 292,305" stroke="#0f172a" stroke-width="8" stroke-linecap="round"/>
+    <ellipse cx="295" cy="307" rx="6" ry="3" fill="#020617"/>
+
+    <!-- Buste / T-shirt Bleu Cyan -->
+    <path d="M 258,225 C 255,215 285,215 288,225 L 282,272 L 264,272 Z" fill="#0284c7"/>
+
+    <!-- Tête -->
+    <circle cx="268" cy="202" r="10" fill="#fed7aa"/>
+    <!-- Cheveux -->
+    <path d="M 260,200 C 260,190 278,190 278,200 Z" fill="#1e293b"/>
+
+    <!-- Bras gauche qui attrape la main du premier étudiant -->
+    <path d="M 260,228 L 222,246" stroke="#0284c7" stroke-width="6" stroke-linecap="round"/>
+    <circle cx="221" cy="247" r="4.5" fill="#fed7aa"/>
+
+    <!-- Bras droit levé en signe d'encouragement -->
+    <path d="M 284,228 L 302,245" stroke="#0284c7" stroke-width="6" stroke-linecap="round"/>
+    <circle cx="304" cy="246" r="4" fill="#fed7aa"/>
+  </g>
+
+  <!-- PERSONNAGE 3 (Au sommet : Orange / Rouge, victorieux et guidant l'équipe) -->
+  <g id="person3-orange">
+    <!-- Ombre au sol -->
+    <ellipse cx="360" cy="245" rx="18" ry="7" fill="#1e3a8a" opacity="0.3"/>
+
+    <!-- Jambes -->
+    <path d="M 352,210 L 348,242" stroke="#1e293b" stroke-width="8" stroke-linecap="round"/>
+    <ellipse cx="346" cy="244" rx="6" ry="3" fill="#0f172a"/>
+    <path d="M 364,210 L 372,242" stroke="#1e293b" stroke-width="8" stroke-linecap="round"/>
+    <ellipse cx="374" cy="244" rx="6" ry="3" fill="#0f172a"/>
+
+    <!-- Corps / T-shirt Orange Corail (Mockup A1) -->
+    <path d="M 345,160 C 345,150 375,150 375,160 L 370,212 L 350,212 Z" fill="#f97316"/>
+
+    <!-- Tête -->
+    <circle cx="360" cy="138" r="10.5" fill="#fed7aa"/>
+    <!-- Cheveux -->
+    <path d="M 352,136 C 352,126 370,126 370,136 Z" fill="#7c2d12"/>
+
+    <!-- Bras gauche en direction du sommet / étoiles -->
+    <path d="M 348,162 L 330,175" stroke="#f97316" stroke-width="6" stroke-linecap="round"/>
+    <circle cx="328" cy="176" r="4" fill="#fed7aa"/>
+
+    <!-- Bras droit tendu en triomphe vers le ciel -->
+    <path d="M 372,162 L 392,135" stroke="#f97316" stroke-width="6" stroke-linecap="round"/>
+    <circle cx="394" cy="133" r="4" fill="#fed7aa"/>
+  </g>
+
+  <!-- Drapeau ou trophée scintillant en haut à droite -->
+  <g filter="url(#softGlow)">
+    <circle cx="395" cy="132" r="8" fill="#fde047" opacity="0.4"/>
+  </g>
+</svg>

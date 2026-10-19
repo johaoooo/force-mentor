@@ -15,5 +15,5 @@ __pycache__/
 
 # Node / Angular
 node_modules/
-dist/
 .angular/
+frontend/.angular/
