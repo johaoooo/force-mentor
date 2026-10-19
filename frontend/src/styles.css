@@ -1837,3 +1837,13 @@ input:focus-visible {
   }
 }
 
+/* Compensation d'espace pour la barre de navigation mobile inférieure style LinkedIn */
+@media (max-width: 768px) {
+  body {
+    padding-bottom: calc(58px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+  .dashboard-main-content {
+    padding-bottom: calc(70px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+}
+
