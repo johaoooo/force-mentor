@@ -369,13 +369,20 @@ input:focus-visible {
 
 @media (max-width: 900px) {
   .hero {
-    padding: 68px 0 74px;
-    min-height: auto;
+    min-height: calc(100vh - 128px);
+    min-height: calc(100dvh - 69px - 58px - env(safe-area-inset-bottom, 0px));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 0 40px;
+    box-sizing: border-box;
   }
   .hero__inner {
     grid-template-columns: 1fr;
     text-align: center;
-    gap: 28px;
+    gap: 24px;
+    width: 100%;
+    margin: auto 0;
   }
   .search {
     margin: 0 auto;
@@ -390,10 +397,12 @@ input:focus-visible {
 
 @media (max-width: 576px) {
   .hero {
-    padding: 55px 0 65px;
+    min-height: calc(100vh - 128px);
+    min-height: calc(100dvh - 69px - 58px - env(safe-area-inset-bottom, 0px));
+    padding: 24px 0 32px;
   }
   .hero h1 {
-    font-size: 26px;
+    font-size: clamp(24px, 7vw, 32px);
     line-height: 1.25;
     letter-spacing: -0.5px;
   }
@@ -401,6 +410,7 @@ input:focus-visible {
     font-size: 14.5px;
     margin: 16px auto 24px;
     line-height: 1.55;
+    max-width: 92%;
   }
   .search {
     height: auto;
