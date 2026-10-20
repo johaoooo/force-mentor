@@ -6,6 +6,18 @@ import { MentorshipService } from '../../services/mentorship.service';
 import { AuthService } from '../../services/auth.service';
 import { DemandeMentorat, Profile, DisponibiliteMentor, Notification, MatchingResult } from '../../models/models';
 
+export interface MatiereProgression {
+  id: number;
+  nom: string;
+  icone: string;
+  totalSessions: number;
+  terminees: number;
+  acceptees: number;
+  enAttente: number;
+  heuresRealisees: number;
+  pourcentage: number;
+}
+
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -52,6 +64,24 @@ import { DemandeMentorat, Profile, DisponibiliteMentor, Notification, MatchingRe
             </span>
             <span *ngIf="viewMode === 'mentore' && demandesEnvoyees.length" class="badge bg-primary rounded-pill ms-auto" style="font-size: 11px;">
               {{ demandesEnvoyees.length }}
+            </span>
+          </a>
+
+          <!-- Onglet Progression par matière -->
+          <a (click)="activeTab = 'progression'" class="sidebar-nav-link" [class.active]="activeTab === 'progression'" style="cursor: pointer;">
+            <i class="bi bi-graph-up-arrow"></i>
+            <span>Progression</span>
+            <span *ngIf="getMatiereProgressions().length" class="badge bg-primary-subtle text-primary rounded-pill ms-auto" style="font-size: 11px;">
+              {{ getMatiereProgressions().length }}
+            </span>
+          </a>
+
+          <!-- Onglet Historique complet -->
+          <a (click)="activeTab = 'historique'" class="sidebar-nav-link" [class.active]="activeTab === 'historique'" style="cursor: pointer;">
+            <i class="bi bi-clock-history"></i>
+            <span>Historique</span>
+            <span *ngIf="getDemandesCourantes().length" class="badge bg-secondary-subtle text-secondary rounded-pill ms-auto" style="font-size: 11px;">
+              {{ getDemandesCourantes().length }}
             </span>
           </a>
 
@@ -149,6 +179,14 @@ import { DemandeMentorat, Profile, DisponibiliteMentor, Notification, MatchingRe
           <a (click)="activeTab = viewMode === 'mentor' ? 'recues' : 'envoyees'; isMobileDrawerOpen = false" class="sidebar-nav-link" [class.active]="activeTab === 'recues' || activeTab === 'envoyees'">
             <i class="bi bi-speedometer2"></i>
             <span>Tableau de bord</span>
+          </a>
+          <a (click)="activeTab = 'progression'; isMobileDrawerOpen = false" class="sidebar-nav-link" [class.active]="activeTab === 'progression'">
+            <i class="bi bi-graph-up-arrow"></i>
+            <span>Progression par matière</span>
+          </a>
+          <a (click)="activeTab = 'historique'; isMobileDrawerOpen = false" class="sidebar-nav-link" [class.active]="activeTab === 'historique'">
+            <i class="bi bi-clock-history"></i>
+            <span>Historique des séances</span>
           </a>
           <a *ngIf="currentUser?.est_mentor" (click)="activeTab = 'disponibilites'; isMobileDrawerOpen = false" class="sidebar-nav-link" [class.active]="activeTab === 'disponibilites'">
             <i class="bi bi-calendar2-week"></i>
@@ -332,56 +370,70 @@ import { DemandeMentorat, Profile, DisponibiliteMentor, Notification, MatchingRe
           <button type="button" class="btn-close p-2" (click)="actionMessage = ''"></button>
         </div>
 
-        <!-- 3 KPIs Simplifiés en 1 ligne -->
+        <!-- 4 KPIs Structurés & Enrichis -->
         <div class="row g-2 mb-3">
           <!-- KPI MENTOR -->
           <ng-container *ngIf="viewMode === 'mentor'">
-            <div class="col-4">
+            <div class="col-6 col-md-3">
               <div class="card p-2 p-md-3 border-0 shadow-sm rounded-3 bg-white text-center h-100">
-                <div class="text-muted fw-bold text-uppercase" style="font-size: 10.5px;">Reçues</div>
+                <div class="text-muted fw-bold text-uppercase" style="font-size: 10px;">Séances</div>
                 <div class="fs-4 fw-bold text-primary my-1">{{ demandesRecues.length }}</div>
                 <small class="text-muted text-truncate d-block" style="font-size: 10px;">
-                  {{ getPendingCount() }} en attente
+                  {{ getTermineesCount() }} terminée(s)
                 </small>
               </div>
             </div>
-            <div class="col-4">
+            <div class="col-6 col-md-3">
               <div class="card p-2 p-md-3 border-0 shadow-sm rounded-3 bg-white text-center h-100">
-                <div class="text-muted fw-bold text-uppercase" style="font-size: 10.5px;">Confirmées</div>
-                <div class="fs-4 fw-bold text-success my-1">{{ getProchainesSessions().length }}</div>
-                <small class="text-muted text-truncate d-block" style="font-size: 10px;">Séances actives</small>
+                <div class="text-muted fw-bold text-uppercase" style="font-size: 10px;">Heures dispensées</div>
+                <div class="fs-4 fw-bold text-success my-1">{{ getHeuresEffectuees() }}h</div>
+                <small class="text-muted text-truncate d-block" style="font-size: 10px;">+{{ getHeuresPlanifiees() }}h prévues</small>
               </div>
             </div>
-            <div class="col-4">
+            <div class="col-6 col-md-3">
               <div class="card p-2 p-md-3 border-0 shadow-sm rounded-3 bg-white text-center h-100">
-                <div class="text-muted fw-bold text-uppercase" style="font-size: 10.5px;">Créneaux</div>
-                <div class="fs-4 fw-bold text-warning my-1">{{ mesDispos.length }}</div>
-                <small class="text-muted text-truncate d-block" style="font-size: 10px;">Hebdomadaires</small>
+                <div class="text-muted fw-bold text-uppercase" style="font-size: 10px;">En attente</div>
+                <div class="fs-4 fw-bold text-warning my-1">{{ getPendingCount() }}</div>
+                <small class="text-muted text-truncate d-block" style="font-size: 10px;">À traiter</small>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="card p-2 p-md-3 border-0 shadow-sm rounded-3 bg-white text-center h-100">
+                <div class="text-muted fw-bold text-uppercase" style="font-size: 10px;">Matières</div>
+                <div class="fs-4 fw-bold text-info my-1">{{ getNbMatieres() }}</div>
+                <small class="text-muted text-truncate d-block" style="font-size: 10px;">Enseignées</small>
               </div>
             </div>
           </ng-container>
 
           <!-- KPI MENTORÉ -->
           <ng-container *ngIf="viewMode === 'mentore'">
-            <div class="col-4">
+            <div class="col-6 col-md-3">
               <div class="card p-2 p-md-3 border-0 shadow-sm rounded-3 bg-white text-center h-100">
-                <div class="text-muted fw-bold text-uppercase" style="font-size: 10.5px;">Demandes</div>
+                <div class="text-muted fw-bold text-uppercase" style="font-size: 10px;">Séances</div>
                 <div class="fs-4 fw-bold text-primary my-1">{{ demandesEnvoyees.length }}</div>
-                <small class="text-muted text-truncate d-block" style="font-size: 10px;">Envoyées</small>
+                <small class="text-muted text-truncate d-block" style="font-size: 10px;">{{ getTermineesCount() }} effectuée(s)</small>
               </div>
             </div>
-            <div class="col-4">
+            <div class="col-6 col-md-3">
               <div class="card p-2 p-md-3 border-0 shadow-sm rounded-3 bg-white text-center h-100">
-                <div class="text-muted fw-bold text-uppercase" style="font-size: 10.5px;">Confirmées</div>
-                <div class="fs-4 fw-bold text-success my-1">{{ getProchainesSessions().length }}</div>
-                <small class="text-muted text-truncate d-block" style="font-size: 10px;">Avec visio</small>
+                <div class="text-muted fw-bold text-uppercase" style="font-size: 10px;">Volume suivi</div>
+                <div class="fs-4 fw-bold text-success my-1">{{ getHeuresEffectuees() }}h</div>
+                <small class="text-muted text-truncate d-block" style="font-size: 10px;">+{{ getHeuresPlanifiees() }}h à venir</small>
               </div>
             </div>
-            <div class="col-4">
+            <div class="col-6 col-md-3">
               <div class="card p-2 p-md-3 border-0 shadow-sm rounded-3 bg-white text-center h-100">
-                <div class="text-muted fw-bold text-uppercase" style="font-size: 10.5px;">Volume</div>
-                <div class="fs-4 fw-bold text-info my-1">{{ getHeuresMentorat() }}h</div>
-                <small class="text-muted text-truncate d-block" style="font-size: 10px;">Accompagnement</small>
+                <div class="text-muted fw-bold text-uppercase" style="font-size: 10px;">En cours</div>
+                <div class="fs-4 fw-bold text-warning my-1">{{ getProchainesSessions().length }}</div>
+                <small class="text-muted text-truncate d-block" style="font-size: 10px;">Confirmée(s)</small>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="card p-2 p-md-3 border-0 shadow-sm rounded-3 bg-white text-center h-100">
+                <div class="text-muted fw-bold text-uppercase" style="font-size: 10px;">Matières</div>
+                <div class="fs-4 fw-bold text-info my-1">{{ getNbMatieres() }}</div>
+                <small class="text-muted text-truncate d-block" style="font-size: 10px;">Accompagnées</small>
               </div>
             </div>
           </ng-container>
@@ -413,16 +465,28 @@ import { DemandeMentorat, Profile, DisponibiliteMentor, Notification, MatchingRe
             <i class="bi bi-send me-1"></i>Mes demandes ({{ demandesEnvoyees.length }})
           </button>
 
+          <!-- Onglet Progression par matière -->
           <button 
-            *ngIf="viewMode === 'mentor'"
             type="button"
-            (click)="activeTab = 'disponibilites'"
+            (click)="activeTab = 'progression'"
             class="btn btn-sm rounded-pill px-3 py-2 fw-bold"
-            [class.btn-primary]="activeTab === 'disponibilites'"
-            [class.btn-light]="activeTab !== 'disponibilites'"
+            [class.btn-primary]="activeTab === 'progression'"
+            [class.btn-light]="activeTab !== 'progression'"
             style="font-size: 12.5px;"
           >
-            <i class="bi bi-calendar-week me-1"></i>Mes créneaux ({{ mesDispos.length }})
+            <i class="bi bi-graph-up-arrow me-1"></i>Progression par matière ({{ getMatiereProgressions().length }})
+          </button>
+
+          <!-- Onglet Historique complet -->
+          <button 
+            type="button"
+            (click)="activeTab = 'historique'"
+            class="btn btn-sm rounded-pill px-3 py-2 fw-bold"
+            [class.btn-primary]="activeTab === 'historique'"
+            [class.btn-light]="activeTab !== 'historique'"
+            style="font-size: 12.5px;"
+          >
+            <i class="bi bi-clock-history me-1"></i>Historique des séances ({{ getDemandesCourantes().length }})
           </button>
 
           <button 
@@ -434,6 +498,18 @@ import { DemandeMentorat, Profile, DisponibiliteMentor, Notification, MatchingRe
             style="font-size: 12.5px;"
           >
             <i class="bi bi-camera-video me-1"></i>Séances Visio ({{ getProchainesSessions().length }})
+          </button>
+
+          <button 
+            *ngIf="viewMode === 'mentor'"
+            type="button"
+            (click)="activeTab = 'disponibilites'"
+            class="btn btn-sm rounded-pill px-3 py-2 fw-bold"
+            [class.btn-primary]="activeTab === 'disponibilites'"
+            [class.btn-light]="activeTab !== 'disponibilites'"
+            style="font-size: 12.5px;"
+          >
+            <i class="bi bi-calendar-week me-1"></i>Mes créneaux ({{ mesDispos.length }})
           </button>
 
           <button 
@@ -805,6 +881,262 @@ import { DemandeMentorat, Profile, DisponibiliteMentor, Notification, MatchingRe
             </div>
           </div>
 
+          <!-- ONGLET PROGRESSION PAR MATIÈRE -->
+          <div *ngIf="!loading && activeTab === 'progression'">
+            <div class="mb-3 d-flex justify-content-between align-items-center flex-wrap gap-2">
+              <div>
+                <h5 class="fw-bold text-dark mb-1" style="font-size: 16px;">
+                  <i class="bi bi-graph-up-arrow text-primary me-2"></i>Progression et volume par matière
+                </h5>
+                <p class="text-muted small mb-0">
+                  Suivez vos séances terminées, vos heures cumulées et vos axes de perfectionnement.
+                </p>
+              </div>
+              <div class="badge bg-primary-subtle text-primary px-3 py-2 rounded-pill fw-bold" style="font-size: 11px;">
+                Total : {{ getHeuresEffectuees() }}h réalisées
+              </div>
+            </div>
+
+            <div *ngIf="getMatiereProgressions().length === 0" class="text-center py-5 text-muted border rounded-3 bg-light">
+              <i class="bi bi-bar-chart-line fs-1 text-secondary opacity-50 mb-2 d-block"></i>
+              <p class="mb-0 small">Aucune séance enregistrée pour calculer la progression.</p>
+            </div>
+
+            <div class="row g-3">
+              <div *ngFor="let prog of getMatiereProgressions()" class="col-12 col-md-6">
+                <div class="card border rounded-3 p-3 bg-white h-100 shadow-sm">
+                  <div class="d-flex justify-content-between align-items-start mb-2">
+                    <div class="d-flex align-items-center gap-2">
+                      <div class="p-2 rounded-3 bg-primary-subtle text-primary d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                        <i class="bi" [ngClass]="prog.icone" style="font-size: 1.2rem;"></i>
+                      </div>
+                      <div>
+                        <strong class="text-dark d-block" style="font-size: 14px;">{{ prog.nom }}</strong>
+                        <small class="text-muted" style="font-size: 11px;">{{ prog.totalSessions }} séance(s) au total</small>
+                      </div>
+                    </div>
+                    <span class="badge rounded-pill px-2.5 py-1 fw-bold" [ngClass]="prog.pourcentage === 100 ? 'bg-success text-white' : 'bg-primary text-white'" style="font-size: 11px;">
+                      {{ prog.pourcentage }}% terminé
+                    </span>
+                  </div>
+
+                  <!-- Jauge de progression -->
+                  <div class="progress mb-2" style="height: 8px; border-radius: 4px; background-color: #e2e8f0;">
+                    <div 
+                      class="progress-bar progress-bar-striped progress-bar-animated" 
+                      role="progressbar" 
+                      [style.width.%]="prog.pourcentage" 
+                      [ngClass]="prog.pourcentage === 100 ? 'bg-success' : 'bg-primary'"
+                      [attr.aria-valuenow]="prog.pourcentage" 
+                      aria-valuemin="0" 
+                      aria-valuemax="100"
+                    ></div>
+                  </div>
+
+                  <!-- Détails chiffrés -->
+                  <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 pt-1 border-top mt-2 small text-muted" style="font-size: 11.5px;">
+                    <div>
+                      <span class="text-success fw-bold me-2"><i class="bi bi-check-circle-fill me-1"></i>{{ prog.terminees }} faite(s)</span>
+                      <span *ngIf="prog.acceptees > 0" class="text-primary fw-bold me-2"><i class="bi bi-calendar2-check-fill me-1"></i>{{ prog.acceptees }} validée(s)</span>
+                      <span *ngIf="prog.enAttente > 0" class="text-warning fw-bold"><i class="bi bi-hourglass-split me-1"></i>{{ prog.enAttente }} en attente</span>
+                    </div>
+                    <div class="fw-bold text-dark">
+                      <i class="bi bi-clock me-1 text-secondary"></i>{{ prog.heuresRealisees }}h
+                    </div>
+                  </div>
+
+                  <!-- Bouton d'action selon rôle -->
+                  <div class="mt-3 pt-2 border-top d-flex justify-content-end">
+                    <a *ngIf="viewMode === 'mentore'" routerLink="/mentors" [queryParams]="{ matiere: prog.id }" class="btn btn-sm btn-outline-primary rounded-pill px-3" style="font-size: 11.5px;">
+                      <i class="bi bi-search me-1"></i>Voir les mentors en {{ prog.nom }}
+                    </a>
+                    <button *ngIf="viewMode === 'mentor'" (click)="activeTab = 'disponibilites'" class="btn btn-sm btn-outline-secondary rounded-pill px-3" style="font-size: 11.5px;">
+                      <i class="bi bi-calendar-plus me-1"></i>Ouvrir un créneau
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ONGLET HISTORIQUE COMPLET -->
+          <div *ngIf="!loading && activeTab === 'historique'">
+            <div class="mb-3">
+              <h5 class="fw-bold text-dark mb-1" style="font-size: 16px;">
+                <i class="bi bi-clock-history text-primary me-2"></i>Historique complet de vos séances
+              </h5>
+              <p class="text-muted small mb-0">
+                Consultez, filtrez et retrouvez l'ensemble de vos demandes, séances réalisées et avis vérifiés.
+              </p>
+            </div>
+
+            <!-- Filtres de recherche -->
+            <div class="card p-3 mb-3 bg-light border rounded-3">
+              <div class="row g-2 align-items-center">
+                <!-- Recherche texte -->
+                <div class="col-12 col-md-5">
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
+                    <input 
+                      type="text" 
+                      [(ngModel)]="historiqueSearchText" 
+                      class="form-control border-start-0" 
+                      placeholder="Rechercher par nom, matière, mot-clé..."
+                    >
+                    <button *ngIf="historiqueSearchText" class="btn btn-white border border-start-0 text-muted" type="button" (click)="historiqueSearchText = ''">
+                      <i class="bi bi-x-lg"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Filtre Matière -->
+                <div class="col-6 col-md-4">
+                  <select [(ngModel)]="historiqueMatiereFilter" class="form-select form-select-sm">
+                    <option value="TOUTES">Toutes les matières</option>
+                    <option *ngFor="let m of getMatieresListFromDemandes()" [value]="m">{{ m }}</option>
+                  </select>
+                </div>
+
+                <!-- Compteur de résultats -->
+                <div class="col-6 col-md-3 text-end small text-muted">
+                  <strong>{{ getFilteredHistorique().length }}</strong> résultat(s)
+                </div>
+              </div>
+
+              <!-- Filtres Statut en pills -->
+              <div class="d-flex gap-1 overflow-auto mt-2 pt-2 border-top" style="-webkit-overflow-scrolling: touch; white-space: nowrap;">
+                <button 
+                  type="button" 
+                  (click)="historiqueStatutFilter = 'TOUS'" 
+                  class="btn btn-sm rounded-pill px-2.5 py-1"
+                  [class.btn-dark]="historiqueStatutFilter === 'TOUS'"
+                  [class.btn-white]="historiqueStatutFilter !== 'TOUS'"
+                  [class.border]="historiqueStatutFilter !== 'TOUS'"
+                  style="font-size: 11px;"
+                >
+                  Tous
+                </button>
+                <button 
+                  type="button" 
+                  (click)="historiqueStatutFilter = 'TERMINEE'" 
+                  class="btn btn-sm rounded-pill px-2.5 py-1"
+                  [class.btn-success]="historiqueStatutFilter === 'TERMINEE'"
+                  [class.btn-white]="historiqueStatutFilter !== 'TERMINEE'"
+                  [class.border]="historiqueStatutFilter !== 'TERMINEE'"
+                  style="font-size: 11px;"
+                >
+                  <i class="bi bi-check2-circle me-1"></i>Terminées
+                </button>
+                <button 
+                  type="button" 
+                  (click)="historiqueStatutFilter = 'ACCEPTEE'" 
+                  class="btn btn-sm rounded-pill px-2.5 py-1"
+                  [class.btn-primary]="historiqueStatutFilter === 'ACCEPTEE'"
+                  [class.btn-white]="historiqueStatutFilter !== 'ACCEPTEE'"
+                  [class.border]="historiqueStatutFilter !== 'ACCEPTEE'"
+                  style="font-size: 11px;"
+                >
+                  <i class="bi bi-calendar-check me-1"></i>Confirmées
+                </button>
+                <button 
+                  type="button" 
+                  (click)="historiqueStatutFilter = 'EN_ATTENTE'" 
+                  class="btn btn-sm rounded-pill px-2.5 py-1"
+                  [class.btn-warning]="historiqueStatutFilter === 'EN_ATTENTE'"
+                  [class.btn-white]="historiqueStatutFilter !== 'EN_ATTENTE'"
+                  [class.border]="historiqueStatutFilter !== 'EN_ATTENTE'"
+                  style="font-size: 11px;"
+                >
+                  <i class="bi bi-hourglass-split me-1"></i>En attente
+                </button>
+                <button 
+                  type="button" 
+                  (click)="historiqueStatutFilter = 'REFUSEE'" 
+                  class="btn btn-sm rounded-pill px-2.5 py-1"
+                  [class.btn-danger]="historiqueStatutFilter === 'REFUSEE'"
+                  [class.btn-white]="historiqueStatutFilter !== 'REFUSEE'"
+                  [class.border]="historiqueStatutFilter !== 'REFUSEE'"
+                  style="font-size: 11px;"
+                >
+                  Refusées / Annulées
+                </button>
+              </div>
+            </div>
+
+            <!-- Liste des cartes historique -->
+            <div *ngIf="getFilteredHistorique().length === 0" class="text-center py-5 text-muted border rounded-3 bg-white">
+              <i class="bi bi-funnel fs-1 text-secondary opacity-50 mb-2 d-block"></i>
+              <p class="mb-0 small">Aucune séance ne correspond aux filtres sélectionnés.</p>
+            </div>
+
+            <div *ngFor="let demande of getFilteredHistorique()" class="card border mb-3 rounded-3 p-3 shadow-none bg-white">
+              <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-2">
+                <div class="d-flex align-items-center gap-2">
+                  <div class="avatar avatar--initials" style="width: 38px; height: 38px; font-size: 13px;">
+                    {{ viewMode === 'mentor' ? getInitials(demande.mentore) : getInitials(demande.mentor) }}
+                  </div>
+                  <div>
+                    <h6 class="fw-bold mb-0 text-dark" style="font-size: 13.5px;">
+                      {{ viewMode === 'mentor' ? (demande.mentore.user.first_name + ' ' + demande.mentore.user.last_name) : (demande.mentor.user.first_name + ' ' + demande.mentor.user.last_name) }}
+                    </h6>
+                    <small class="text-muted" style="font-size: 11px;">
+                      {{ viewMode === 'mentor' ? (demande.mentore.filiere || 'Mentoré') : (demande.mentor.filiere || 'Mentor') }}
+                      &bull; Demande du {{ demande.date_creation | date:'dd/MM/yyyy' }}
+                    </small>
+                  </div>
+                </div>
+                <div class="d-flex align-items-center gap-1">
+                  <span class="badge bg-primary-subtle text-primary border border-primary-subtle" style="font-size: 11px;">
+                    {{ demande.matiere.nom }}
+                  </span>
+                  <span class="badge" [ngClass]="getBadgeClass(demande.statut)" style="font-size: 11px;">
+                    {{ demande.statut_display }}
+                  </span>
+                </div>
+              </div>
+
+              <!-- Bloc Date et Heure -->
+              <div class="p-2 mb-2 rounded-2 bg-light border d-flex align-items-center justify-content-between flex-wrap gap-2 small">
+                <div>
+                  <i class="bi bi-calendar-event text-primary me-1"></i>
+                  <span class="fw-bold text-dark">
+                    {{ demande.date_heure_souhaitee ? (demande.date_heure_souhaitee | date:'EEEE d MMMM yyyy à HH:mm') : 'Créneau convenu' }}
+                  </span>
+                </div>
+                <span class="badge bg-secondary-subtle text-secondary">{{ demande.duree_minutes || 60 }} min</span>
+              </div>
+
+              <p class="text-secondary small mb-2 p-2 bg-light rounded-2 border" style="font-size: 12.5px;">
+                « {{ demande.message }} »
+              </p>
+
+              <!-- Avis vérifié affiché si déjà noté -->
+              <div *ngIf="demande.avis" class="p-2 mb-2 rounded-2 bg-warning-subtle border border-warning-subtle small d-flex align-items-center justify-content-between flex-wrap gap-1">
+                <div>
+                  <i class="bi bi-patch-check-fill text-warning me-1"></i>
+                  <strong>Avis vérifié déposé :</strong>
+                  <span class="ms-1 fst-italic text-dark">« {{ demande.avis.commentaire || 'Séance validée' }} »</span>
+                </div>
+                <div class="text-warning fw-bold">
+                  {{ demande.avis.note }}/5 ⭐
+                </div>
+              </div>
+
+              <!-- Actions contextuelles -->
+              <div class="d-flex justify-content-end gap-2 flex-wrap pt-1">
+                <button *ngIf="demande.peut_noter" (click)="openAvisModal(demande)" class="btn btn-sm btn-warning text-dark fw-bold rounded-pill px-3 shadow-sm">
+                  <i class="bi bi-star-fill me-1"></i>Laisser un avis vérifié
+                </button>
+                <a *ngIf="demande.statut === 'ACCEPTEE' && demande.lien_visio" [href]="demande.lien_visio" target="_blank" class="btn btn-sm btn-success px-3">
+                  <i class="bi bi-camera-video me-1"></i>Lien Visio
+                </a>
+                <a [routerLink]="['/messages']" [queryParams]="{ destinataireId: viewMode === 'mentor' ? demande.mentore.id : demande.mentor.id }" class="btn btn-sm btn-light border px-2.5" title="Discuter">
+                  <i class="bi bi-chat-dots me-1"></i>Message
+                </a>
+              </div>
+            </div>
+          </div>
+
         </div>
       </main>
 
@@ -971,12 +1303,17 @@ export class DashboardComponent implements OnInit {
   mesDispos: DisponibiliteMentor[] = [];
   matchingMentors: MatchingResult[] = [];
 
-  activeTab: 'recues' | 'envoyees' | 'disponibilites' | 'sessions' | 'matching' = 'recues';
+  activeTab: 'recues' | 'envoyees' | 'progression' | 'historique' | 'disponibilites' | 'sessions' | 'matching' = 'recues';
   viewMode: 'mentor' | 'mentore' = 'mentor';
   loading = true;
   actionMessage = '';
 
   isMobileDrawerOpen = false;
+
+  // Filtres pour l'onglet Historique
+  historiqueStatutFilter: string = 'TOUS';
+  historiqueMatiereFilter: string = 'TOUTES';
+  historiqueSearchText: string = '';
 
   // Modal Avis vérifié
   isAvisModalOpen = false;
@@ -1165,14 +1502,118 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  getDemandesCourantes(): DemandeMentorat[] {
+    return this.viewMode === 'mentor' ? this.demandesRecues : this.demandesEnvoyees;
+  }
+
   getProchainesSessions(): DemandeMentorat[] {
-    const list = this.viewMode === 'mentor' ? this.demandesRecues : this.demandesEnvoyees;
-    return list.filter(d => d.statut === 'ACCEPTEE');
+    return this.getDemandesCourantes().filter(d => d.statut === 'ACCEPTEE');
+  }
+
+  getTermineesCount(): number {
+    return this.getDemandesCourantes().filter(d => d.statut === 'TERMINEE').length;
+  }
+
+  getHeuresEffectuees(): string {
+    const list = this.getDemandesCourantes();
+    const terminees = list.filter(d => d.statut === 'TERMINEE');
+    const totalMin = terminees.reduce((sum, d) => sum + (d.duree_minutes || 60), 0);
+    const hours = totalMin / 60;
+    return hours % 1 === 0 ? hours.toFixed(0) : hours.toFixed(1);
+  }
+
+  getHeuresPlanifiees(): string {
+    const list = this.getDemandesCourantes();
+    const acceptees = list.filter(d => d.statut === 'ACCEPTEE');
+    const totalMin = acceptees.reduce((sum, d) => sum + (d.duree_minutes || 60), 0);
+    const hours = totalMin / 60;
+    return hours % 1 === 0 ? hours.toFixed(0) : hours.toFixed(1);
+  }
+
+  getNbMatieres(): number {
+    const set = new Set<number>();
+    this.getDemandesCourantes().forEach(d => {
+      if (d.matiere?.id) set.add(d.matiere.id);
+    });
+    return set.size;
+  }
+
+  getMatiereProgressions(): MatiereProgression[] {
+    const list = this.getDemandesCourantes();
+    const map = new Map<number, MatiereProgression>();
+
+    for (const d of list) {
+      if (!d.matiere) continue;
+      const mId = d.matiere.id;
+      if (!map.has(mId)) {
+        map.set(mId, {
+          id: mId,
+          nom: d.matiere.nom,
+          icone: d.matiere.icone || 'bi-journal-code',
+          totalSessions: 0,
+          terminees: 0,
+          acceptees: 0,
+          enAttente: 0,
+          heuresRealisees: 0,
+          pourcentage: 0
+        });
+      }
+      const stat = map.get(mId)!;
+      stat.totalSessions++;
+      if (d.statut === 'TERMINEE') {
+        stat.terminees++;
+        stat.heuresRealisees += (d.duree_minutes || 60) / 60;
+      } else if (d.statut === 'ACCEPTEE') {
+        stat.acceptees++;
+      } else if (d.statut === 'EN_ATTENTE') {
+        stat.enAttente++;
+      }
+    }
+
+    const result = Array.from(map.values());
+    result.forEach(r => {
+      r.pourcentage = r.totalSessions > 0 ? Math.round((r.terminees / r.totalSessions) * 100) : 0;
+      r.heuresRealisees = Math.round(r.heuresRealisees * 10) / 10;
+    });
+    return result.sort((a, b) => b.totalSessions - a.totalSessions);
+  }
+
+  getFilteredHistorique(): DemandeMentorat[] {
+    const list = this.getDemandesCourantes();
+    return list.filter(d => {
+      // Filtre statut
+      if (this.historiqueStatutFilter !== 'TOUS' && d.statut !== this.historiqueStatutFilter) {
+        return false;
+      }
+      // Filtre matière
+      if (this.historiqueMatiereFilter !== 'TOUTES' && d.matiere?.nom !== this.historiqueMatiereFilter) {
+        return false;
+      }
+      // Filtre recherche textuelle
+      if (this.historiqueSearchText.trim()) {
+        const query = this.historiqueSearchText.toLowerCase();
+        const mentoreName = d.mentore?.user ? `${d.mentore.user.first_name} ${d.mentore.user.last_name}`.toLowerCase() : '';
+        const mentorName = d.mentor?.user ? `${d.mentor.user.first_name} ${d.mentor.user.last_name}`.toLowerCase() : '';
+        const matiereNom = (d.matiere?.nom || '').toLowerCase();
+        const msg = (d.message || '').toLowerCase();
+        if (!mentoreName.includes(query) && !mentorName.includes(query) && !matiereNom.includes(query) && !msg.includes(query)) {
+          return false;
+        }
+      }
+      return true;
+    });
+  }
+
+  getMatieresListFromDemandes(): string[] {
+    const set = new Set<string>();
+    this.getDemandesCourantes().forEach(d => {
+      if (d.matiere?.nom) set.add(d.matiere.nom);
+    });
+    return Array.from(set);
   }
 
   getHeuresMentorat(): string {
-    const hours = this.getProchainesSessions().length * 1.5;
-    return hours.toFixed(0);
+    return this.getHeuresEffectuees();
   }
 
   getUserInitials(): string {
